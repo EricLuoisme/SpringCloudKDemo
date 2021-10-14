@@ -17,6 +17,13 @@
     </properties>
 
     <dependencies>
+        <!-- Eureka客户端, 里面包含了Ribbon -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <version>2.2.9.RELEASE</version>
+        </dependency>
+
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>springcloud-api</artifactId>

@@ -14,7 +14,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <eureka.version>1.4.7.RELEASE</eureka.version>
+        <eureka.version>2.2.9.RELEASE</eureka.version>
         <actuator.version>2.3.12.RELEASE</actuator.version>
     </properties>
 
@@ -28,7 +28,7 @@
         <!-- 注册服务到Eureka -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
             <version>${eureka.version}</version>
         </dependency>
         <!-- 监控 -->
