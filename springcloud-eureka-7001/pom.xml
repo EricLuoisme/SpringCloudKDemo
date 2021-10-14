@@ -17,6 +17,7 @@
     </properties>
 
     <dependencies>
+        <!-- 作为Eureka的注册中心 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka-server</artifactId>

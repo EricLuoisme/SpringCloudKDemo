@@ -14,6 +14,8 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <eureka.version>1.4.7.RELEASE</eureka.version>
+        <actuator.version>2.3.12.RELEASE</actuator.version>
     </properties>
 
     <dependencies>
@@ -22,6 +24,18 @@
             <groupId>org.example</groupId>
             <artifactId>springcloud-api</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- 注册服务到Eureka -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+            <version>${eureka.version}</version>
+        </dependency>
+        <!-- 监控 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>${actuator.version}</version>
         </dependency>
         <!-- 提供服务 -->
         <dependency>
