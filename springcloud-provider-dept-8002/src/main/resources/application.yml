@@ -1,6 +1,6 @@
 # 服务配置
 server:
-  port: 8001
+  port: 8002
 # mybatis配置
 mybatis:
   type-aliases-package: com.kdemo.springcloud.pojo
@@ -26,6 +26,6 @@ eureka:
 # 描述项目基本信息
 info:
   app:
-    name: springcloud-provider-dept-8001
+    name: springcloud-provider-dept-8002
     port: ${server.port}
     version: 1.0.0
