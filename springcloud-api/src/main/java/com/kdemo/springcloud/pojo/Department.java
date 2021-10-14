@@ -13,13 +13,14 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class Department implements Serializable {
 
-    private Long deptNo;
+    // 这里必须与数据库中字段名完全一致, 才能绑定上, 否则需要在xml文件中重新设置resultMap进行映射
+    private Long dept_no;
 
-    private String deptName;
+    private String dept_name;
 
-    private String dbSource;
+    private String db_source;
 
     public Department(String deptName) {
-        this.deptName = deptName;
+        this.dept_name = dept_name;
     }
 }
