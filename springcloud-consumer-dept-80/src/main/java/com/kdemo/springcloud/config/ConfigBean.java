@@ -12,8 +12,13 @@ import org.springframework.web.client.RestTemplate;
 public class ConfigBean {
 
     @Bean
-    // Ribbon 配置负载均衡
     @LoadBalanced
+    /**
+     * Ribbon 配置负载均衡
+     * IRule 负载策略, 让LoadBalancer选择
+     * AvailabilityFilteringRule: 先过滤会崩溃的服务
+     * RoundRobinRule: 轮询策略
+     */
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
