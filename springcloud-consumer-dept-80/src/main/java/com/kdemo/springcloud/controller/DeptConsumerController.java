@@ -15,8 +15,10 @@ import java.util.List;
 @RestController
 public class DeptConsumerController {
 
-    /** 请求地址前缀不变 */
-    private final static String REST_URL_PREFIX = "http://127.0.0.1:8001";
+    /**
+     * 通过Ribbon注册时, 应该通过服务获取
+     */
+    private final static String REST_URL_PREFIX = "http://springcloud-provider-dept";
 
     /**
      * 提供方便访问HTTP方式的方法
