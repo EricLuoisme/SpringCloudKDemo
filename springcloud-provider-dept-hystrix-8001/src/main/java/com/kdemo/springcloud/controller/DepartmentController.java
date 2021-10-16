@@ -40,6 +40,9 @@ public class DepartmentController {
         return byId;
     }
 
+    /**
+     * 实现服务熔断的返回设置
+     */
     public Department findByIdFallback(Long id) {
         return new Department().setDept_no(id).setDept_name("secret department").setDb_source("None db store this department");
     }

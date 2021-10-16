@@ -13,7 +13,7 @@ import java.util.List;
  * Feign只需要注册接口, 后面消费者只需要调用接口方法, feign会结合ribbon负载均衡, 并调用响应服务
  */
 @Component
-@FeignClient(value = "springcloud-provider-dept")
+@FeignClient(value = "springcloud-provider-dept", fallbackFactory = DeptClientServiceFallbackFactory.class)
 public interface DeptClientService {
 
     // 这里的路径, 需要是生产者的对应路径
