@@ -29,3 +29,9 @@ info:
     name: springcloud-provider-dept-hystrix-8001
     port: ${server.port}
     version: 1.0.0
+# 允许的dashboard监控地址
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

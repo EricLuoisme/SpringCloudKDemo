@@ -1,0 +1,6 @@
+server:
+  port: 9001
+# hystrix 需要添加暴露地址
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"

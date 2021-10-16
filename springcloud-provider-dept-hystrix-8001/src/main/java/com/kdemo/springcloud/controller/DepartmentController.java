@@ -34,9 +34,9 @@ public class DepartmentController {
     @GetMapping(path = "/department/get/{id}")
     public Department findById(@PathVariable("id") Long id) {
         Department byId = departmentService.findById(id);
-        if (null == byId) {
-            throw new RuntimeException();
-        }
+//        if (null == byId) {
+//            throw new RuntimeException();
+//        }
         return byId;
     }
 
