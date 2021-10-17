@@ -1,6 +1,7 @@
 package com.kdemo.springcloud.controller;
 
 import com.kdemo.springcloud.pojo.Department;
+import com.kdemo.springcloud.service.DeptClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,11 @@ public class DeptConsumerController {
      */
     private final static String REST_URL_PREFIX = "http://springcloud-provider-dept";
 
-
+    /**
+     * 通过Feign调用服务
+     */
+    @Autowired
+    private DeptClientService deptClientService;
 
     /**
      * 提供方便访问HTTP方式的方法
@@ -30,17 +35,20 @@ public class DeptConsumerController {
 
     @RequestMapping("/consumer/dept/add")
     public boolean add(Department newDept) {
-        return restTemplate.postForObject(REST_URL_PREFIX + "/department/add/", newDept, Boolean.class);
+        return deptClientService.add(newDept);
+//        return restTemplate.postForObject(REST_URL_PREFIX + "/department/add/", newDept, Boolean.class);
     }
 
     @RequestMapping("/consumer/dept/get/{id}")
     public Department get(@PathVariable("id") Long id) {
-        return restTemplate.getForObject(REST_URL_PREFIX + "/department/get/" + id, Department.class);
+        return deptClientService.findById(id);
+//        return restTemplate.getForObject(REST_URL_PREFIX + "/department/get/" + id, Department.class);
     }
 
     @RequestMapping("/consumer/dept/list")
     public List<Department> getAll() {
-        return restTemplate.getForObject(REST_URL_PREFIX + "/department/list", List.class);
+        return deptClientService.findAll();
+//        return restTemplate.getForObject(REST_URL_PREFIX + "/department/list", List.class);
     }
 
 

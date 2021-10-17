@@ -9,3 +9,7 @@ eureka:
 ribbon:
   eager-load:
     enabled: true
+# feign 开启降级配置
+feign:
+  hystrix:
+    enabled: true
