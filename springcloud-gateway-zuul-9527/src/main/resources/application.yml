@@ -1,0 +1,27 @@
+server:
+  port: 9527
+spring:
+  application:
+    name: spring-cloud-zuul
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    instance-id: zuul9527.com
+    # 展示ip地址
+    prefer-ip-address: true
+# zuul 可以通过反向代理, 隐藏服务名称进行访问
+zuul:
+  routes:
+    deptProvider:
+      serviceId: springcloud-provider-dept
+      path: /department/**
+      # 若不置为false, 请求会把department去除, 请求路径可能有问题
+      stripPrefix: false
+  # 不允许再使用原路径进行访问
+  ignored-services: springcloud-provider-dept
+  # 所有访问都需要添加的前缀
+  prefix: /demo
+info:
+  app.name: kdemo-springcloud

@@ -22,7 +22,7 @@ eureka:
     service-url:
       # 要用与Eureka注册中心所配置的地址相同, 才能注册上服务, 需要同时注册到集群每一台eureka上
 #      defaultZone: http://eureka7001.com:7001/eureka/, http://eureka7002.com:7002/eureka/, http://eureka7003.com:7003/eureka/
-      defaultZone: http://eureka7001.com:7001/eureka/, http://eureka7002.com:7002/eureka/
+      defaultZone: http://eureka7001.com:7001/eureka/
 # 描述项目基本信息
 info:
   app:
