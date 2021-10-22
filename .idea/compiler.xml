@@ -22,6 +22,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="springcloud-api" target="11" />
+      <module name="springcloud-config-server-3344" target="11" />
       <module name="springcloud-consumer-dept-80" target="11" />
       <module name="springcloud-consumer-dept-feign" target="11" />
       <module name="springcloud-consumer-dept-hystrix" target="11" />

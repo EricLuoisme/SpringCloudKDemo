@@ -17,19 +17,19 @@ public class LogRequestInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Port " + SERVER_PORT + " pre-handle");
+        log.info("Port " + SERVER_PORT + " pre-handle By Interceptor");
         return super.preHandle(request, response, handler);
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.info("Port " + SERVER_PORT + " post-handle");
+        log.info("Port " + SERVER_PORT + " post-handle By Interceptor");
         super.postHandle(request, response, handler, modelAndView);
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        log.info("Port " + SERVER_PORT + " after-completion-handle");
+        log.info("Port " + SERVER_PORT + " after-completion-handle By Interceptor");
         super.afterCompletion(request, response, handler, ex);
     }
 
@@ -38,7 +38,7 @@ public class LogRequestInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Port " + SERVER_PORT + " after-concurrent-handle");
+        log.info("Port " + SERVER_PORT + " after-concurrent-handle By Interceptor");
         super.afterConcurrentHandlingStarted(request, response, handler);
     }
 }
