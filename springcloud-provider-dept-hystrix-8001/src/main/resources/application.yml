@@ -3,8 +3,11 @@ server:
   port: 8001
 # mybatis配置
 mybatis:
+  # 别名扫描路径
   type-aliases-package: com.kdemo.springcloud.pojo
+  # 关联位置
   config-location: classpath:mybatis/mybatis-config.xml
+  # 关联配置文件
   mapper-locations: classpath:mybatis/mapper/*.xml
 # spring配置
 spring:
