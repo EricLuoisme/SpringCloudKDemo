@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 
@@ -13,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 @EnableEurekaClient
 // 添加熔断支持 (这个注释只是启动断路器)
 @EnableCircuitBreaker
+// 如EnableZuulProxy中描述, 生产者需要开启才可以被反向代理
+@EnableDiscoveryClient
 public class DeptProvider_Hystrix_8001 {
     public static void main(String[] args) {
         SpringApplication.run(DeptProvider_Hystrix_8001.class, args);
