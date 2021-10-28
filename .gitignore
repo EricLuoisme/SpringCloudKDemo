@@ -1,0 +1,8 @@
+/springcloud-api/target/
+/springcloud-consumer-dept-feign/target/
+/springcloud-consumer-hystrix-dashboard/target/
+/springcloud-eureka-7001/target/
+/springcloud-provider-dept-8001/target/
+/springcloud-provider-dept-8002/target/
+/springcloud-provider-dept-hystrix-8001/target/
+/.idea/
