@@ -4,6 +4,7 @@ import com.kdemo.springcloud.pojo.Department;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -27,7 +28,9 @@ public class DeptClientServiceFallbackFactory implements FallbackFactory {
 
             @Override
             public List<Department> findAll() {
-                return null;
+                List<Department> result = new ArrayList<>();
+                result.add(new Department().setDept_no((long) 999).setDept_name("id => " + 999 + " 该服务已降级"));
+                return result;
             }
         };
     }
