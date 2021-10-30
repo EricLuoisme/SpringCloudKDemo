@@ -1,5 +1,6 @@
 package com.kdemo.springcloud.service;
 
+import com.github.pagehelper.PageHelper;
 import com.kdemo.springcloud.dao.DepartmentDao;
 import com.kdemo.springcloud.pojo.Department;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class DepartmentServiceImpl implements DepartmentService{
 
     @Override
     public List<Department> findAll() {
+
+        PageHelper.startPage(1, 2);
         return departmentDao.findAll();
     }
 }

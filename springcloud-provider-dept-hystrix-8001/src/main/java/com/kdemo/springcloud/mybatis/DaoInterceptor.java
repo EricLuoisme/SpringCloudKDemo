@@ -24,7 +24,7 @@ public class DaoInterceptor implements Interceptor {
 
         // before executed the sql
         log.info("\n hahahahaha mybatis interceptor before is invoked \n");
-
+        
         Object proceed = invocation.proceed();
 
         // after executed the sql

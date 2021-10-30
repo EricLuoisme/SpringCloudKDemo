@@ -9,6 +9,9 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   # 关联配置文件
   mapper-locations: classpath:mybatis/mapper/*.xml
+# PageHelper配置
+pagehelper:
+  helperDialect: mysql
 # spring配置
 spring:
   application:
