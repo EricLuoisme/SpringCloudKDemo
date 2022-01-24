@@ -2,6 +2,7 @@ package com.kdemo.springcloud.controller;
 
 import com.kdemo.springcloud.pojo.Department;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +26,11 @@ public class DeptConsumerController {
      */
     @Autowired
     private RestTemplate restTemplate;
+
+    /**
+     * Ribbon的LoadBalance实现, 通过choose()来选取ServerIp和Port, 然后也要使用RestTemplate来进行Http调用
+     */
+    private LoadBalancerClient loadBalancerClient;
 
     @RequestMapping("/consumer/dept/add")
     public boolean add(Department newDept) {

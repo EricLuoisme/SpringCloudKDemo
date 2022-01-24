@@ -9,6 +9,7 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Statement;
 
@@ -17,6 +18,7 @@ import java.sql.Statement;
  */
 @Intercepts(@Signature(type = StatementHandler.class, method = "query", args = {Statement.class, ResultHandler.class}))
 @Slf4j
+@Transactional()
 public class DaoInterceptor implements Interceptor {
 
     @Override
