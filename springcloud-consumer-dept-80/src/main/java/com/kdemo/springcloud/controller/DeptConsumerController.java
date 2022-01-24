@@ -2,6 +2,7 @@ package com.kdemo.springcloud.controller;
 
 import com.kdemo.springcloud.pojo.Department;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,10 @@ public class DeptConsumerController {
 
     /**
      * 提供方便访问HTTP方式的方法
+     * 添加@LoadBalanced注解, Ribbon将其实现本身的LoadBalance功能
      */
     @Autowired
+    @LoadBalanced
     private RestTemplate restTemplate;
 
     /**
