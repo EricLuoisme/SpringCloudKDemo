@@ -27,7 +27,6 @@ public class DeptConsumerController {
      * 添加@LoadBalanced注解, Ribbon将其实现本身的LoadBalance功能
      */
     @Autowired
-    @LoadBalanced
     private RestTemplate restTemplate;
 
     /**
