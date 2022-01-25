@@ -7,6 +7,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableEurekaClient
+/**
+ * Feign需要进行包扫描, 才能获取到Feign调用服务
+ */
 @EnableFeignClients(basePackages = {"com.kdemo.springcloud"})
 public class DeptConsumerFeign {
     public static void main(String[] args) {
