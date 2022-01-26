@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SpringCloudKDemo.iml" filepath="$PROJECT_DIR$/.idea/SpringCloudKDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-consumer-nacos-8888/spring-consumer-nacos-8888.iml" filepath="$PROJECT_DIR$/spring-consumer-nacos-8888/spring-consumer-nacos-8888.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud-api/springcloud-api.iml" filepath="$PROJECT_DIR$/springcloud-api/springcloud-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud-consumer-dept-80/springcloud-consumer-dept-80.iml" filepath="$PROJECT_DIR$/springcloud-consumer-dept-80/springcloud-consumer-dept-80.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud-consumer-dept-feign/springcloud-consumer-dept-feign.iml" filepath="$PROJECT_DIR$/springcloud-consumer-dept-feign/springcloud-consumer-dept-feign.iml" />
@@ -14,6 +15,7 @@
       <module fileurl="file://$PROJECT_DIR$/springcloud-provider-dept-8001/springcloud-provider-dept-8001.iml" filepath="$PROJECT_DIR$/springcloud-provider-dept-8001/springcloud-provider-dept-8001.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud-provider-dept-8002/springcloud-provider-dept-8002.iml" filepath="$PROJECT_DIR$/springcloud-provider-dept-8002/springcloud-provider-dept-8002.iml" />
       <module fileurl="file://$PROJECT_DIR$/springcloud-provider-dept-hystrix-8001/springcloud-provider-dept-hystrix-8001.iml" filepath="$PROJECT_DIR$/springcloud-provider-dept-hystrix-8001/springcloud-provider-dept-hystrix-8001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springcloud-provider-nacos-8005/springcloud-provider-nacos-8005.iml" filepath="$PROJECT_DIR$/springcloud-provider-nacos-8005/springcloud-provider-nacos-8005.iml" />
     </modules>
   </component>
 </project>
