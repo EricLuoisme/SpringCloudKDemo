@@ -63,12 +63,13 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--热部署工具-->
+        <!-- 热部署工具 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
+        <!-- Nacos 配置中心 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
