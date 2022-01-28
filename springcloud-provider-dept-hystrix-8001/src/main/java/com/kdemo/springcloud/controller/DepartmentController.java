@@ -3,6 +3,7 @@ package com.kdemo.springcloud.controller;
 import com.kdemo.springcloud.pojo.Department;
 import com.kdemo.springcloud.service.DepartmentService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -30,7 +31,14 @@ public class DepartmentController {
         return departmentService.add(department);
     }
 
-    @HystrixCommand(fallbackMethod = "findByIdFallback")
+    @HystrixCommand(commandProperties = {
+            // 设置最大请求次数
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+            // 设置请求此时达到限额后, 熔断窗口持续时间
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000"),
+            // 设置熔断返回错误的比例
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50")
+    }, fallbackMethod = "findByIdFallback")
     @GetMapping(path = "/department/get/{id}")
     public Department findById(@PathVariable("id") Long id) {
         Department byId = departmentService.findById(id);
