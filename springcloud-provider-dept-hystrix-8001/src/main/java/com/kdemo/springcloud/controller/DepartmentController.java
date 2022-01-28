@@ -31,9 +31,12 @@ public class DepartmentController {
         return departmentService.add(department);
     }
 
+    /**
+     * 10s内, 超过20次请求, 且失败率超过1/2, 则触发熔断, 直接返回findByIdFallback方法
+     */
     @HystrixCommand(commandProperties = {
             // 设置最大请求次数
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "20"),
             // 设置请求此时达到限额后, 熔断窗口持续时间
             @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000"),
             // 设置熔断返回错误的比例
