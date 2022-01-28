@@ -5,6 +5,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Nacos实现配置监听更新
+ */
 @RestController
 @RequestMapping("/config")
 @RefreshScope
