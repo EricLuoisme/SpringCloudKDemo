@@ -21,6 +21,7 @@
         <module>springcloud-gateway-zuul-9527</module>
         <module>springcloud-provider-nacos-8005</module>
         <module>spring-consumer-nacos-8888</module>
+        <module>springcloud-gateway-new-9900</module>
     </modules>
 
     <!--打包方式-->

@@ -16,6 +16,7 @@
         <module name="springcloud-eureka-7003" />
         <module name="springcloud-eureka-7002" />
         <module name="springcloud-eureka-7001" />
+        <module name="springcloud-gateway-new-9900" />
         <module name="springcloud-provider-dept-hystrix-8001" />
         <module name="springcloud-api" />
         <module name="springcloud-provider-nacos-8005" />
@@ -33,6 +34,7 @@
       <module name="springcloud-eureka-7001" target="11" />
       <module name="springcloud-eureka-7002" target="11" />
       <module name="springcloud-eureka-7003" target="11" />
+      <module name="springcloud-gateway-new-9900" target="11" />
       <module name="springcloud-gateway-zuul-9527" target="11" />
       <module name="springcloud-provider-dept-8001" target="11" />
       <module name="springcloud-provider-dept-8002" target="11" />
