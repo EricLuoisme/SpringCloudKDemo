@@ -7,3 +7,7 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: method_route
+          uri: http://example.org
+          predicates:
+            - Method=GET, POST
