@@ -22,6 +22,7 @@
         <module>springcloud-provider-nacos-8005</module>
         <module>spring-consumer-nacos-8888</module>
         <module>springcloud-gateway-new-9900</module>
+        <module>springcloud-token-9909</module>
     </modules>
 
     <!--打包方式-->
