@@ -1,7 +1,6 @@
 package com.kdemo.springcloud;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
@@ -31,6 +30,7 @@ public class TokenDemo {
         if (content == null) {
             return null;
         }
+
         /**
          * jti: jwt唯一标记
          * iss: jwt签发主体
@@ -38,13 +38,11 @@ public class TokenDemo {
          * iat: jwt签发时间
          * sub: jwt所有者
          */
-
         Date expireDate = Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
         JWT.create().withIssuer("Tomcat")
                 .withExpiresAt(expireDate)
                 .withClaim("name", "dsafdsfadsf")
                 .sign(ALGORITHM);
-
         return "asdf";
     }
 
