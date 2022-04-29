@@ -47,6 +47,7 @@
     </dependencies>
 
     <build>
+        <!-- For Compile the Grpc - Protocol Buffer File -->
         <extensions>
             <extension>
                 <groupId>kr.motd.maven</groupId>
@@ -56,7 +57,6 @@
         </extensions>
 
         <plugins>
-            <!-- For Compile the Protocol Buffer File -->
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
@@ -77,45 +77,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-
-<!--            <plugin>-->
-<!--                <groupId>com.github.os72</groupId>-->
-<!--                <artifactId>protoc-jar-maven-plugin</artifactId>-->
-<!--                <version>3.11.4</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>protoc.main</id>-->
-<!--                        <phase>generate-sources</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>run</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <protocVersion>3.20.1</protocVersion>-->
-<!--                            <addSources>main</addSources>-->
-<!--                            <includeMavenTypes>direct</includeMavenTypes>-->
-<!--                            <includeStdTypes>true</includeStdTypes>-->
-<!--                            &lt;!&ndash; For Protobuf Compiling &ndash;&gt;-->
-<!--                            <includeDirectories>-->
-<!--                                <include>src/main/proto</include>-->
-<!--                            </includeDirectories>-->
-<!--                            <inputDirectories>-->
-<!--                                <include>src/main/proto</include>-->
-<!--                            </inputDirectories>-->
-<!--                            &lt;!&ndash; For Java-Grpc Compiling &ndash;&gt;-->
-<!--                            <outputTargets>-->
-<!--                                <outputTarget>-->
-<!--                                    <type>java</type>-->
-<!--                                </outputTarget>-->
-<!--                                <outputTarget>-->
-<!--                                    <type>grpc-java</type>-->
-<!--                                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.45.1</pluginArtifact>-->
-<!--                                </outputTarget>-->
-<!--                            </outputTargets>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
         </plugins>
     </build>
 

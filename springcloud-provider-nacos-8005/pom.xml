@@ -48,6 +48,13 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!-- Grpc Nacos Registry -->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>grpc-java-registry-nacos-parent</artifactId>
+            <version>0.1.0-beta</version>
+        </dependency>
+
 
     </dependencies>
 
