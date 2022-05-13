@@ -6,6 +6,7 @@ import com.kdemo.springcloud.protos.RemoteRpcServiceGrpc;
 import com.kdemo.springcloud.protos.RpcEmployee;
 import com.kdemo.springcloud.protos.RpcEmployees;
 import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.service.GrpcService;
 
 /**
  * 作为服务端, 对rpc的service进行具体服务逻辑实现
@@ -13,6 +14,7 @@ import io.grpc.stub.StreamObserver;
  * @author Roylic
  * @date 2022/4/25
  */
+@GrpcService
 public class RemoteRpcServiceImpl extends RemoteRpcServiceGrpc.RemoteRpcServiceImplBase {
 
     @Override

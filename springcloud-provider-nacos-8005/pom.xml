@@ -18,11 +18,11 @@
 
     <dependencies>
 
-        <!-- 注册 grpc 到 Nacos 服务  -->
+        <!-- grpc-server https://yidongnan.github.io/grpc-spring-boot-starter/zh-CN/ -->
         <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>grpc-java-registry-nacos</artifactId>
-            <version>0.1.0-beta</version>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-server-spring-boot-starter</artifactId>
+            <version>2.13.1.RELEASE</version>
         </dependency>
 
         <!-- Spring Cloud + Nacos -->

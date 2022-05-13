@@ -9,11 +9,11 @@ option java_outer_classname = "RemoteRpcServiceProto";
 
 service RemoteRpcService {
 
-  rpc GetEmployees(EmptyRequest) returns (RpcEmployees) ;
+  rpc getEmployees(EmptyRequest) returns (RpcEmployees) ;
 
-  rpc GetEmployeeStream(IdRequest) returns (stream RpcEmployee) ;
+  rpc getEmployeeStream(IdRequest) returns (stream RpcEmployee) ;
 
-  rpc GetBidEmployeeStream(stream RpcEmployee) returns (stream RpcEmployee) ;
+  rpc getBidEmployeeStream(stream RpcEmployee) returns (stream RpcEmployee) ;
 }
 
 message EmptyRequest {}
