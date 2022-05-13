@@ -18,6 +18,13 @@
 
     <dependencies>
 
+        <!-- grpc-client https://yidongnan.github.io/grpc-spring-boot-starter/zh-CN/ -->
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-client-spring-boot-starter</artifactId>
+            <version>2.13.1.RELEASE</version>
+        </dependency>
+
         <!-- Spring Cloud + Nacos -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -42,6 +49,10 @@
             <groupId>io.grpc</groupId>
             <artifactId>grpc-all</artifactId>
             <version>1.16.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
     </dependencies>
