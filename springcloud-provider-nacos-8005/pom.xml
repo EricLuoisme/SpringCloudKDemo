@@ -18,6 +18,13 @@
 
     <dependencies>
 
+        <!-- 注册 grpc 到 Nacos 服务  -->
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>grpc-java-registry-nacos</artifactId>
+            <version>0.1.0-beta</version>
+        </dependency>
+
         <!-- Spring Cloud + Nacos -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -47,14 +54,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
-        <!-- Grpc Nacos Registry -->
-        <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>grpc-java-registry-nacos-parent</artifactId>
-            <version>0.1.0-beta</version>
-        </dependency>
-
 
     </dependencies>
 
