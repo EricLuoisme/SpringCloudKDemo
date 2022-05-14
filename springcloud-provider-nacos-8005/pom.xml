@@ -17,6 +17,15 @@
     </properties>
 
     <dependencies>
+
+        <!-- grpc-server https://yidongnan.github.io/grpc-spring-boot-starter/zh-CN/ -->
+        <dependency>
+            <groupId>net.devh</groupId>
+            <artifactId>grpc-server-spring-boot-starter</artifactId>
+            <version>2.13.1.RELEASE</version>
+        </dependency>
+
+        <!-- Spring Cloud + Nacos -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
@@ -26,6 +35,98 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- Okhttp -->
+        <!-- 自带的okhttp版本过低, 需要显式选用更高版本的-->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.3</version>
+        </dependency>
+
+        <!-- For Java-Grpc Service Generating - Server Side -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-all</artifactId>
+            <version>1.16.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.6.2</version>
+            </extension>
+        </extensions>
+
+        <plugins>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.5.1</version>
+                <configuration>
+                    <protocArtifact>com.google.protobuf:protoc:3.5.1-1:exe:${os.detected.classifier}</protocArtifact>
+                    <pluginId>grpc-java</pluginId>
+                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.16.1:exe:${os.detected.classifier}</pluginArtifact>
+                    <protoSourceRoot>src/main/proto</protoSourceRoot>
+                    <clearOutputDirectory>true</clearOutputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+<!--            &lt;!&ndash; For Compile the Protocol Buffer File &ndash;&gt;-->
+<!--            <plugin>-->
+<!--                <groupId>com.github.os72</groupId>-->
+<!--                <artifactId>protoc-jar-maven-plugin</artifactId>-->
+<!--                <version>3.11.4</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>protoc.main</id>-->
+<!--                        <phase>generate-sources</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <protocVersion>3.9.0</protocVersion>-->
+<!--                            <addSources>main</addSources>-->
+<!--                            <includeMavenTypes>direct</includeMavenTypes>-->
+<!--                            <includeStdTypes>true</includeStdTypes>-->
+<!--                            &lt;!&ndash; For Protobuf Compiling &ndash;&gt;-->
+<!--                            <includeDirectories>-->
+<!--                                <include>src/main/proto</include>-->
+<!--                            </includeDirectories>-->
+<!--                            <inputDirectories>-->
+<!--                                <include>src/main/proto</include>-->
+<!--                            </inputDirectories>-->
+<!--                            &lt;!&ndash; For Java-Grpc Compiling &ndash;&gt;-->
+<!--                            <outputTargets>-->
+<!--                                <outputTarget>-->
+<!--                                    <type>java</type>-->
+<!--                                </outputTarget>-->
+<!--                                <outputTarget>-->
+<!--                                    <type>grpc-java</type>-->
+<!--                                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.24.0</pluginArtifact>-->
+<!--                                </outputTarget>-->
+<!--                            </outputTargets>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+        </plugins>
+    </build>
 
 </project>
