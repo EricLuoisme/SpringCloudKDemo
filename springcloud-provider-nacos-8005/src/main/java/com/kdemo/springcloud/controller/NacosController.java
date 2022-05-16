@@ -1,6 +1,6 @@
 package com.kdemo.springcloud.controller;
 
-import com.kdemo.springcloud.config.ExtraConfigWithProperty;
+import com.kdemo.springcloud.config.PropertyExtraConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class NacosController {
 
     @Autowired
-    private ExtraConfigWithProperty extraConfigWithProperty;
+    private PropertyExtraConfig propertyExtraConfig;
 
 
     @GetMapping("/getName")
@@ -21,6 +21,6 @@ public class NacosController {
 
     @GetMapping("/mapTest")
     public String getMap() {
-        return extraConfigWithProperty.getSinTestStr();
+        return propertyExtraConfig.getSinTestStr();
     }
 }

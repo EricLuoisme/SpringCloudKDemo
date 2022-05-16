@@ -7,10 +7,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import javax.annotation.PostConstruct;
-
 /**
- * 使用PropertySource仅支持.propertySource结尾的文件
+ * 使用PropertySource仅支持.propertySource结尾的文件,
+ * 并且难以与Nacos搭配进行热加载
  *
  * @author Roylic
  * 2022/5/16
@@ -19,14 +18,9 @@ import javax.annotation.PostConstruct;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "extra")
-@EnableConfigurationProperties({ExtraConfigWithProperty.class})
+@EnableConfigurationProperties({PropertyExtraConfig.class})
 @PropertySource("classpath:extra.properties")
-public class ExtraConfigWithProperty {
+public class PropertyExtraConfig {
 
     private String sinTestStr;
-
-    @PostConstruct
-    public void postConstruct() {
-        log.info(">>> ExtraConfig Reading:{}", sinTestStr);
-    }
 }

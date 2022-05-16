@@ -22,9 +22,4 @@ import javax.annotation.PostConstruct;
 public class ServerProperties {
 
     private int port;
-
-    @PostConstruct
-    public void logInfo() {
-        log.info(">>> Server Port:{}", port);
-    }
 }
