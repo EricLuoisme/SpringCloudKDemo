@@ -26,7 +26,6 @@ public class DepartmentServiceImpl implements DepartmentService{
 
     @Override
     public List<Department> findAll() {
-
         PageHelper.startPage(1, 2);
         return departmentDao.findAll();
     }

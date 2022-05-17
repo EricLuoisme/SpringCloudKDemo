@@ -1,6 +1,7 @@
 package com.kdemo.springcloud.controller;
 
 import com.kdemo.springcloud.pojo.Department;
+import com.kdemo.springcloud.service.DepartmentCollapseService;
 import com.kdemo.springcloud.service.DepartmentService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * 提供Restful服务
@@ -24,12 +27,11 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @Autowired
+    private DepartmentCollapseService departmentCollapseService;
+
+    @Autowired
     private DiscoveryClient discoveryClient;
 
-    @PostMapping(path = "/department/add")
-    public boolean addDept(Department department) {
-        return departmentService.add(department);
-    }
 
     /**
      * 10s内, 超过20次请求, 且失败率超过1/2, 则触发熔断, 直接返回findByIdFallback方法
@@ -52,10 +54,18 @@ public class DepartmentController {
     }
 
     /**
-     * 实现服务熔断的返回设置
+     * 测试HystrixCollapse是否生效
      */
-    public Department findByIdFallback(Long id) {
-        return new Department().setDept_no(id).setDept_name("secret department").setDb_source("None db store this department");
+    @GetMapping(path = "/department/get/once/{id}")
+    public Department findByIdOnce(@PathVariable("id") Long id) throws ExecutionException, InterruptedException {
+        CompletableFuture<Department> byIdOnce = departmentCollapseService.findByIdOnce(id);
+        return byIdOnce.get();
+    }
+
+
+    @PostMapping(path = "/department/add")
+    public boolean addDept(Department department) {
+        return departmentService.add(department);
     }
 
     @GetMapping(path = "/department/list")
@@ -79,5 +89,15 @@ public class DepartmentController {
                     + "\t" + x.getServiceId());
         });
         return this.discoveryClient;
+    }
+
+    /**
+     * 实现服务熔断的返回设置
+     */
+    public Department findByIdFallback(Long id) {
+        return new Department()
+                .setDept_no(id)
+                .setDept_name("secret department")
+                .setDb_source("None db store this department");
     }
 }
