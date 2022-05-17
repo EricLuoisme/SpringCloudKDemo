@@ -54,13 +54,6 @@
             <version>4.9.3</version>
         </dependency>
 
-        <!-- 允许Feign使用OkHttpClient -->
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-okhttp</artifactId>
-            <version>11.8</version>
-        </dependency>
-
         <!-- For Java-Grpc Service Generating - Server Side -->
         <dependency>
             <groupId>io.grpc</groupId>

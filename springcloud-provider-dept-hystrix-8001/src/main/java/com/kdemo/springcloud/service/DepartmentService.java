@@ -10,6 +10,8 @@ public interface DepartmentService {
 
     Department findById(Long departmentId);
 
+    Department findById_Improved(Long departmentId);
+
     List<Department> findAll();
 
 }

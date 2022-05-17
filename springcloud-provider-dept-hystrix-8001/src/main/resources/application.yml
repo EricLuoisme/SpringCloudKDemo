@@ -22,6 +22,18 @@ spring:
     url: jdbc:mysql://localhost:3306/db01?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
     password: 123456
+  # Redis - Config
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
 # Eureka
 eureka:
   client:
@@ -41,22 +53,22 @@ management:
     web:
       exposure:
         include: "*"
-# Feign
-feign:
-  client:
-    config:
-      default:
-        # 10s
-        connectTimeout: 10000
-        # 20s
-        readTimeout: 20000
-  httpclient:
-    # 关闭ApacheHttpClient
-    enabled: false
-    # 连接池最大闲置数目
-    max-connections: 50
-    # 最大闲置链接时间, 600s
-    time-to-live: 600
-  # 开启OkHttp
-  okhttp:
-    enabled: true
+## Feign - Config
+#feign:
+#  client:
+#    config:
+#      default:
+#        # 10s
+#        connectTimeout: 10000
+#        # 20s
+#        readTimeout: 20000
+#  httpclient:
+#    # 关闭ApacheHttpClient
+#    enabled: false
+#    # 连接池最大闲置数目
+#    max-connections: 50
+#    # 最大闲置链接时间, 600s
+#    time-to-live: 600
+#  # 开启OkHttp
+#  okhttp:
+#    enabled: true
