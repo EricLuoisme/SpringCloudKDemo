@@ -41,3 +41,22 @@ management:
     web:
       exposure:
         include: "*"
+# Feign
+feign:
+  client:
+    config:
+      default:
+        # 10s
+        connectTimeout: 10000
+        # 20s
+        readTimeout: 20000
+  httpclient:
+    # 关闭ApacheHttpClient
+    enabled: false
+    # 连接池最大闲置数目
+    max-connections: 50
+    # 最大闲置链接时间, 600s
+    time-to-live: 600
+  # 开启OkHttp
+  okhttp:
+    enabled: true
