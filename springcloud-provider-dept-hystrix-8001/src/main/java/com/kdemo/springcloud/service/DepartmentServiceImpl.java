@@ -1,6 +1,8 @@
 package com.kdemo.springcloud.service;
 
 import com.github.pagehelper.PageHelper;
+import com.kdemo.springcloud.anno.CacheType;
+import com.kdemo.springcloud.anno.DoubleCache;
 import com.kdemo.springcloud.dao.DepartmentDao;
 import com.kdemo.springcloud.pojo.Department;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +43,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         return fromDb;
     }
 
+    /**
+     * 无侵入的使用Caffeine+Redis缓存
+     */
     @Override
+    @DoubleCache(cacheName = "department", key = "#departmentId", type = CacheType.FULL)
     public Department findById_Improved(Long departmentId) {
-        return null;
+        return departmentDao.findById(departmentId);
     }
 
     @Override
