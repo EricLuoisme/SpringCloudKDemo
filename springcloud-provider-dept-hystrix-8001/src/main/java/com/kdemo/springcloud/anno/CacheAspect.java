@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Aspect
 @Component
+// 替代Autowired
 @AllArgsConstructor
 public class CacheAspect {
 
