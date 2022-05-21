@@ -20,4 +20,12 @@
         from department
     </select>
 
+    <select id="findInIds" resultType="Department">
+        select dept_no, dept_name, db_source
+        from department
+        where dept_no in
+        <foreach collection="departmentIds" item="dept_no" index="index" open="(" close=")" separator=",">
+            #{dept_no}
+        </foreach>
+    </select>
 </mapper>

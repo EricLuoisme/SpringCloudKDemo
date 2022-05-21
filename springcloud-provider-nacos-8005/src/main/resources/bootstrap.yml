@@ -1,0 +1,30 @@
+server:
+  port: 8005
+spring:
+  application:
+    name: nacos-provider
+  profiles:
+    include:
+      - reloaded
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        # 额外配置 (理论上应该本地有一份)
+        extension-configs:
+          dataId: application-reloaded.yml
+          group: DEFAULT_GROUP
+          refresh: true
+
+#        # 共享配置 (理论上应该Nacos才有)
+#        shared-configs:
+#          dataId: shared.yml
+#          group: DEFUALT_GROUP
+#          refresh: true
+grpc:
+  server:
+    port: 9991

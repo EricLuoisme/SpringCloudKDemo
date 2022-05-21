@@ -1,10 +1,7 @@
 package com.kdemo.springcloud.dao;
 
 import com.kdemo.springcloud.pojo.Department;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.ResultType;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.ResultSetType;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +23,6 @@ public interface DepartmentDao {
     Department findById(Long departmentId);
 
     List<Department> findAll();
+
+    List<Department> findInIds(@Param("departmentIds") List<Long> departmentIds);
 }
