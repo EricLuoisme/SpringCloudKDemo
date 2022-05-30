@@ -24,6 +24,7 @@
         <module>springcloud-gateway-new-9900</module>
         <module>springcloud-nacos-naming-8080</module>
         <module>springcloud-token-9909</module>
+        <module>springcloud-provider-nacos-8006</module>
     </modules>
 
     <!--打包方式-->
