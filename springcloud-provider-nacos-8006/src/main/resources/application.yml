@@ -1,0 +1,9 @@
+
+serv
+spring:
+  application:
+    name:
+  r2dbc:
+    url: r2dbcs:mysql://localhost:3306/springreactive?useSSL=false
+    username: root
+    password: 12345678
