@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Roylic
@@ -34,24 +35,16 @@ public class SseController {
         {
             try {
                 for (int i = 0; i < 100; i++) {
-                    randomDelay();
+                    TimeUnit.SECONDS.sleep(3);
                     emitter.send(i);
                 }
                 emitter.complete();
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 emitter.completeWithError(e);
             }
         });
         executor.shutdown();
         return emitter;
-    }
-
-    private void randomDelay() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
 }
