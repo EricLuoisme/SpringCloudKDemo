@@ -1,3 +1,5 @@
 reloaded:
   address-url: "http://test/omg/12341"
   api-path: "/api/calling"
+  inside-class:
+    simple-url: "http://inside/url"
