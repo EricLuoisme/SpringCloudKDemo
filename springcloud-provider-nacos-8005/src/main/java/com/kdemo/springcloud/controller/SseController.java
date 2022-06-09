@@ -14,6 +14,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * SSE Controller, we have to set them return stream value (media type), then we can get it continuity
+ *
  * @author Roylic
  * 2022/6/8
  */
@@ -21,12 +23,18 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/sse")
 public class SseController {
 
+    /**
+     * Reactive implementation of SSE
+     */
     @GetMapping(value = "/testFlux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Long> getFluxTest() {
         return Flux.interval(Duration.ofSeconds(3)).log();
     }
 
-    // we have to set it return stream value, then we can get
+
+    /**
+     * SSEEmitter implementation of SSE
+     */
     @GetMapping(value = "/testEmit", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter getSseTest() {
         SseEmitter emitter = new SseEmitter();
