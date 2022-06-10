@@ -1,5 +1,6 @@
-package com.kdemo.springcloud.controller;
+package com.kdemo.springcloud.sse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,10 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/sse")
 public class SseController {
 
+    @Autowired
+    private SseServiceHandler sseServiceHandler;
+
+
     /**
      * Reactive implementation of SSE
      */
@@ -37,22 +42,14 @@ public class SseController {
      */
     @GetMapping(value = "/testEmit", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter getSseTest() {
-        SseEmitter emitter = new SseEmitter();
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() ->
-        {
-            try {
-                for (int i = 0; i < 100; i++) {
-                    TimeUnit.SECONDS.sleep(3);
-                    emitter.send(i);
-                }
-                emitter.complete();
-            } catch (IOException | InterruptedException e) {
-                emitter.completeWithError(e);
-            }
-        });
-        executor.shutdown();
-        return emitter;
+
+        // assume that the request inside here should be authorised one
+
+        // default connection to 10s
+        SseEmitter emitter = new SseEmitter(10000L);
+
+        // calling the service
+        return sseServiceHandler.sseInsiderService(emitter);
     }
 
 }

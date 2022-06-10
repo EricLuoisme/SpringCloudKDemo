@@ -1,4 +1,4 @@
-package com.kdemo.springcloud.oksse;
+package com.kdemo.springcloud.sse;
 
 import okhttp3.*;
 import okhttp3.internal.sse.RealEventSource;
@@ -66,7 +66,7 @@ public class OkhttpSseRequest {
             OK_CLIENT.dispatcher().cancelAll();
         }
 
-
+        System.exit(-1);
     }
 
 }
