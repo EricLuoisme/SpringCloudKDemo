@@ -1,0 +1,9 @@
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: localhost # Eureka 服务端实例
+  client:
+    register-with-eureka: false # 是否向Eureka注册自己
+    fetch-registry: false # 如果为false标识自己为注册中心, true是寻找注册中心
+

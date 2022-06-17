@@ -25,6 +25,7 @@
         <module>springcloud-nacos-naming-8080</module>
         <module>springcloud-token-9909</module>
         <module>springcloud-provider-nacos-8006</module>
+        <module>springcloud-eureka-8761</module>
     </modules>
 
     <!--打包方式-->
