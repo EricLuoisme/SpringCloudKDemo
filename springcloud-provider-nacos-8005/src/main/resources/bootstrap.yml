@@ -28,3 +28,9 @@ spring:
 grpc:
   server:
     port: 9991
+
+simple:
+  combine:
+    combine-list:
+      - "1234234"
+      - "2134325"
