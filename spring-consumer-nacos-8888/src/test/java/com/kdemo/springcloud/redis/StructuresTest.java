@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Redis 相关测试
@@ -71,6 +72,18 @@ public class StructuresTest {
 
         redisTemplateObj.opsForHash().increment("hashBook", "book2", 2);
         System.out.println(redisTemplateObj.opsForHash().get("hashBook", "book2"));
+    }
+
+    @Test
+    public void testForSet() {
+        redisTemplateObj.opsForSet().add("setbook", "a", "b", "c");
+        Set<Object> setbook = redisTemplateObj.opsForSet().members("setbook");
+        setbook.forEach(System.out::println);
+        System.out.println();
+
+        redisTemplateObj.opsForSet().add("setbook", "c", "d", "e");
+        Set<Object> setbook2 = redisTemplateObj.opsForSet().members("setbook");
+        setbook2.forEach(System.out::println);
     }
 
 }
