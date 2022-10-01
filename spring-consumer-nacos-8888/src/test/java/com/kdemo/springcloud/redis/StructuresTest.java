@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -84,6 +85,20 @@ public class StructuresTest {
         redisTemplateObj.opsForSet().add("setbook", "c", "d", "e");
         Set<Object> setbook2 = redisTemplateObj.opsForSet().members("setbook");
         setbook2.forEach(System.out::println);
+    }
+
+    @Test
+    public void testForZSet() {
+        redisTemplateObj.opsForZSet().add("zsetbook", "b", 20);
+        redisTemplateObj.opsForZSet().add("zsetbook", "c", 35);
+
+        Set<Object> zsetbook = redisTemplateObj.opsForZSet().rangeByScore("zsetbook", 30, 40);
+        zsetbook.forEach(System.out::println);
+        System.out.println();
+
+        redisTemplateObj.opsForZSet().incrementScore("zsetbook", "b", 5);
+        Set<Object> zsetbook1 = redisTemplateObj.opsForZSet().range("zsetbook", 0, -1);
+        zsetbook1.forEach(System.out::println);
     }
 
 }
