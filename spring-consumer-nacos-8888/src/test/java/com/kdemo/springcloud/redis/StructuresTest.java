@@ -31,12 +31,33 @@ public class StructuresTest {
     }
 
     @Test
-    public void testForIncrsOnStr() {
+    public void testForIncrOnStr() {
         System.out.println(redisTemplateObj.opsForValue().get("Name1"));
         redisTemplateObj.opsForValue().increment("Name1");
         System.out.println(redisTemplateObj.opsForValue().get("Name1"));
         redisTemplateObj.opsForValue().increment("Name1", 100);
         System.out.println(redisTemplateObj.opsForValue().get("Name1"));
+    }
+
+    @Test
+    public void testForList() {
+
+        // acting like a queue
+        redisTemplateObj.opsForList().leftPush("books", "python");
+        redisTemplateObj.opsForList().rightPush("books", "java");
+        redisTemplateObj.opsForList().leftPush("books", "golang");
+        System.out.println(redisTemplateObj.opsForList().leftPop("books"));
+        System.out.println(redisTemplateObj.opsForList().leftPop("books"));
+        System.out.println(redisTemplateObj.opsForList().leftPop("books"));
+        System.out.println();
+
+        // acting like a stack
+        redisTemplateObj.opsForList().leftPush("books", "python");
+        redisTemplateObj.opsForList().leftPush("books", "java");
+        redisTemplateObj.opsForList().leftPush("books", "golang");
+        System.out.println(redisTemplateObj.opsForList().leftPop("books"));
+        System.out.println(redisTemplateObj.opsForList().leftPop("books"));
+        System.out.println(redisTemplateObj.opsForList().leftPop("books"));
     }
 
 }
