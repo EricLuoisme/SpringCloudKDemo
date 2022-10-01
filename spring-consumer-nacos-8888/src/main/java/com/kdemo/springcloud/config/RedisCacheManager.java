@@ -11,7 +11,7 @@ public class RedisCacheManager {
 
     // must input the RedisConnectionFactory, then it would autowired it
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+    public RedisTemplate<String, Object> redisTemplateObj(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         // change the serializer here
         template.setDefaultSerializer(new StringRedisSerializer());
