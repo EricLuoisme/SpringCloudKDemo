@@ -60,4 +60,17 @@ public class StructuresTest {
         System.out.println(redisTemplateObj.opsForList().leftPop("books"));
     }
 
+    @Test
+    public void testForHash() {
+        redisTemplateObj.opsForHash().put("hashBook", "book", "book");
+        redisTemplateObj.opsForHash().put("hashBook", "book1", "book1");
+        redisTemplateObj.opsForHash().put("hashBook", "book2", "3");
+        List<Object> valList = redisTemplateObj.opsForHash()
+                .multiGet("hashBook", Arrays.asList("book", "book1", "book2"));
+        valList.forEach(System.out::println);
+
+        redisTemplateObj.opsForHash().increment("hashBook", "book2", 2);
+        System.out.println(redisTemplateObj.opsForHash().get("hashBook", "book2"));
+    }
+
 }
