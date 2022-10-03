@@ -98,6 +98,11 @@ public class StructuresTest {
         redisTemplateObj.opsForZSet().incrementScore("zsetbook", "b", 5);
         Set<Object> zsetbook1 = redisTemplateObj.opsForZSet().range("zsetbook", 0, -1);
         zsetbook1.forEach(System.out::println);
+
+        // zrem for faster removing from a zset
+        redisTemplateObj.opsForZSet().remove("zsetbook", "b");
+        Set<Object> zsetbook2 = redisTemplateObj.opsForZSet().range("zsetbook", 0, -1);
+        zsetbook2.forEach(System.out::println);
     }
 
 }
