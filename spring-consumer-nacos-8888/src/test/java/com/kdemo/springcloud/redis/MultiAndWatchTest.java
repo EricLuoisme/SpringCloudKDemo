@@ -13,7 +13,6 @@ import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Redis 相关测试
