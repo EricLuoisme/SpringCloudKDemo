@@ -14,19 +14,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class PubSubTest {
 
-    /**
-     * pubsub only working with the ReactiveRedisConnection
-     */
-    @Autowired
-    private ReactiveRedisTemplate<String, String> reactiveRedisTemplate;
-
-
-    @Test
-    public void testPubSub() {
-
-        reactiveRedisTemplate.convertAndSend("channel", "message");
-
-    }
+//    /**
+//     * pubsub only working with the ReactiveRedisConnection
+//     */
+//    @Autowired
+//    private ReactiveRedisTemplate<String, String> reactiveRedisTemplate;
+//
+//
+//    @Test
+//    public void testPubSub() {
+//
+//        reactiveRedisTemplate.convertAndSend("channel", "message");
+//
+//    }
 
 
 }

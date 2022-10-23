@@ -11,17 +11,17 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class ReactiveTemplateManager {
 
-    @Bean
-    public ReactiveRedisConnectionFactory connectionFactory() {
-        return new LettuceConnectionFactory("localhost", 6379);
-    }
-
-
-    @Bean
-    public ReactiveRedisTemplate<String, String> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
-        return new ReactiveRedisTemplate<>(factory, RedisSerializationContext.fromSerializer(
-                new StringRedisSerializer()));
-    }
+//    @Bean
+//    public ReactiveRedisConnectionFactory connectionFactory() {
+//        return new LettuceConnectionFactory("localhost", 6379);
+//    }
+//
+//
+//    @Bean
+//    public ReactiveRedisTemplate<String, String> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
+//        return new ReactiveRedisTemplate<>(factory, RedisSerializationContext.fromSerializer(
+//                new StringRedisSerializer()));
+//    }
 
 
 }
