@@ -84,25 +84,20 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-core</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-actuator-autoconfigure</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>io.micrometer</groupId>-->
+<!--            <artifactId>micrometer-core</artifactId>-->
+<!--        </dependency>-->
 
         <!-- For Append log4j logging to Loki-->
         <dependency>
             <groupId>com.github.loki4j</groupId>
-            <artifactId>loki-logback-appender-jdk8</artifactId>
+            <artifactId>loki-logback-appender</artifactId>
             <version>1.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
         </dependency>
 
 
@@ -139,44 +134,44 @@
                 </executions>
             </plugin>
 
-<!--            &lt;!&ndash; For Compile the Protocol Buffer File &ndash;&gt;-->
-<!--            <plugin>-->
-<!--                <groupId>com.github.os72</groupId>-->
-<!--                <artifactId>protoc-jar-maven-plugin</artifactId>-->
-<!--                <version>3.11.4</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>protoc.main</id>-->
-<!--                        <phase>generate-sources</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>run</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <protocVersion>3.9.0</protocVersion>-->
-<!--                            <addSources>main</addSources>-->
-<!--                            <includeMavenTypes>direct</includeMavenTypes>-->
-<!--                            <includeStdTypes>true</includeStdTypes>-->
-<!--                            &lt;!&ndash; For Protobuf Compiling &ndash;&gt;-->
-<!--                            <includeDirectories>-->
-<!--                                <include>src/main/proto</include>-->
-<!--                            </includeDirectories>-->
-<!--                            <inputDirectories>-->
-<!--                                <include>src/main/proto</include>-->
-<!--                            </inputDirectories>-->
-<!--                            &lt;!&ndash; For Java-Grpc Compiling &ndash;&gt;-->
-<!--                            <outputTargets>-->
-<!--                                <outputTarget>-->
-<!--                                    <type>java</type>-->
-<!--                                </outputTarget>-->
-<!--                                <outputTarget>-->
-<!--                                    <type>grpc-java</type>-->
-<!--                                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.24.0</pluginArtifact>-->
-<!--                                </outputTarget>-->
-<!--                            </outputTargets>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            &lt;!&ndash; For Compile the Protocol Buffer File &ndash;&gt;-->
+            <!--            <plugin>-->
+            <!--                <groupId>com.github.os72</groupId>-->
+            <!--                <artifactId>protoc-jar-maven-plugin</artifactId>-->
+            <!--                <version>3.11.4</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>protoc.main</id>-->
+            <!--                        <phase>generate-sources</phase>-->
+            <!--                        <goals>-->
+            <!--                            <goal>run</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <protocVersion>3.9.0</protocVersion>-->
+            <!--                            <addSources>main</addSources>-->
+            <!--                            <includeMavenTypes>direct</includeMavenTypes>-->
+            <!--                            <includeStdTypes>true</includeStdTypes>-->
+            <!--                            &lt;!&ndash; For Protobuf Compiling &ndash;&gt;-->
+            <!--                            <includeDirectories>-->
+            <!--                                <include>src/main/proto</include>-->
+            <!--                            </includeDirectories>-->
+            <!--                            <inputDirectories>-->
+            <!--                                <include>src/main/proto</include>-->
+            <!--                            </inputDirectories>-->
+            <!--                            &lt;!&ndash; For Java-Grpc Compiling &ndash;&gt;-->
+            <!--                            <outputTargets>-->
+            <!--                                <outputTarget>-->
+            <!--                                    <type>java</type>-->
+            <!--                                </outputTarget>-->
+            <!--                                <outputTarget>-->
+            <!--                                    <type>grpc-java</type>-->
+            <!--                                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.24.0</pluginArtifact>-->
+            <!--                                </outputTarget>-->
+            <!--                            </outputTargets>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 
