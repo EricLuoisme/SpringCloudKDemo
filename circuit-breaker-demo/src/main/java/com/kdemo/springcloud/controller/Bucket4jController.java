@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
 
+/**
+ * https://github.com/kuldeepsingh99/api-rate-limiting
+ * Could use Redisson to configure the cache-proxy -> letting the bucket4j using Redis to store tokens stuff
+ */
 @RestController
 @RequestMapping("/bucket4j")
 public class Bucket4jController {
