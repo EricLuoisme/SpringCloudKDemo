@@ -24,6 +24,7 @@ public class OkhttpSseRequest {
     private static final OkHttpClient OK_CLIENT = new OkHttpClient.Builder()
             .connectTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)
+            .connectionPool(new ConnectionPool(3, 10, TimeUnit.SECONDS))
             .build();
 
 
