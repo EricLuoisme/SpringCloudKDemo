@@ -1,3 +1,4 @@
+# 额外的配置文件获取, 可以让实现单个配置文件对多个服务生效
 reloaded:
   address-url: "http://test/omg/12341"
   api-path: "/api/calling"
