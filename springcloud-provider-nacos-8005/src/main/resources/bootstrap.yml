@@ -2,7 +2,8 @@ server:
   port: 8005
 spring:
   application:
-    name: nacos-provider
+    #    name: nacos-provider
+    name: springcloud-provider-dept
   profiles:
     include:
       - reloaded

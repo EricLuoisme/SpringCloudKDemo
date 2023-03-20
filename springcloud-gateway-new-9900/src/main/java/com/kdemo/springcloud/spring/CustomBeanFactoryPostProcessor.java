@@ -2,9 +2,12 @@ package com.kdemo.springcloud.spring;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.cloud.gateway.config.GatewayProperties;
+import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +28,9 @@ import java.util.List;
  */
 @Component
 public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, BeanFactoryPostProcessor {
+
+    @Autowired
+    private GatewayProperties gatewayProperties;
 
     private ClassLoader classLoader;
 
@@ -44,17 +52,25 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
                 if (aClass.isAnnotationPresent(FeignClient.class) || aClass.getSuperclass().isAnnotationPresent(FeignClient.class)) {
                     for (Method declaredMethod : aClass.getDeclaredMethods()) {
                         if (declaredMethod.isAnnotationPresent(PostMapping.class)) {
-                            String[] anoValue = declaredMethod.getAnnotation(PostMapping.class).value();
-                            pathList.add(anoValue.length > 0 ? anoValue[0] : "/");
+                            PostMapping annotation = declaredMethod.getAnnotation(PostMapping.class);
+                            String[] value = annotation.value();
+                            System.out.println();
                         }
                         if (declaredMethod.isAnnotationPresent(GetMapping.class)) {
-                            String[] anoValue = declaredMethod.getAnnotation(GetMapping.class).value();
-                            pathList.add(anoValue.length > 0 ? anoValue[0] : "/");
+                            GetMapping annotation = declaredMethod.getAnnotation(GetMapping.class);
+                            String[] value = annotation.value();
+                            System.out.println();
                         }
                     }
                 }
             }
         }
+
+        pathList.forEach(path -> {
+            RouteDefinition routeDefinition = new RouteDefinition();
+            routeDefinition.setId("1245");
+            routeDefinition.setUri(URI.create(path));
+        });
     }
 
 
