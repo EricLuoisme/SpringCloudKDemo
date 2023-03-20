@@ -1,11 +1,12 @@
 package com.kdemo.springcloud.spring;
 
+import feign.ReflectiveFeign;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Proxy;
 import java.util.Map;
 
 /**
@@ -25,9 +26,9 @@ public class CustomSmartInitializingSingleton implements SmartInitializingSingle
 
     @Override
     public void afterSingletonsInstantiated() {
-        Map<String, Object> beansWithAnnotation = beanFactory.getBeansWithAnnotation(FeignClient.class);
-        for (Map.Entry<String, Object> stringObjectEntry : beansWithAnnotation.entrySet()) {
-            System.out.println();
-        }
+//        Map<String, Object> beansWithAnnotation = beanFactory.getBeansWithAnnotation(FeignClient.class);
+//        for (Map.Entry<String, Object> entry : beansWithAnnotation.entrySet()) {
+//            System.out.println();
+//        }
     }
 }
