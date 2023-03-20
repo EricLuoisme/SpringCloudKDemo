@@ -3,11 +3,8 @@ server:
 
 spring:
   application:
-    name: gateway
+    name: cloud-gateway
   cloud:
-    gateway:
-      routes:
-        - id: method_route
-          uri: http://example.org
-          predicates:
-            - Method=GET, POST
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848

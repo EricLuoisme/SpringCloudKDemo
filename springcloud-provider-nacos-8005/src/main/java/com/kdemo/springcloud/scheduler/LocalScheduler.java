@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LocalScheduler {
 
-    @Scheduled(cron = "0/10 * * * * ?")
+//    @Scheduled(cron = "0/10 * * * * ?")
     public void logging() {
         log.info("Logging, Logging");
     }
