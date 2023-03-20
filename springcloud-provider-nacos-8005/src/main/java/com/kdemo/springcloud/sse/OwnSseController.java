@@ -8,11 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.time.Duration;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * SSE Controller, we have to set them return stream value (media type), then we can get it continuity
@@ -22,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping("/sse")
-public class SseController {
+public class OwnSseController {
 
     @Autowired
     private SseServiceHandler sseServiceHandler;
