@@ -33,22 +33,22 @@ public class RouteConfig {
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
-
-
-        FeignPathDto feignPathDto = allFeignPaths.stream().filter(dto -> "/department/list".equals(dto.getFullPath())).collect(Collectors.toList()).get(0);
-
-        // if we have @RequestMapping over feign interfaces, we have to reconvert request like below
         RouteLocatorBuilder.Builder routes = builder.routes();
         allFeignPaths.forEach(dto ->
                 routes.route(r ->
                         r.path("/router" + dto.getFullPath())
-                                .filters(f -> f.filter(((exchange, chain) -> {
-                                    ServerHttpRequest request = exchange.getRequest();
-                                    String originalPath = request.getURI().getRawPath();
-                                    String newPath = originalPath.replace("/router", "");
-                                    ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
-                                    return chain.filter(exchange.mutate().request(innerRequest).build());
-                                })))
+                                .filters(f -> f.filter(
+                                                        // if we have @RequestMapping over feign interfaces, we have to reconvert request like below
+                                                        ((exchange, chain) -> {
+                                                            ServerHttpRequest request = exchange.getRequest();
+                                                            String originalPath = request.getURI().getRawPath();
+                                                            String newPath = originalPath.replace("/router", "");
+                                                            ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
+                                                            return chain.filter(exchange.mutate().request(innerRequest).build());
+                                                        })
+                                                )
+                                                .circuitBreaker(config -> config.setFallbackUri("http://localhost:9900/fallback"))
+                                )
                                 .uri("lb://" + dto.getServerName())));
         return routes.build();
     }
