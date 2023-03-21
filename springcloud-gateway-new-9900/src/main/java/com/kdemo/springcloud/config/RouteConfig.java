@@ -12,26 +12,26 @@ import java.util.List;
 @Component
 public class RouteConfig {
 
-    private List<String> allFeignPaths;
-
-    public RouteConfig(CustomBeanFactoryPostProcessor postProcessor) {
-        this.allFeignPaths = postProcessor.getPathList();
-    }
-
-    @Bean
-    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route(r -> r.path("/router/department/list")
-                        // replace to inner url
-                        .filters(f -> f.filter(((exchange, chain) -> {
-                            ServerHttpRequest request = exchange.getRequest();
-                            String originalPath = request.getURI().getRawPath();
-                            String newPath = originalPath.replace("/router", "");
-                            ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
-                            return chain.filter(exchange.mutate().request(innerRequest).build());
-                        })))
-                        .uri("lb://springcloud-provider-dept"))
-                .build();
-    }
+//    private List<String> allFeignPaths;
+//
+//    public RouteConfig(CustomBeanFactoryPostProcessor postProcessor) {
+//        this.allFeignPaths = postProcessor.getPathList();
+//    }
+//
+//    @Bean
+//    public RouteLocator routeLocator(RouteLocatorBuilder builder) {
+//        return builder.routes()
+//                .route(r -> r.path("/router/department/list")
+//                        // replace to inner url
+//                        .filters(f -> f.filter(((exchange, chain) -> {
+//                            ServerHttpRequest request = exchange.getRequest();
+//                            String originalPath = request.getURI().getRawPath();
+//                            String newPath = originalPath.replace("/router", "");
+//                            ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
+//                            return chain.filter(exchange.mutate().request(innerRequest).build());
+//                        })))
+//                        .uri("lb://springcloud-provider-dept"))
+//                .build();
+//    }
 
 }

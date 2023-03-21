@@ -14,6 +14,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
@@ -59,19 +60,25 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
                 // traverse all feign path
                 if (aClass.isAnnotationPresent(FeignClient.class) || aClass.getSuperclass().isAnnotationPresent(FeignClient.class)) {
 
-                    FeignClient feignClient = aClass.getAnnotation(FeignClient.class);
-                    String feignServiceName = getFeignServiceNameByProxy(Proxy.getInvocationHandler(feignClient));
+                    // get Feign Service Name
+                    String feignServiceName = getFeignServiceNameByProxy(Proxy.getInvocationHandler(aClass.getAnnotation(FeignClient.class)));
 
-                    // TODO 针对interface上可能还有requestMapping注解, 需要结合
+                    // get Request Mapping path
+                    String baseUrl = aClass.isAnnotationPresent(RequestMapping.class)
+                            ? getMappingPathByProxy(Proxy.getInvocationHandler(aClass.getAnnotation(RequestMapping.class)))
+                            : "";
 
+                    // get PostMapping + GetMapping path
                     for (Method declaredMethod : aClass.getDeclaredMethods()) {
                         if (declaredMethod.isAnnotationPresent(PostMapping.class)) {
-                            PostMapping annotation = declaredMethod.getAnnotation(PostMapping.class);
-                            getMappingPathByProxy(Proxy.getInvocationHandler(annotation));
+                            String postPath = getMappingPathByProxy(Proxy.getInvocationHandler(declaredMethod.getAnnotation(PostMapping.class)));
+                            String fullPath = baseUrl + postPath;
+                            System.out.println(fullPath);
                         }
                         if (declaredMethod.isAnnotationPresent(GetMapping.class)) {
-                            GetMapping annotation = declaredMethod.getAnnotation(GetMapping.class);
-                            getMappingPathByProxy(Proxy.getInvocationHandler(annotation));
+                            String getPath = getMappingPathByProxy(Proxy.getInvocationHandler(declaredMethod.getAnnotation(GetMapping.class)));
+                            String fullPath = baseUrl + getPath;
+                            System.out.println(fullPath);
                         }
                     }
                 }
@@ -79,7 +86,6 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
         }
         System.out.println();
     }
-
 
     private String getFeignServiceNameByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
         Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
@@ -92,8 +98,7 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
         return StringUtils.hasLength(value) ? value : name;
     }
 
-
-    private void getMappingPathByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
+    private String getMappingPathByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
         Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
         // same result as using memberValues.setAccessible(true);
         ReflectionUtils.makeAccessible(memberValues);
@@ -101,10 +106,7 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
         Map memberValuesMap = (Map) memberValues.get(invocationHandler);
         String[] values = (String[]) memberValuesMap.get("value");
         String[] paths = (String[]) memberValuesMap.get("path");
-        String path = values.length == 0 ? paths[0] : values[0];
-        pathList.add(path);
-
-        log.debug("Find feign path: " + path);
+        return values.length == 0 ? paths[0] : values[0];
     }
 
 

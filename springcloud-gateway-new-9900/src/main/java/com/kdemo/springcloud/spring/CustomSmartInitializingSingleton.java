@@ -1,5 +1,6 @@
 package com.kdemo.springcloud.spring;
 
+//import com.kdemo.springcloud.config.RouteConfig;
 import com.kdemo.springcloud.config.RouteConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

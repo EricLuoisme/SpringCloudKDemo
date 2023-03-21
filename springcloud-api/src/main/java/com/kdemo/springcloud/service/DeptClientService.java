@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -14,15 +15,16 @@ import java.util.List;
  */
 @Component
 @FeignClient(value = "springcloud-provider-dept", fallbackFactory = DeptClientServiceFallbackFactory.class)
+@RequestMapping("/department")
 public interface DeptClientService {
 
     // 这里的路径, 需要是生产者的对应路径
-    @PostMapping(path = "/department/add")
+    @PostMapping(path = "/add")
     boolean add(Department dept);
 
-    @GetMapping("/department/get/{id}")
+    @GetMapping("/get/{id}")
     Department findById(@PathVariable("id") Long id);
 
-    @GetMapping(path = "/department/list")
+    @GetMapping(path = "/list")
     List<Department> findAll();
 }
