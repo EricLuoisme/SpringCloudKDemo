@@ -38,19 +38,19 @@ public class RouteConfig {
         FeignPathDto feignPathDto = allFeignPaths.stream().filter(dto -> "/department/list".equals(dto.getFullPath())).collect(Collectors.toList()).get(0);
 
         // if we have @RequestMapping over feign interfaces, we have to reconvert request like below
-        return builder.routes()
-//                .route(r -> r.path("/router/department/list")
-                .route(r -> r.path("/router" + feignPathDto.getFullPath())
-                        // replace to inner url
-                        .filters(f -> f.filter(((exchange, chain) -> {
-                            ServerHttpRequest request = exchange.getRequest();
-                            String originalPath = request.getURI().getRawPath();
-                            String newPath = originalPath.replace("/router", "");
-                            ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
-                            return chain.filter(exchange.mutate().request(innerRequest).build());
-                        })))
-                        .uri("lb://" + feignPathDto.getServerName()))
-                .build();
+        RouteLocatorBuilder.Builder routes = builder.routes();
+        allFeignPaths.forEach(dto ->
+                routes.route(r ->
+                        r.path("/router" + dto.getFullPath())
+                                .filters(f -> f.filter(((exchange, chain) -> {
+                                    ServerHttpRequest request = exchange.getRequest();
+                                    String originalPath = request.getURI().getRawPath();
+                                    String newPath = originalPath.replace("/router", "");
+                                    ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
+                                    return chain.filter(exchange.mutate().request(innerRequest).build());
+                                })))
+                                .uri("lb://" + dto.getServerName())));
+        return routes.build();
     }
 
 }
