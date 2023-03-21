@@ -19,12 +19,15 @@ import java.util.List;
 public interface DeptClientService {
 
     // 这里的路径, 需要是生产者的对应路径
+//    @PostMapping(path = "/department/add")
     @PostMapping(path = "/add")
     boolean add(Department dept);
 
+    //    @GetMapping("/department/get/{id}")
     @GetMapping("/get/{id}")
     Department findById(@PathVariable("id") Long id);
 
+    //    @GetMapping(path = "/department/list")
     @GetMapping(path = "/list")
     List<Department> findAll();
 }

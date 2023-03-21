@@ -45,6 +45,10 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
         this.classLoader = classLoader;
     }
 
+    public List<FeignPathDto> getFeignPathDtoList() {
+        return feignPathDtoList;
+    }
+
     @SneakyThrows
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -55,33 +59,22 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
             if (null != beanClassName) {
                 Class<?> aClass = ClassUtils.resolveClassName(beanClassName, this.classLoader);
                 // traverse all feign path
-                if (aClass.isAnnotationPresent(FeignClient.class) || aClass.getSuperclass().isAnnotationPresent(FeignClient.class)) {
-
+                if (aClass.isAnnotationPresent(FeignClient.class)) {
                     // get Feign Service Name
                     String feignServiceName = getFeignServiceNameByProxy(Proxy.getInvocationHandler(aClass.getAnnotation(FeignClient.class)));
-
                     // get Request Mapping path
                     String baseUrl = aClass.isAnnotationPresent(RequestMapping.class)
                             ? getMappingPathByProxy(Proxy.getInvocationHandler(aClass.getAnnotation(RequestMapping.class)))
                             : "";
-
                     // get PostMapping + GetMapping path
                     for (Method declaredMethod : aClass.getDeclaredMethods()) {
                         if (declaredMethod.isAnnotationPresent(PostMapping.class)) {
-                            String postPath = getMappingPathByProxy(Proxy.getInvocationHandler(declaredMethod.getAnnotation(PostMapping.class)));
-                            feignPathDtoList.add(
-                                    FeignPathDto.builder()
-                                            .fullPath(baseUrl + postPath)
-                                            .serverName(feignServiceName)
-                                            .build());
+                            String path = getMappingPathByProxy(Proxy.getInvocationHandler(declaredMethod.getAnnotation(PostMapping.class)));
+                            feignPathDtoList.add(FeignPathDto.builder().fullPath(baseUrl + path).serverName(feignServiceName).build());
                         }
                         if (declaredMethod.isAnnotationPresent(GetMapping.class)) {
-                            String getPath = getMappingPathByProxy(Proxy.getInvocationHandler(declaredMethod.getAnnotation(GetMapping.class)));
-                            feignPathDtoList.add(
-                                    FeignPathDto.builder()
-                                            .fullPath(baseUrl + getPath)
-                                            .serverName(feignServiceName)
-                                            .build());
+                            String path = getMappingPathByProxy(Proxy.getInvocationHandler(declaredMethod.getAnnotation(GetMapping.class)));
+                            feignPathDtoList.add(FeignPathDto.builder().fullPath(baseUrl + path).serverName(feignServiceName).build());
                         }
                     }
                 }
