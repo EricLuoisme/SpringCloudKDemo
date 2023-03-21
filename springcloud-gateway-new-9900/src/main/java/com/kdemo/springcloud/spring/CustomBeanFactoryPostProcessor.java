@@ -1,5 +1,6 @@
 package com.kdemo.springcloud.spring;
 
+import com.kdemo.springcloud.dto.FeignPathDto;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -36,12 +37,8 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
 
     private ClassLoader classLoader;
 
-    private final List<String> pathList = new LinkedList<>();
+    private final List<FeignPathDto> feignPathDtoList = new LinkedList<>();
 
-
-    public List<String> getPathList() {
-        return pathList;
-    }
 
     @Override
     public void setBeanClassLoader(ClassLoader classLoader) {
@@ -72,41 +69,47 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
                     for (Method declaredMethod : aClass.getDeclaredMethods()) {
                         if (declaredMethod.isAnnotationPresent(PostMapping.class)) {
                             String postPath = getMappingPathByProxy(Proxy.getInvocationHandler(declaredMethod.getAnnotation(PostMapping.class)));
-                            String fullPath = baseUrl + postPath;
-                            System.out.println(fullPath);
+                            feignPathDtoList.add(
+                                    FeignPathDto.builder()
+                                            .fullPath(baseUrl + postPath)
+                                            .serverName(feignServiceName)
+                                            .build());
                         }
                         if (declaredMethod.isAnnotationPresent(GetMapping.class)) {
                             String getPath = getMappingPathByProxy(Proxy.getInvocationHandler(declaredMethod.getAnnotation(GetMapping.class)));
-                            String fullPath = baseUrl + getPath;
-                            System.out.println(fullPath);
+                            feignPathDtoList.add(
+                                    FeignPathDto.builder()
+                                            .fullPath(baseUrl + getPath)
+                                            .serverName(feignServiceName)
+                                            .build());
                         }
                     }
                 }
             }
         }
-        System.out.println();
+
+        feignPathDtoList.forEach(dto -> System.out.println("Scanned feign with path: " + dto.getFullPath() + ", with service name: " + dto.getServerName()));
     }
 
-    private String getFeignServiceNameByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
-        Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
-        // same result as using memberValues.setAccessible(true);
-        ReflectionUtils.makeAccessible(memberValues);
-
-        Map memberValuesMap = (Map) memberValues.get(invocationHandler);
+    private static String getFeignServiceNameByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
+        Map memberValuesMap = accessMemberValues(invocationHandler);
         String value = (String) memberValuesMap.get("value");
         String name = (String) memberValuesMap.get("name");
         return StringUtils.hasLength(value) ? value : name;
     }
 
-    private String getMappingPathByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
-        Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
-        // same result as using memberValues.setAccessible(true);
-        ReflectionUtils.makeAccessible(memberValues);
-
-        Map memberValuesMap = (Map) memberValues.get(invocationHandler);
+    private static String getMappingPathByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
+        Map memberValuesMap = accessMemberValues(invocationHandler);
         String[] values = (String[]) memberValuesMap.get("value");
         String[] paths = (String[]) memberValuesMap.get("path");
         return values.length == 0 ? paths[0] : values[0];
+    }
+
+    private static Map accessMemberValues(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
+        Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
+        // same result as using memberValues.setAccessible(true);
+        ReflectionUtils.makeAccessible(memberValues);
+        return (Map) memberValues.get(invocationHandler);
     }
 
 
