@@ -17,7 +17,10 @@ public class DepartmentController {
 
     @PostMapping(path = "/department/add")
     public boolean addDept(Department department) {
-        return true;
+        Long dept_no = department.getDept_no();
+        String dept_name = department.getDept_name();
+        String db_source = department.getDb_source();
+        return null != dept_no && null != dept_name && null != db_source;
     }
 
     @GetMapping(path = "/department/get/{id}")
