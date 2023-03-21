@@ -1,20 +1,17 @@
 package com.kdemo.springcloud.spring;
 
-import com.kdemo.springcloud.config.RouteConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.cloud.gateway.config.GatewayProperties;
-import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -61,23 +58,42 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
                 Class<?> aClass = ClassUtils.resolveClassName(beanClassName, this.classLoader);
                 // traverse all feign path
                 if (aClass.isAnnotationPresent(FeignClient.class) || aClass.getSuperclass().isAnnotationPresent(FeignClient.class)) {
+
+                    FeignClient feignClient = aClass.getAnnotation(FeignClient.class);
+                    String feignServiceName = getFeignServiceNameByProxy(Proxy.getInvocationHandler(feignClient));
+
+                    // TODO 针对interface上可能还有requestMapping注解, 需要结合
+
                     for (Method declaredMethod : aClass.getDeclaredMethods()) {
                         if (declaredMethod.isAnnotationPresent(PostMapping.class)) {
                             PostMapping annotation = declaredMethod.getAnnotation(PostMapping.class);
-                            printPathByProxy(Proxy.getInvocationHandler(annotation));
+                            getMappingPathByProxy(Proxy.getInvocationHandler(annotation));
                         }
                         if (declaredMethod.isAnnotationPresent(GetMapping.class)) {
                             GetMapping annotation = declaredMethod.getAnnotation(GetMapping.class);
-                            printPathByProxy(Proxy.getInvocationHandler(annotation));
+                            getMappingPathByProxy(Proxy.getInvocationHandler(annotation));
                         }
                     }
                 }
             }
         }
+        System.out.println();
     }
 
 
-    private void printPathByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
+    private String getFeignServiceNameByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
+        Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
+        // same result as using memberValues.setAccessible(true);
+        ReflectionUtils.makeAccessible(memberValues);
+
+        Map memberValuesMap = (Map) memberValues.get(invocationHandler);
+        String value = (String) memberValuesMap.get("value");
+        String name = (String) memberValuesMap.get("name");
+        return StringUtils.hasLength(value) ? value : name;
+    }
+
+
+    private void getMappingPathByProxy(InvocationHandler invocationHandler) throws NoSuchFieldException, IllegalAccessException {
         Field memberValues = invocationHandler.getClass().getDeclaredField("memberValues");
         // same result as using memberValues.setAccessible(true);
         ReflectionUtils.makeAccessible(memberValues);
