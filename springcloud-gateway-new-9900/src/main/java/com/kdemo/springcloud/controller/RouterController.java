@@ -13,6 +13,6 @@ public class RouterController {
 
     @RequestMapping("/fallback")
     public Mono<String> fallback() {
-        return Mono.just("Too many requests");
+        return Mono.just("Server currently unavailable, please try again later");
     }
 }

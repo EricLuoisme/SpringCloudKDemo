@@ -5,7 +5,6 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterRegistry;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
-import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,21 +43,13 @@ public class CustomCircuitBreakerConfig {
                 .build();
 
         // time limiter config
-        TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.custom().timeoutDuration(Duration.ofMillis(200)).build();
+        TimeLimiterConfig timeLimiterConfig = TimeLimiterConfig.custom()
+                // cut the request if it last longer than 500ms
+                .timeoutDuration(Duration.ofMillis(500))
+                .build();
 
-
-        // factory
-        ReactiveResilience4JCircuitBreakerFactory factory = new ReactiveResilience4JCircuitBreakerFactory();
-        factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
-                .timeLimiterConfig(timeLimiterConfig)
-                .circuitBreakerConfig(circuitBreakerConfig)
-                .build());
-
-        return factory;
-
-
-//        return new ReactiveResilience4JCircuitBreakerFactory(
-//                CircuitBreakerRegistry.custom().addCircuitBreakerConfig("baseConfig", circuitBreakerConfig).build(),
-//                TimeLimiterRegistry.of(timeLimiterConfig));
+        return new ReactiveResilience4JCircuitBreakerFactory(
+                CircuitBreakerRegistry.custom().addCircuitBreakerConfig("baseConfig", circuitBreakerConfig).build(),
+                TimeLimiterRegistry.of(timeLimiterConfig));
     }
 }
