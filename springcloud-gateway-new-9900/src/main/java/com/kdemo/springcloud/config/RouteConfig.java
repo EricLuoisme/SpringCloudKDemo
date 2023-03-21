@@ -1,9 +1,12 @@
 package com.kdemo.springcloud.config;
 
 import com.kdemo.springcloud.spring.CustomBeanFactoryPostProcessor;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,14 +16,28 @@ public class RouteConfig {
 
     private List<String> allFeignPaths;
 
-    public RouteConfig(CustomBeanFactoryPostProcessor postProcessor) {
+    private LoadBalancerClient loadBalancerClient;
+
+    public RouteConfig(CustomBeanFactoryPostProcessor postProcessor, LoadBalancerClient loadBalancerClient) {
         this.allFeignPaths = postProcessor.getPathList();
+        this.loadBalancerClient = loadBalancerClient;
     }
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
+
+//        ServiceInstance instance = loadBalancerClient.choose("springcloud-provider-dept");
         return builder.routes()
-                .route(r -> r.path(allFeignPaths.get(0)).uri("http://localhost:9900/1234"))
+                .route(r -> r.path("/router/department/list")
+                        // replace to inner url
+                        .filters(f -> f.filter(((exchange, chain) -> {
+                            ServerHttpRequest request = exchange.getRequest();
+                            String originalPath = request.getURI().getRawPath();
+                            String newPath = originalPath.replace("/router", "");
+                            ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
+                            return chain.filter(exchange.mutate().request(innerRequest).build());
+                        })))
+                        .uri("lb://springcloud-provider-dept"))
                 .build();
     }
 
