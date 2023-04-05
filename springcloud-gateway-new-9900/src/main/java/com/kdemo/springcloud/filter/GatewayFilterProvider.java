@@ -2,7 +2,6 @@ package com.kdemo.springcloud.filter;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.server.ServerWebExchange;
 
 /**
  * For storing all filters
