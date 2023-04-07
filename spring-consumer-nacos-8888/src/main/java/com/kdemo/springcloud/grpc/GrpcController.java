@@ -24,7 +24,7 @@ public class GrpcController {
     @GetMapping("/employee")
     public String getEmployees() {
         RpcEmployees employees = stub.getEmployees(EmptyRequest.newBuilder().build());
-        return "yes";
+        return employees.toString();
     }
 
 }
