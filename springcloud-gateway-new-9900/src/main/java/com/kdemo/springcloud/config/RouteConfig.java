@@ -41,7 +41,7 @@ public class RouteConfig {
         RouteLocatorBuilder.Builder routes = builder.routes();
         allFeignPaths.forEach(dto ->
                 routes.route(r ->
-                        r.path("/router" + dto.getFullPath())
+                        r.path("/v1/api/router" + dto.getFullPath())
                                 .filters(f -> f.filter(rewritePathFilter())
                                         .circuitBreaker(config ->
                                                 config.setFallbackUri("http://localhost:9900/fallback"))
