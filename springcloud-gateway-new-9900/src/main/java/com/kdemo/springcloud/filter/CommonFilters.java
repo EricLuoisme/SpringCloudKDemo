@@ -6,7 +6,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 /**
  * For storing all filters
  */
-public class GatewayFilterProvider {
+public class CommonFilters {
 
     /**
      * Filter for Rewrite Path
@@ -16,7 +16,7 @@ public class GatewayFilterProvider {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             String originalPath = request.getURI().getRawPath();
-            String newPath = originalPath.replace("/v1/api/router", "/department");
+            String newPath = originalPath.replace("/v1/api/router/department", "/department");
             ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
             return chain.filter(exchange.mutate().request(innerRequest).build());
         };

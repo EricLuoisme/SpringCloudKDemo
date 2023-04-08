@@ -44,7 +44,6 @@
             <version>1.7.1</version>
         </dependency>
 
-
         <!-- Nacos -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

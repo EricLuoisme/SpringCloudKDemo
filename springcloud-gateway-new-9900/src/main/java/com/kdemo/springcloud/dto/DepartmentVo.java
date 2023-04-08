@@ -1,21 +1,23 @@
 package com.kdemo.springcloud.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
-/**
- * For storing the scanned feign API paths
- *
- * @author Roylic
- * 2023/3/21
- */
+import java.io.Serializable;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class FeignPathDto {
-    private String fullPath;
-    private String serverName;
+public class DepartmentVo {
+
+    private Long departmentId;
+
+    private String departmentName;
+
+    private String departmentSource;
 }
