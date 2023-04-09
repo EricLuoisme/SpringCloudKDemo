@@ -38,11 +38,13 @@ public class DepartmentController {
         department.setDept_no(10058L);
         department.setDept_name("nacos");
         department.setDb_source("baffle");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        // for circuit breaker test
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         return Collections.singletonList(department);
     }
 }

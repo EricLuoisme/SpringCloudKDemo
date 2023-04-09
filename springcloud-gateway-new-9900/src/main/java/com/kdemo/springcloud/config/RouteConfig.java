@@ -13,6 +13,7 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -38,19 +39,34 @@ public class RouteConfig {
 
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
-        RouteLocatorBuilder.Builder routes = builder.routes();
-        allFeignPaths.forEach(dto ->
-                routes.route(r ->
-                        r.path("/v1/api/router" + dto.getFullPath())
-                                .filters(f -> f.filter(rewritePathFilter())
-                                        .circuitBreaker(config ->
-                                                config.setFallbackUri("http://localhost:9900/fallback"))
-                                        .modifyRequestBody(
-                                                DepartmentVo.class, Department.class,
-                                                MediaType.APPLICATION_JSON_VALUE, new BodyRewriter.DepartmentRewriter())
-                                )
-                                .uri("lb://" + dto.getServerName())));
-        return routes.build();
+//        RouteLocatorBuilder.Builder routes = builder.routes();
+//        allFeignPaths.forEach(dto ->
+//                routes.route(r ->
+//                        r.path("/v1/api/router" + dto.getFullPath())
+//                                .filters(f -> f.filter(rewritePathFilter())
+//                                        .circuitBreaker(config ->
+//                                                config.setFallbackUri("http://localhost:9900/fallback"))
+//                                        .modifyRequestBody(
+//                                                DepartmentVo.class, Department.class,
+//                                                MediaType.APPLICATION_JSON_VALUE, new BodyRewriter.DepartmentRewriter())
+//                                )
+//                                .uri("lb://" + dto.getServerName())));
+//        return routes.build();
+
+
+        // for single successfully calling
+        return builder.routes()
+                .route(r -> r.path("/router/department/list")
+                        // replace to inner url
+                        .filters(f -> f.filter(((exchange, chain) -> {
+                            ServerHttpRequest request = exchange.getRequest();
+                            String originalPath = request.getURI().getRawPath();
+                            String newPath = originalPath.replace("/router", "");
+                            ServerHttpRequest innerRequest = request.mutate().path(newPath).build();
+                            return chain.filter(exchange.mutate().request(innerRequest).build());
+                        })))
+                        .uri("lb://springcloud-provider-dept"))
+                .build();
     }
 
 
