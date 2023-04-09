@@ -1,10 +1,8 @@
 package com.kdemo.springcloud.controller;
 
 import com.kdemo.springcloud.pojo.Department;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.own.anno.demo.annotation.RoundingLog;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,10 +11,11 @@ import java.util.List;
  * 提供Restful服务
  */
 @RestController
+@RoundingLog
 public class DepartmentController {
 
     @PostMapping(path = "/department/add")
-    public boolean addDept(Department department) {
+    public boolean addDept(@RequestBody Department department) {
         Long dept_no = department.getDept_no();
         String dept_name = department.getDept_name();
         String db_source = department.getDb_source();
