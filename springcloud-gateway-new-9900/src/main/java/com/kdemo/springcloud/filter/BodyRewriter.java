@@ -18,7 +18,7 @@ public class BodyRewriter {
             Department department = new Department();
             department.setDept_no(departmentVo.getDepartmentId());
             department.setDept_name(departmentVo.getDepartmentName());
-            department.setDb_source(department.getDb_source());
+            department.setDb_source(departmentVo.getDepartmentSource());
             return Mono.just(department);
         }
     }
