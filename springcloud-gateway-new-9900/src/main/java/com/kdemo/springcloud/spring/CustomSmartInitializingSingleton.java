@@ -1,18 +1,14 @@
 package com.kdemo.springcloud.spring;
 
 //import com.kdemo.springcloud.config.RouteConfig;
-import com.kdemo.springcloud.config.RouteConfig;
+import com.kdemo.springcloud.config.RoutesConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.lang.reflect.*;
 import java.util.LinkedList;
@@ -36,12 +32,12 @@ public class CustomSmartInitializingSingleton implements BeanClassLoaderAware, S
 
     private final ListableBeanFactory beanFactory;
 
-    private final RouteConfig routeConfig;
+    private final RoutesConfig routesConfig;
 
 
-    public CustomSmartInitializingSingleton(ListableBeanFactory beanFactory, RouteConfig routeConfig) {
+    public CustomSmartInitializingSingleton(ListableBeanFactory beanFactory, RoutesConfig routesConfig) {
         this.beanFactory = beanFactory;
-        this.routeConfig = routeConfig;
+        this.routesConfig = routesConfig;
     }
 
 

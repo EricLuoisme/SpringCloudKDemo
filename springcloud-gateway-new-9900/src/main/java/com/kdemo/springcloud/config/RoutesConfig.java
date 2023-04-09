@@ -2,7 +2,9 @@ package com.kdemo.springcloud.config;
 
 import com.kdemo.springcloud.dto.DepartmentVo;
 import com.kdemo.springcloud.dto.FeignPathDto;
-import com.kdemo.springcloud.filter.BodyRewriter;
+import com.kdemo.springcloud.filter.rewriter.AbstractRewriter;
+import com.kdemo.springcloud.filter.rewriter.DepartmentRewriter;
+import com.kdemo.springcloud.handler.RewriterHandler;
 import com.kdemo.springcloud.pojo.Department;
 import com.kdemo.springcloud.spring.CustomBeanFactoryPostProcessor;
 import org.springframework.beans.factory.ObjectProvider;
@@ -13,22 +15,25 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.kdemo.springcloud.constants.GatewayConstants.GATEWAY_OUTSIDER_PATH;
 import static com.kdemo.springcloud.filter.CommonFilters.rewritePathFilter;
 
 @Component
-public class RouteConfig {
+public class RoutesConfig {
 
-    private List<FeignPathDto> allFeignPaths;
+    private final List<FeignPathDto> allFeignPaths;
 
-    public RouteConfig(CustomBeanFactoryPostProcessor postProcessor) {
+    private final RewriterHandler rewriterHandler;
+
+    public RoutesConfig(CustomBeanFactoryPostProcessor postProcessor, RewriterHandler rewriterHandler) {
         this.allFeignPaths = postProcessor.getFeignPathDtoList();
+        this.rewriterHandler = rewriterHandler;
     }
 
     @Bean
@@ -42,17 +47,26 @@ public class RouteConfig {
     public RouteLocator routeLocator(RouteLocatorBuilder builder) {
         RouteLocatorBuilder.Builder routes = builder.routes();
         allFeignPaths.forEach(dto ->
-                routes.route(r ->
-                        r.path(GATEWAY_OUTSIDER_PATH + dto.getFullPath())
-                                .filters(f -> f.filter(rewritePathFilter())
-                                                .circuitBreaker(config ->
-                                                        config.setFallbackUri("http://localhost:9900/fallback"))
-                                        .modifyRequestBody(
-                                                DepartmentVo.class, Department.class,
-                                                MediaType.APPLICATION_JSON_VALUE, new BodyRewriter.DepartmentRewriter())
-                                )
-                                .uri("lb://" + dto.getServerName())));
+                rewriterHandler.buildCorrespondingRoutes(routes, dto));
         return routes.build();
+
+
+//        // for plain configuring
+//        allFeignPaths.forEach(
+//                dto -> {
+//                    String fullPath = dto.getFullPath();
+//                    if (fullPath.contains("department")) {
+//                        routes.route(r -> r.path(GATEWAY_OUTSIDER_PATH + dto.getFullPath())
+//                                .filters(f -> f.filter(rewritePathFilter())
+//                                        .circuitBreaker(config ->
+//                                                config.setFallbackUri("http://localhost:9900/fallback"))
+//                                        .modifyRequestBody(
+//                                                DepartmentVo.class, Department.class,
+//                                                MediaType.APPLICATION_JSON_VALUE, new DepartmentRewriter()))
+//                                .uri("lb://" + dto.getServerName()));
+//                    }
+//                });
+//        return routes.build();
 
 
 //        // for single successfully calling
