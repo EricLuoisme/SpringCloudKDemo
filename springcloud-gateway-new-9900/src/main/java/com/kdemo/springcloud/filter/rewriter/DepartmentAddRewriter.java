@@ -33,13 +33,8 @@ public class DepartmentAddRewriter extends AbstractRewriter {
     }
 
     @Override
-    public BiFunction<ServerWebExchange, Department, Mono<DepartmentVo>> rewriteResponse() {
-        return (exchange, department) -> Mono.just(
-                DepartmentVo.builder()
-                        .departmentId(department.getDept_no())
-                        .departmentName(department.getDept_name())
-                        .departmentSource(department.getDb_source())
-                        .build());
+    public <O, I> BiFunction<ServerWebExchange, I, Mono<O>> rewriteResponse() {
+        return null;
     }
 
 
@@ -52,9 +47,7 @@ public class DepartmentAddRewriter extends AbstractRewriter {
 
     @Override
     public GatewayFilterSpec addingResponseRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto) {
-        return gatewayFilterSpec
-                .modifyResponseBody(Department.class, DepartmentVo.class,
-                        MediaType.APPLICATION_JSON_VALUE, createGenericRewriter(rewriteResponse()));
+        return gatewayFilterSpec;
     }
 
 

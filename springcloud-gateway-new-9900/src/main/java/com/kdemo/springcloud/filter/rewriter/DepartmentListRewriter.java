@@ -17,7 +17,7 @@ public class DepartmentListRewriter extends AbstractRewriter {
 
     @Override
     public String effectedFullPath() {
-        return "/department/add";
+        return "/department/list";
     }
 
     @Override
@@ -43,6 +43,7 @@ public class DepartmentListRewriter extends AbstractRewriter {
 
     @Override
     public GatewayFilterSpec addingResponseRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto) {
+        // TODO not working for list response for now
         return gatewayFilterSpec
                 .modifyResponseBody(Department.class, DepartmentVo.class,
                         MediaType.APPLICATION_JSON_VALUE, createGenericRewriter(rewriteResponse()));
