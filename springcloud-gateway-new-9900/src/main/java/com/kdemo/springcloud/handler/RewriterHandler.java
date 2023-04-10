@@ -33,10 +33,11 @@ public class RewriterHandler {
                 .filters(f -> {
                     // add common configuration for each path
                     GatewayFilterSpec gatewayFilterSpec = AbstractRewriter.commonBaseFilterConfig(f);
-                    // if a rewriter found, try adding rewriter
-                    if (null != abstractRewriter) {
-                        abstractRewriter.addingRewriter(gatewayFilterSpec, dto);
+                    if (null == abstractRewriter) {
+                        throw new RuntimeException("Path " + dto.getFullPath() + " have not implement the Rewriter");
                     }
+                    abstractRewriter.addingRequestRewriter(gatewayFilterSpec, dto);
+                    abstractRewriter.addingResponseRewriter(gatewayFilterSpec, dto);
                     return gatewayFilterSpec;
                 })
                 // commonly use when interacting with Nacos

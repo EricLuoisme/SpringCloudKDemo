@@ -1,11 +1,7 @@
 package com.kdemo.springcloud.config;
 
-import com.kdemo.springcloud.dto.DepartmentVo;
 import com.kdemo.springcloud.dto.FeignPathDto;
-import com.kdemo.springcloud.filter.rewriter.AbstractRewriter;
-import com.kdemo.springcloud.filter.rewriter.DepartmentRewriter;
 import com.kdemo.springcloud.handler.RewriterHandler;
-import com.kdemo.springcloud.pojo.Department;
 import com.kdemo.springcloud.spring.CustomBeanFactoryPostProcessor;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,16 +9,11 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.kdemo.springcloud.constants.GatewayConstants.GATEWAY_OUTSIDER_PATH;
-import static com.kdemo.springcloud.filter.CommonFilters.rewritePathFilter;
 
 @Component
 public class RoutesConfig {

@@ -1,9 +1,16 @@
 package com.kdemo.springcloud.filter.rewriter;
 
 
+import com.kdemo.springcloud.dto.DepartmentVo;
 import com.kdemo.springcloud.dto.FeignPathDto;
 import com.kdemo.springcloud.filter.CommonFilters;
+import com.kdemo.springcloud.pojo.Department;
+import org.springframework.cloud.gateway.filter.factory.rewrite.RewriteFunction;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+import java.util.function.BiFunction;
 
 /**
  * All rewriter need to implement this abstract class
@@ -16,9 +23,53 @@ public abstract class AbstractRewriter {
     public abstract String effectedFullPath();
 
     /**
-     * Build their own route configuration
+     * Rewrite request function
+     *
+     * @param <O> outside request input
+     * @param <I> inside received input
+     * @return rewrite function
      */
-    public abstract GatewayFilterSpec addingRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto);
+    public abstract <O, I> BiFunction<ServerWebExchange, O, Mono<I>> rewriteRequest();
+
+    /**
+     * Rewrite response function
+     *
+     * @param <O> outside response output
+     * @param <I> inside response output
+     * @return rewrite function
+     */
+    public abstract <O, I> BiFunction<ServerWebExchange, I, Mono<O>> rewriteResponse();
+
+    /**
+     * Add request rewriter
+     *
+     * @param gatewayFilterSpec spring cloud gateway filter builder
+     * @param dto               feign path dto
+     * @return spring cloud gateway filter builder
+     */
+    public abstract GatewayFilterSpec addingRequestRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto);
+
+    /**
+     * Add response rewriter
+     *
+     * @param gatewayFilterSpec spring cloud gateway filter builder
+     * @param dto               feign path dto
+     * @return spring cloud gateway filter builder
+     */
+    public abstract GatewayFilterSpec addingResponseRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto);
+
+
+    /**
+     * General specific rewrite function into Genetics Type's rewrite function
+     *
+     * @param conversionFunction the function need to pass
+     * @param <A>                type A
+     * @param <B>                type B
+     * @return generalized rewrite function
+     */
+    public static <A, B> RewriteFunction<A, B> createGenericRewriter(BiFunction<ServerWebExchange, A, Mono<B>> conversionFunction) {
+        return (exchange, a) -> conversionFunction.apply(exchange, a);
+    }
 
     /**
      * Common base filter configuration

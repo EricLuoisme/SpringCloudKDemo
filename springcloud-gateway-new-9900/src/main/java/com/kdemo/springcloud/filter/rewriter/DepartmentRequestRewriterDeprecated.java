@@ -7,15 +7,14 @@ import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.factory.rewrite.RewriteFunction;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 
-@Component
-public class DepartmentRewriter extends AbstractRewriter implements RewriteFunction<DepartmentVo, Department> {
+@Deprecated
+public class DepartmentRequestRewriterDeprecated implements RewriteFunction<DepartmentVo, Department> {
 
-    @Override
+
     public String effectedFullPath() {
         return "/department/add";
     }
@@ -29,10 +28,9 @@ public class DepartmentRewriter extends AbstractRewriter implements RewriteFunct
         return Mono.just(department);
     }
 
-    @Override
     public GatewayFilterSpec addingRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto) {
         return gatewayFilterSpec.modifyRequestBody(
-                DepartmentVo.class, Department.class, MediaType.APPLICATION_JSON_VALUE, new DepartmentRewriter());
+                DepartmentVo.class, Department.class, MediaType.APPLICATION_JSON_VALUE, new DepartmentRequestRewriterDeprecated());
     }
 
 }
