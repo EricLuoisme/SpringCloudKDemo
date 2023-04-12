@@ -1,0 +1,15 @@
+server:
+  port: 10089
+spring:
+  application:
+    name: grpc-client
+  profiles:
+    active: local
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+#grpc:
+#  server:
+#    port: 9991
