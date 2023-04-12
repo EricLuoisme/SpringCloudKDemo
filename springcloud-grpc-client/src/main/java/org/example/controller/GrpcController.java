@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/grpc")
 public class GrpcController {
 
-    @GrpcClient("localhost")
+    @GrpcClient("grpc-server")
     private RemoteRpcServiceGrpc.RemoteRpcServiceBlockingStub stub;
 
     @GetMapping("/employee")

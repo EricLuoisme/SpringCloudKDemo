@@ -10,6 +10,9 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-#grpc:
-#  server:
-#    port: 9991
+grpc:
+  client:
+    GLOBAL:
+      # client需要与server选择同样配置
+#      negotiation-type: plaintext_upgrade
+      negotiation-type: plaintext
