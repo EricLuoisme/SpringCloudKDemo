@@ -17,7 +17,7 @@ public class SimpleGrpcServer {
     public static void main(String[] args) {
         Server grpcNettyServer = NettyServerBuilder
                 .forPort(9090)
-                .addService(new RemoteRpcServiceImpl())
+//                .addService(new RemoteRpcServiceImpl())
                 .build();
         try {
             grpcNettyServer.start();

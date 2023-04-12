@@ -2,8 +2,8 @@ server:
   port: 8005
 spring:
   application:
-    name: nacos-provider # for grpc
-  #    name: springcloud-provider-dept # for openFeign
+    #    name: nacos-provider # for grpc
+    name: springcloud-provider-dept # for openFeign
   profiles:
     include:
       - reloaded
