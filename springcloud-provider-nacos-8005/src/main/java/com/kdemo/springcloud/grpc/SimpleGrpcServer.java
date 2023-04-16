@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 /**
+ * Simple Grpc Server demo
+ *
  * @author Roylic
  * @date 2022/4/28
  */
@@ -17,7 +19,8 @@ public class SimpleGrpcServer {
     public static void main(String[] args) {
         Server grpcNettyServer = NettyServerBuilder
                 .forPort(9090)
-//                .addService(new RemoteRpcServiceImpl())
+                .addService(new RemoteRpcServiceImpl())
+                .intercept(new GrpcLogInterceptor())
                 .build();
         try {
             grpcNettyServer.start();
