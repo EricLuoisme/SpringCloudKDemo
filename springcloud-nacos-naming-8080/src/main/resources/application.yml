@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: nacos-naming-demo
+    name: nacos-naming
   cloud:
     nacos:
       discovery:

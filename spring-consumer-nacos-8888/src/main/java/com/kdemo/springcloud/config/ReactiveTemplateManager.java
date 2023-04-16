@@ -15,13 +15,13 @@ public class ReactiveTemplateManager {
 //    public ReactiveRedisConnectionFactory connectionFactory() {
 //        return new LettuceConnectionFactory("localhost", 6379);
 //    }
-//
-//
-//    @Bean
-//    public ReactiveRedisTemplate<String, String> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
-//        return new ReactiveRedisTemplate<>(factory, RedisSerializationContext.fromSerializer(
-//                new StringRedisSerializer()));
-//    }
+
+
+    @Bean
+    public ReactiveRedisTemplate<String, String> reactiveRedisTemplate(ReactiveRedisConnectionFactory factory) {
+        return new ReactiveRedisTemplate<>(factory, RedisSerializationContext.fromSerializer(
+                new StringRedisSerializer()));
+    }
 
 
 }
