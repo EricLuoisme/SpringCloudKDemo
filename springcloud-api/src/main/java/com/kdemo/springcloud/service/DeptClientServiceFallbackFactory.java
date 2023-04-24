@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class DeptClientServiceFallbackFactory implements FallbackFactory {
@@ -31,6 +32,13 @@ public class DeptClientServiceFallbackFactory implements FallbackFactory {
                 List<Department> result = new ArrayList<>();
                 result.add(new Department().setDept_no((long) 999).setDept_name("id => " + 999 + " 该服务已降级"));
                 return result;
+            }
+
+            @Override
+            public CompletableFuture<List<Department>> findAll_async() {
+                List<Department> result = new ArrayList<>();
+                result.add(new Department().setDept_no((long) 999).setDept_name("id => " + 999 + " 该服务已降级"));
+                return CompletableFuture.completedFuture(result);
             }
         };
     }

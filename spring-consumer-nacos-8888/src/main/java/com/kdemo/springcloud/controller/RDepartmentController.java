@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/remote")
@@ -19,6 +20,11 @@ public class RDepartmentController {
     @PostMapping("/list")
     public List<Department> getRemoteDeptList() {
         return deptClientService.findAll();
+    }
+
+    @PostMapping("/list/async")
+    public CompletableFuture<List<Department>> getRemoteDeptList_Async() {
+        return deptClientService.findAll_async();
     }
 
 }

@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Feign只需要注册接口, 后面消费者只需要调用接口方法, feign会结合ribbon负载均衡, 并调用响应服务
@@ -19,15 +21,15 @@ import java.util.List;
 public interface DeptClientService {
 
     // 这里的路径, 需要是生产者的对应路径
-//    @PostMapping(path = "/department/add")
     @PostMapping(path = "/add")
     boolean add(Department dept);
 
-    //    @GetMapping("/department/get/{id}")
     @GetMapping("/get/{id}")
     Department findById(@PathVariable("id") Long id);
 
-    //    @GetMapping(path = "/department/list")
     @GetMapping(path = "/list")
     List<Department> findAll();
+
+    @GetMapping(path = "/list/async")
+    CompletableFuture<List<Department>> findAll_async();
 }

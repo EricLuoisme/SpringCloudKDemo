@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 提供Restful服务
@@ -45,5 +46,14 @@ public class DepartmentController {
 //            e.printStackTrace();
 //        }
         return Collections.singletonList(department);
+    }
+
+    @GetMapping(path = "/department/list/async")
+    public CompletableFuture<List<Department>> findAll_async() {
+        Department department = new Department();
+        department.setDept_no(10058L);
+        department.setDept_name("nacos");
+        department.setDb_source("baffle");
+        return CompletableFuture.completedFuture(Collections.singletonList(department));
     }
 }
