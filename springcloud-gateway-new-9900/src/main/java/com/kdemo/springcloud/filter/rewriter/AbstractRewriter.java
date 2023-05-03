@@ -66,7 +66,7 @@ public abstract class AbstractRewriter {
      * @return generalized rewrite function
      */
     public static <A, B> RewriteFunction<A, B> createGenericRewriter(BiFunction<ServerWebExchange, A, Mono<B>> conversionFunction) {
-        return (exchange, a) -> conversionFunction.apply(exchange, a);
+        return conversionFunction::apply;
     }
 
     /**
