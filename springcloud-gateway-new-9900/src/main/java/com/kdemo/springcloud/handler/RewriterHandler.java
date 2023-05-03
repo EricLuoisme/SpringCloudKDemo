@@ -5,13 +5,14 @@ import com.kdemo.springcloud.filter.rewriter.AbstractRewriter;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.kdemo.springcloud.constants.GatewayConstants.GATEWAY_OUTSIDER_PATH;
 
@@ -26,8 +27,11 @@ public class RewriterHandler {
 
     private final RedisRateLimiter rateLimiter;
 
-    public RewriterHandler(List<AbstractRewriter> abstractRewriterList, RedisRateLimiter rateLimiter) {
+    private final ApiKeyResolver keyResolver;
+
+    public RewriterHandler(List<AbstractRewriter> abstractRewriterList, RedisRateLimiter rateLimiter, ApiKeyResolver keyResolver) {
         this.rateLimiter = rateLimiter;
+        this.keyResolver = keyResolver;
         this.rewriterPathMap = new HashMap<>();
         this.init(abstractRewriterList);
     }
@@ -54,6 +58,8 @@ public class RewriterHandler {
 
     /**
      * Request Rate Limit config
+     * 403 -> X-API-KEY is invalid
+     * 429 -> Exceeded the Rate Limit
      */
     private void requestRateLimit(GatewayFilterSpec f) {
         f.requestRateLimiter(
@@ -63,8 +69,22 @@ public class RewriterHandler {
                     // set rate limiter
                     config.setRateLimiter(rateLimiter);
                     // check for key's validation
-                    config.setKeyResolver(exchange ->
-                            Mono.justOrEmpty(exchange.getRequest().getHeaders().getFirst("X-API-KEY")));
+                    config.setKeyResolver(
+                            // handling invalid api-key into correct http status
+                            exchange -> keyResolver.resolve(exchange)
+                                    .onErrorResume(error -> {
+                                        if (error instanceof RuntimeException) {
+                                            return Mono.just("denied"); // convert to a specific 'key' value
+                                        }
+                                        return Mono.error(error);
+                                    })
+                                    .flatMap(key -> {
+                                        // for this specific key value -> return error status
+                                        if ("denied".equalsIgnoreCase(key)) {
+                                            return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN, "Api Key Denied"));
+                                        }
+                                        return Mono.just(key);
+                                    }));
                 });
     }
 
