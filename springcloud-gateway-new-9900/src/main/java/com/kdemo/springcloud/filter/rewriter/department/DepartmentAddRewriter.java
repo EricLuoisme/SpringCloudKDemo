@@ -1,7 +1,6 @@
-package com.kdemo.springcloud.filter.rewriter;
+package com.kdemo.springcloud.filter.rewriter.department;
 
-import com.kdemo.springcloud.dto.DepartmentVo;
-import com.kdemo.springcloud.dto.FeignPathDto;
+import com.kdemo.springcloud.filter.FeignPathDto;
 import com.kdemo.springcloud.filter.rewriter.AbstractRewriter;
 import com.kdemo.springcloud.pojo.Department;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;

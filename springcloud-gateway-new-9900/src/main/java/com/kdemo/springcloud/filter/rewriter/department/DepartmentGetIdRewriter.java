@@ -1,7 +1,7 @@
-package com.kdemo.springcloud.filter.rewriter;
+package com.kdemo.springcloud.filter.rewriter.department;
 
-import com.kdemo.springcloud.dto.DepartmentVo;
-import com.kdemo.springcloud.dto.FeignPathDto;
+import com.kdemo.springcloud.filter.FeignPathDto;
+import com.kdemo.springcloud.filter.rewriter.AbstractRewriter;
 import com.kdemo.springcloud.pojo.Department;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.http.MediaType;
@@ -13,16 +13,16 @@ import java.util.function.BiFunction;
 
 
 @Component
-public class DepartmentListRewriter extends AbstractRewriter {
+public class DepartmentGetIdRewriter extends AbstractRewriter {
 
     @Override
     public String effectedFullPath() {
-        return "/department/list";
+        return "/department/get/{id}";
     }
 
     @Override
-    public <O, I> BiFunction<ServerWebExchange, O, Mono<I>> rewriteRequest() {
-        return null;
+    public BiFunction<ServerWebExchange, DepartmentVo, Mono<Department>> rewriteRequest() {
+        return (serverWebExchange, departmentVo) -> null;
     }
 
     @Override
@@ -38,12 +38,13 @@ public class DepartmentListRewriter extends AbstractRewriter {
 
     @Override
     public GatewayFilterSpec addingRequestRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto) {
-        return gatewayFilterSpec;
+        return gatewayFilterSpec
+                .modifyRequestBody(DepartmentVo.class, Department.class,
+                        MediaType.APPLICATION_JSON_VALUE, createGenericRewriter(rewriteRequest()));
     }
 
     @Override
     public GatewayFilterSpec addingResponseRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto) {
-        // TODO not working for list response for now
         return gatewayFilterSpec
                 .modifyResponseBody(Department.class, DepartmentVo.class,
                         MediaType.APPLICATION_JSON_VALUE, createGenericRewriter(rewriteResponse()));

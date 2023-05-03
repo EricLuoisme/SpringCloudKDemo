@@ -1,10 +1,8 @@
 package com.kdemo.springcloud.filter.rewriter;
 
 
-import com.kdemo.springcloud.dto.DepartmentVo;
-import com.kdemo.springcloud.dto.FeignPathDto;
+import com.kdemo.springcloud.filter.FeignPathDto;
 import com.kdemo.springcloud.filter.CommonFilters;
-import com.kdemo.springcloud.pojo.Department;
 import org.springframework.cloud.gateway.filter.factory.rewrite.RewriteFunction;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.web.server.ServerWebExchange;
@@ -41,7 +39,7 @@ public abstract class AbstractRewriter {
     public abstract <O, I> BiFunction<ServerWebExchange, I, Mono<O>> rewriteResponse();
 
     /**
-     * Add request rewriter
+     * Add rewrite request function into the Gateway Filter Configuration
      *
      * @param gatewayFilterSpec spring cloud gateway filter builder
      * @param dto               feign path dto
@@ -50,7 +48,7 @@ public abstract class AbstractRewriter {
     public abstract GatewayFilterSpec addingRequestRewriter(GatewayFilterSpec gatewayFilterSpec, FeignPathDto dto);
 
     /**
-     * Add response rewriter
+     * Add rewrite response function into the Gateway Filter Configuration
      *
      * @param gatewayFilterSpec spring cloud gateway filter builder
      * @param dto               feign path dto
@@ -78,6 +76,7 @@ public abstract class AbstractRewriter {
         // rewrite outside path config
         return f.filter(CommonFilters.rewritePathFilter())
                 // circuit breaker config
-                .circuitBreaker(config -> config.setFallbackUri("http://localhost:9900/fallback"));
+                .circuitBreaker(config ->
+                        config.setFallbackUri("http://localhost:9900/fallback"));
     }
 }

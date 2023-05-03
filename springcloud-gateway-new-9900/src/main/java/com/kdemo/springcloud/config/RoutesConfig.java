@@ -1,6 +1,6 @@
 package com.kdemo.springcloud.config;
 
-import com.kdemo.springcloud.dto.FeignPathDto;
+import com.kdemo.springcloud.filter.FeignPathDto;
 import com.kdemo.springcloud.handler.RewriterHandler;
 import com.kdemo.springcloud.spring.CustomBeanFactoryPostProcessor;
 import org.springframework.beans.factory.ObjectProvider;

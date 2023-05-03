@@ -1,4 +1,4 @@
-package com.kdemo.springcloud.dto;
+package com.kdemo.springcloud.filter.rewriter.department;
 
 
 import lombok.AllArgsConstructor;

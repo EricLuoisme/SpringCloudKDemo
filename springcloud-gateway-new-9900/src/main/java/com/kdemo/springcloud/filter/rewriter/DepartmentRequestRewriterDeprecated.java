@@ -1,7 +1,7 @@
 package com.kdemo.springcloud.filter.rewriter;
 
-import com.kdemo.springcloud.dto.DepartmentVo;
-import com.kdemo.springcloud.dto.FeignPathDto;
+import com.kdemo.springcloud.filter.rewriter.department.DepartmentVo;
+import com.kdemo.springcloud.filter.FeignPathDto;
 import com.kdemo.springcloud.pojo.Department;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.factory.rewrite.RewriteFunction;
