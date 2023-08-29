@@ -48,6 +48,7 @@ public class DepartmentController {
         return Collections.singletonList(department);
     }
 
+    // does not work -> feign not support async request
     @GetMapping(path = "/department/list/async")
     public CompletableFuture<List<Department>> findAll_async() {
         Department department = new Department();

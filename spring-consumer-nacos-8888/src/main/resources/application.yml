@@ -1,5 +1,6 @@
 server:
   port: 8888
+
 spring:
   application:
     name: nacos-consumer
@@ -20,6 +21,10 @@ spring:
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+
+logging:
+  pattern:
+    console: "%date{yy-MM-dd HH:mm:ss.SSS} %5p ${PID:-} --- [%15.15t] %-40.40logger{39}[%4line]: %msg%n trace_id=%X{trace_id}%n"
 
 grpc:
   client:

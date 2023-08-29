@@ -22,6 +22,7 @@ public class RDepartmentController {
         return deptClientService.findAll();
     }
 
+    // does not work -> feign not support async request
     @PostMapping("/list/async")
     public CompletableFuture<List<Department>> getRemoteDeptList_Async() {
         return deptClientService.findAll_async();
