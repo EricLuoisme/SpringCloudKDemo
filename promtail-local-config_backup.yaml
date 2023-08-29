@@ -1,0 +1,36 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /Users/roylic/IdeaProjects/logs/positions.yaml
+
+clients:
+  - url: http://127.0.0.1:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: all_logs
+    pipeline_stages:
+      - match:
+          selector: '{job="all_logs"}'
+          stages:
+            # capture "timestamp", "level", "module", "msg" fields
+            - regex:
+                expression: '(?P<timestamp>[\d-]+ [\d:]+),[\d]+ - (?P<level>[A-Z]+) - (?P<module>[A-Za-z_.]+) - (?P<msg>.*)'
+            # promote "level" and "module" to labels
+            - labels:
+                level:
+                module:
+            # specify the timestamp format and source field
+            - timestamp:
+                format: '2006-01-02 03:04:05'
+                source: timestamp
+            # specify value of output body per log message
+            - output:
+                source: msg
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: all_logs
+          __path__: /Users/roylic/IdeaProjects/logs/*.log
