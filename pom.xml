@@ -21,7 +21,7 @@
         <module>springcloud-consumer-hystrix-dashboard</module>
         <module>springcloud-gateway-zuul-9527</module>
         <module>springcloud-provider-nacos-8005</module>
-        <module>spring-consumer-nacos-8888</module>
+        <module>spring-consumer-nacos-8887</module>
         <module>springcloud-gateway-new-9900</module>
         <module>springcloud-nacos-naming-8080</module>
         <module>springcloud-token-9909</module>
