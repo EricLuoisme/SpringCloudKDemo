@@ -2,7 +2,9 @@ package com.kdemo.springcloud.controller;
 
 import com.kdemo.springcloud.pojo.Department;
 import com.kdemo.springcloud.service.DeptClientService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,11 +16,21 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/remote")
 public class RDepartmentController {
 
-    @Autowired
-    private DeptClientService deptClientService;
+    private final Counter listCounter;
+
+    private final DeptClientService deptClientService;
+
+    public RDepartmentController(MeterRegistry meterRegistry, DeptClientService deptClientService) {
+        this.deptClientService = deptClientService;
+        this.listCounter = Counter.builder("ep_counter_list_dept")
+                .description("number of request on dept list")
+                .register(meterRegistry);
+    }
 
     @PostMapping("/list")
+    @Timed(value = "endpoint_request_duration_dept_list", description = "Time consumption on listing department", histogram = true)
     public List<Department> getRemoteDeptList() {
+        this.listCounter.increment();
         return deptClientService.findAll();
     }
 

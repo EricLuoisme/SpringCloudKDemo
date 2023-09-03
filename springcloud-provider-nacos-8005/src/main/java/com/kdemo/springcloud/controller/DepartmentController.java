@@ -2,6 +2,10 @@ package com.kdemo.springcloud.controller;
 
 import com.kdemo.springcloud.pojo.Department;
 import com.own.anno.demo.annotation.RoundingLog;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -14,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 @RestController
 @RoundingLog
 public class DepartmentController {
+
 
     @PostMapping(path = "/department/add")
     public boolean addDept(@RequestBody Department department) {
@@ -34,6 +39,8 @@ public class DepartmentController {
 
     @GetMapping(path = "/department/list")
     public List<Department> findAll() {
+
+        // logic
         Department department = new Department();
         department.setDept_no(10058L);
         department.setDept_name("nacos");
@@ -45,6 +52,8 @@ public class DepartmentController {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+
+
         return Collections.singletonList(department);
     }
 
