@@ -4,7 +4,9 @@ management:
       exposure:
         include: "*"
       base-path: "/actuator"
-
+  metrics:
+    tags:
+      application: ${spring.application.name}
 loki:
   url: http://localhost:3100/loki/api/v1/push
 
