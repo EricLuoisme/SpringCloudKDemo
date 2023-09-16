@@ -11,6 +11,10 @@
 
     <artifactId>spring-consumer-nacos-8887</artifactId>
 
+    <!-- by using mvn wrapper:wrapper, now can use mvnw to run maven command
+    without need to taking care of local mvn's version is not compatible with the
+    project ones -->
+
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
