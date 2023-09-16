@@ -16,6 +16,21 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <!-- profile could let you config env stuff in pom -->
+    <!-- when we use mvn plugin for Spring's start trigger, this make sense -->
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <environment>local</environment>
+            </properties>
+        </profile>
+    </profiles>
+
+
     <dependencies>
 
         <dependency>
