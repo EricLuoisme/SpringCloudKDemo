@@ -22,6 +22,18 @@ spring:
         max-idle: 8
         min-idle: 0
 
+# use okhttp to do the feign request
+feign:
+  okhttp:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: FULL
+
+
 management:
   endpoints:
     web:

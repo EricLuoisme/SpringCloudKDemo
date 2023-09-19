@@ -2,6 +2,7 @@ package com.kdemo.springcloud.controller;
 
 import com.kdemo.springcloud.pojo.Department;
 import com.kdemo.springcloud.service.DeptClientService;
+import com.own.anno.demo.annotation.RoundingLog;
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -14,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/remote")
+@RoundingLog
 public class RDepartmentController {
 
     private final Counter listCounter;
