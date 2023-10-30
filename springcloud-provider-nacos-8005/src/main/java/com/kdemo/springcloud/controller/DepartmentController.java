@@ -1,9 +1,8 @@
 package com.kdemo.springcloud.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.kdemo.springcloud.handler.CustomBlockExceptionHandler;
 import com.kdemo.springcloud.handler.FallbackHandler;
+import com.kdemo.springcloud.handler.BlockHandler;
 import com.kdemo.springcloud.pojo.Department;
 import com.own.anno.demo.annotation.RoundingLog;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,9 @@ public class DepartmentController {
     }
 
     @GetMapping(path = "/department/list")
-    @SentinelResource(value = "/department/list", fallbackClass = FallbackHandler.class, fallback = "handleFallback")
+    @SentinelResource(value = "/department/list",
+            fallbackClass = FallbackHandler.class, fallback = "handleFallback",
+            blockHandlerClass = BlockHandler.class, blockHandler = "handleBlock")
     public List<Department> findAll() {
 
         // logic

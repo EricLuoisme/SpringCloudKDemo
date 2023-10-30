@@ -24,16 +24,16 @@ public class SentinelConfig {
         final FlowRule flowRule = new FlowRule();
         flowRule.setResource("/department/list");
         flowRule.setGrade(RuleConstant.FLOW_GRADE_QPS); // set qps as measurement
-        flowRule.setCount(5);
+        flowRule.setCount(10);
         FlowRuleManager.loadRules(Collections.singletonList(flowRule));
     }
 
     private static void initDegradeRules() {
         final DegradeRule degradeRule = new DegradeRule();
         degradeRule.setResource("/department/list");
-        degradeRule.setGrade(RuleConstant.DEGRADE_GRADE_EXCEPTION_COUNT); // set exception count as measurement
-        degradeRule.setCount(10);
-        degradeRule.setTimeWindow(5); // recover time to half-open window
+        degradeRule.setGrade(RuleConstant.FLOW_GRADE_QPS); // set exception count as measurement
+        degradeRule.setCount(5);
+        degradeRule.setTimeWindow(1); // recover time to half-open window
         DegradeRuleManager.loadRules(Collections.singletonList(degradeRule));
     }
 
