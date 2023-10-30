@@ -12,4 +12,5 @@ loki:
 
 logging:
   pattern:
-    console: "%date{yy-MM-dd HH:mm:ss.SSS} %5p ${PID:-} --- [%15.15t] %-40.40logger{39}[%4line]: %msg%n trace_id=%X{trace_id}%n"
+#    console: "%date{yy-MM-dd HH:mm:ss.SSS} %5p ${PID:-} --- [%15.15t] %-40.40logger{39}[%4line]: %msg%n trace_id=%X{trace_id}%n"
+    console: "%date{HH:mm:ss.SSS} %5p ${PID:-} --- [%15.15t] %-40.40logger{39}[%4line]: %msg%n trace_id=%X{trace_id}%n"

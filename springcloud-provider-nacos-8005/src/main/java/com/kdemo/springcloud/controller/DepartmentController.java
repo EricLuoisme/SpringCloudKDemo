@@ -1,11 +1,9 @@
 package com.kdemo.springcloud.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.kdemo.springcloud.handler.SentinelBlockHandler;
 import com.kdemo.springcloud.pojo.Department;
 import com.own.anno.demo.annotation.RoundingLog;
-import io.micrometer.core.annotation.Timed;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -38,6 +36,8 @@ public class DepartmentController {
     }
 
     @GetMapping(path = "/department/list")
+    @SentinelResource(value = "/department/list",
+            blockHandlerClass = SentinelBlockHandler.class, blockHandler = "handlerBlock")
     public List<Department> findAll() {
 
         // logic
