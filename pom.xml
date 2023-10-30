@@ -47,7 +47,7 @@
         <mysql.version>8.0.26</mysql.version>
         <druid.version>1.2.6</druid.version>
         <mybatis.version>2.2.0</mybatis.version>
-        <lombok.version>1.18.12</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <log4j.version>1.2.12</log4j.version>
         <logback.version>1.2.3</logback.version>
         <junit.version>4.13</junit.version>
