@@ -8,8 +8,11 @@ spring:
     include:
       - reloaded
     active: local
-  # Nacos配置
   cloud:
+    # Sentinel 配置
+    sentinel:
+      enabled: true
+    # Nacos 配置
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848

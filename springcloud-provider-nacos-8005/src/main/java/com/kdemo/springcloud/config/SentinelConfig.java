@@ -1,5 +1,8 @@
 package com.kdemo.springcloud.config;
 
+import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRule;
+import com.alibaba.csp.sentinel.slots.block.degrade.DegradeRuleManager;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRule;
 import com.alibaba.csp.sentinel.slots.block.flow.FlowRuleManager;
 import org.springframework.context.annotation.Configuration;
@@ -10,16 +13,28 @@ import java.util.Collections;
 @Configuration
 public class SentinelConfig {
 
+
     @PostConstruct
     public void postConstruct() {
-        initFlowRule();
+        initFlowRules();
+        initDegradeRules();
     }
 
-    private void initFlowRule() {
-        FlowRule flowRule = new FlowRule();
+    private static void initFlowRules() {
+        final FlowRule flowRule = new FlowRule();
         flowRule.setResource("/department/list");
-        flowRule.setGrade(5); // QPS limit
+        flowRule.setGrade(RuleConstant.FLOW_GRADE_QPS); // set qps as measurement
+        flowRule.setCount(5);
         FlowRuleManager.loadRules(Collections.singletonList(flowRule));
+    }
+
+    private static void initDegradeRules() {
+        final DegradeRule degradeRule = new DegradeRule();
+        degradeRule.setResource("/department/list");
+        degradeRule.setGrade(RuleConstant.DEGRADE_GRADE_EXCEPTION_COUNT); // set exception count as measurement
+        degradeRule.setCount(10);
+        degradeRule.setTimeWindow(5); // recover time to half-open window
+        DegradeRuleManager.loadRules(Collections.singletonList(degradeRule));
     }
 
 }

@@ -1,9 +1,10 @@
 package com.kdemo.springcloud.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.kdemo.springcloud.handler.SentinelBlockHandler;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.kdemo.springcloud.pojo.Department;
 import com.own.anno.demo.annotation.RoundingLog;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * 提供Restful服务
  */
+@Slf4j
 @RestController
 @RoundingLog
 public class DepartmentController {
@@ -36,8 +38,7 @@ public class DepartmentController {
     }
 
     @GetMapping(path = "/department/list")
-    @SentinelResource(value = "/department/list",
-            blockHandlerClass = SentinelBlockHandler.class, blockHandler = "handlerBlock")
+    @SentinelResource(value = "/department/list")
     public List<Department> findAll() {
 
         // logic
@@ -52,7 +53,6 @@ public class DepartmentController {
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-
 
         return Collections.singletonList(department);
     }
