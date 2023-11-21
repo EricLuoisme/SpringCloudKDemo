@@ -24,6 +24,7 @@ public class SentinelConfig {
         final FlowRule flowRule = new FlowRule();
         flowRule.setResource("/department/list");
         flowRule.setGrade(RuleConstant.FLOW_GRADE_QPS); // set qps as measurement
+        flowRule.setControlBehavior(RuleConstant.CONTROL_BEHAVIOR_WARM_UP); // use warm up behavior
         flowRule.setCount(10);
         FlowRuleManager.loadRules(Collections.singletonList(flowRule));
     }
