@@ -49,6 +49,12 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
         return feignPathDtoList;
     }
 
+    /**
+     * For OpenFeign, because it needs to form some kind of proxy bean -> to perform RPC
+     * we could hardly get the actual bean for that remote service -> thus, now we want
+     * automatically 'scan' all possible API path, we need to start with BeanFactory
+     * and retrieve all 'api path' from the @FeignClient class
+     */
     @SneakyThrows
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
