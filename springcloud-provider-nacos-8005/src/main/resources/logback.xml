@@ -4,7 +4,8 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
-            <pattern>%date{HH:mm:ss.SSS} %5p ${PID:-} --- [%5.5t] %-30.30logger{20}[%4line]: %msg%n trace_id=%X{trace_id}%n</pattern>
+            <pattern>%date{HH:mm:ss.SSS} %5p ${PID:-} --- [%5.5t] %-30.30logger{20}[%4line]: %msg%n trace_id=%X{trace_id}%n
+            </pattern>
         </encoder>
     </appender>
 
@@ -23,6 +24,7 @@
     </appender>
 
     <logger name="io.grpc.netty" level="info"/>
+    <logger name="io.grpc.ChannelLogger" level="finest"/>
     <logger name="org.apache" level="info"/>
     <logger name="org.springframework.web" level="info"/>
     <logger name="org.springframework.jdbc" level="debug"/>
