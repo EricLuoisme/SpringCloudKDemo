@@ -14,4 +14,12 @@ logging:
   pattern:
     # trace_id -> for integrating the OpenTelemetry JavaAgent
     console: "%date{yy-MM-dd HH:mm:ss.SSS} %5p ${PID:-} --- [%15.15t] %-40.40logger{20}[%4line]: %msg%n trace_id=%X{trace_id}%n"
-#    console: "%date{HH:mm:ss.SSS} %5p ${PID:-} --- [%15.15t] %-40.40logger{39}[%4line]: %msg%n trace_id=%X{trace_id}%n"
+    # %5p -> output log level
+    # ${PID:} -> for process id (under OS manner)
+    # [%15.15t] -> show name of the thread, truncated or padding to 15 characters
+    # %-40.40logger{20}[%4line] -> logger's name truncated or padding to 40 characters, and line number is fixed with width of 4 chars
+    #   {20}: inside 20 is represented the depth indicator, which means only include 20 level of stack exception trace
+    # %msg -> is the real msg will be logged
+    # %n -> for new line
+    # %X{trace_id}
+

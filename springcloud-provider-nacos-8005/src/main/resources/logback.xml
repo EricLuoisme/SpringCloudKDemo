@@ -1,0 +1,33 @@
+<configuration>
+
+    <!-- Real Logging Writer, should be placed first -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+            <pattern>%date{HH:mm:ss.SSS} %5p ${PID:-} --- [%5.5t] %-30.30logger{20}[%4line]: %msg%n trace_id=%X{trace_id}%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- AsyncAppender named ASYNC -->
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- target the appender should use 'CONSOLE' appender to actually perform logging -->
+        <appender-ref ref="CONSOLE"/>
+        <!-- up to 100 logEvent for the blockingQueue -->
+        <queueSize>100</queueSize>
+        <!-- setting to 0 mean would not discard the logEvent until the queue is full -->
+        <!-- default setting is that over 80% would discard the upcoming logEvents -->
+        <!-- when it needs to discard events, it will drop DEBUG, WARN, INFO, but remain ERROR -->
+        <discardingThreshold>80</discardingThreshold>
+        <!-- ensure the caller's method, name, line number include in the logEvent-->
+        <includeCallerData>true</includeCallerData>
+    </appender>
+
+    <logger name="io.grpc.netty" level="info"/>
+    <logger name="org.apache" level="info"/>
+    <logger name="org.springframework.web" level="info"/>
+    <logger name="org.springframework.jdbc" level="debug"/>
+    <logger name="com.alibaba.nacos" level="info"/>
+    <root level="info">
+        <appender-ref ref="ASYNC"/>
+    </root>
+</configuration>
