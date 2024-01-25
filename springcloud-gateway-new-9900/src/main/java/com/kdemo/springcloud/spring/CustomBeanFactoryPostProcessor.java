@@ -54,6 +54,10 @@ public class CustomBeanFactoryPostProcessor implements BeanClassLoaderAware, Bea
      * we could hardly get the actual bean for that remote service -> thus, now we want
      * automatically 'scan' all possible API path, we need to start with BeanFactory
      * and retrieve all 'api path' from the @FeignClient class
+     * <p>
+     * 回看NettyRPC实现，同样需要implement的是BeanFactoryPostProcessor，然后对被注解的需要RPC注入的bean
+     * 进行特殊的BeanDefinition生成（通过继承FactoryBean<T></>），然后init这个bean实际上是构建一个代理，
+     * 这个代理每次invoke这个bean的方法，都是通过远程注册中心，获取服务信息后，进行调用
      */
     @SneakyThrows
     @Override
