@@ -19,11 +19,13 @@ spring:
       config:
         server-addr: 127.0.0.1:8848
         file-extension: yml
+        namespace: local
         # 额外配置 (理论上应该本地有一份)
         extension-configs[0]:
           dataId: application-reloaded.yml
           group: DEFAULT_GROUP
           refresh: true
+
 
 #        # 共享配置 (理论上应该Nacos才有)
 #        shared-configs:

@@ -23,3 +23,7 @@ logging:
     # %n -> for new line
     # %X{trace_id}
 
+dynamic:
+  schedule:
+    cron: "0/5 * * * * ?"
+
