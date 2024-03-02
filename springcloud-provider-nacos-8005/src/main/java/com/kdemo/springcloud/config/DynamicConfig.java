@@ -21,6 +21,9 @@ public class DynamicConfig {
 
     private String cron;
 
+    /**
+     * 从这里重复被构建可以看出, Nacos有配置文件更新时, 是重新构建bean来替换的, 不是调用set方法更新
+     */
     @PostConstruct
     public void postConstruct() {
         // 日志traceId原因
