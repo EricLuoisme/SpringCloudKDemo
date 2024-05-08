@@ -1,5 +1,6 @@
 server:
   port: 8005
+  shutdown: graceful
 spring:
   application:
     #    name: nacos-provider # for grpc

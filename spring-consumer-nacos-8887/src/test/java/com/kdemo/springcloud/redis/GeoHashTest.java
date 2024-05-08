@@ -17,7 +17,9 @@ import java.util.Map;
 @SpringBootTest
 public class GeoHashTest {
 
-
+    /**
+     * 地理位置数据
+     */
     @Test
     public void geoHashTest() {
 
