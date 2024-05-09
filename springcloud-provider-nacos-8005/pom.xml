@@ -32,6 +32,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.29.0</version>
+        </dependency>
+
         <!-- Spring Cloud + Nacos Discovery + Config + WebFlux -->
 
         <!-- for latest version of SpringBoot -> add below dpc or not using bootstrap.yml -->
