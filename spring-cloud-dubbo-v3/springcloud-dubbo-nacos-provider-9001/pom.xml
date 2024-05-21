@@ -10,7 +10,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>springcloud-dubbo-nacos-9002</artifactId>
+
+    <artifactId>springcloud-dubbo-nacos-provider-9001</artifactId>
     <version>${project.version}</version>
 
     <properties>
@@ -20,6 +21,14 @@
     </properties>
 
     <dependencies>
+
+        <!-- interface -->
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>springcloud-dubbo-interface</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Dubbo -->
         <dependency>
             <groupId>org.apache.dubbo</groupId>
@@ -37,6 +46,7 @@
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-registry-nacos</artifactId>
         </dependency>
+
 
 
     </dependencies>

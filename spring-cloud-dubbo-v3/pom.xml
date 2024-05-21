@@ -11,8 +11,8 @@
 
     <modules>
         <module>springcloud-dubbo-interface</module>
-        <module>springcloud-dubbo-nacos-9001</module>
-        <module>springcloud-dubbo-nacos-9002</module>
+        <module>springcloud-dubbo-nacos-provider-9001</module>
+        <module>springcloud-dubbo-nacos-consumer-9002</module>
     </modules>
 
 
