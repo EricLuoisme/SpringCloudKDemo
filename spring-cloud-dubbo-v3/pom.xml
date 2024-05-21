@@ -15,9 +15,7 @@
         <module>springcloud-dubbo-nacos-consumer-9002</module>
     </modules>
 
-
     <packaging>pom</packaging>
-
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

@@ -10,9 +10,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-
     <artifactId>springcloud-dubbo-nacos-provider-9001</artifactId>
-    <version>${project.version}</version>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -26,13 +25,13 @@
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>springcloud-dubbo-interface</artifactId>
-            <version>${project.version}</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
-        <!-- Dubbo -->
+        <!-- SpringBoot -->
         <dependency>
-            <groupId>org.apache.dubbo</groupId>
-            <artifactId>dubbo</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
         <!-- Dubbo-Spring -->
