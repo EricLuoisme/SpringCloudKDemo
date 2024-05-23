@@ -6,3 +6,6 @@ dubbo:
     port: -1
   registry:
     address: nacos://localhost:8848
+
+server:
+  shutdown: graceful
