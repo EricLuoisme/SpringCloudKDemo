@@ -46,6 +46,18 @@
             <artifactId>dubbo-registry-nacos</artifactId>
         </dependency>
 
+        <!-- Dubbo-Metrics -->
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-observability-starter</artifactId>
+        </dependency>
+
+        <!-- OpenTelemetry as Tracer, Otlp as exporter -->
+        <dependency>
+            <groupId>org.apache.dubbo</groupId>
+            <artifactId>dubbo-spring-boot-tracing-otel-otlp-starter</artifactId>
+        </dependency>
+
 
 
     </dependencies>

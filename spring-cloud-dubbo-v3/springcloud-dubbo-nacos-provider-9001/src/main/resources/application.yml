@@ -1,11 +1,34 @@
+# dubbo config
 dubbo:
   application:
     name: dubbo-spring-demo-provider
+  # dubbo rpc protocol
   protocol:
     name: dubbo
-    port: -1
+    port: -1 # randomly
+  # dubbo rpc registry
   registry:
     address: nacos://localhost:8848
+  # dubbo tracing
+  tracing:
+    enabled: true
+    sampling:
+      probability: 0.5 # sampling rate, default: 0.1
+    propagation:
+      type: W3C
+    # tracing exporter
+    tracing-exporter:
+      otlp-config: 127.0.0.1:4317
+      timeout: 10s
+      compression-method: none
 
+# logging
+logging:
+  level:
+    root: info
+  pattern:
+    console: '[%d{dd/MM/yy HH:mm:ss:SSS z}] %t %5p %c{2} [%X{traceId:-}, %X{spanId:-}]: %m%n'
+
+# spring-boot server config
 server:
   shutdown: graceful
