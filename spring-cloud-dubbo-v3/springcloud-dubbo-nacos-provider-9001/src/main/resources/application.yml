@@ -18,9 +18,10 @@ dubbo:
       type: W3C
     # tracing exporter
     tracing-exporter:
-      otlp-config: 127.0.0.1:4317
-      timeout: 10s
-      compression-method: none
+      otlp-config:
+        endpoint: http://localhost:4317
+        timeout: 10s
+        compression-method: none
 
 # logging
 logging:

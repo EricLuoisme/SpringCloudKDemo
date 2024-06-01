@@ -24,6 +24,7 @@
         <!-- project -->
         <dubbo.version>3.2.5</dubbo.version>
         <spring-boot.version>2.7.14</spring-boot.version>
+        <openTelemetry.version>1.28.0</openTelemetry.version>
     </properties>
 
     <dependencyManagement>
@@ -43,6 +44,15 @@
                 <groupId>org.apache.dubbo</groupId>
                 <artifactId>dubbo-bom</artifactId>
                 <version>${dubbo.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- OpenTelemetry Dependencies -->
+            <dependency>
+                <groupId>io.opentelemetry</groupId>
+                <artifactId>opentelemetry-bom</artifactId>
+                <version>${openTelemetry.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

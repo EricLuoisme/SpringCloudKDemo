@@ -58,6 +58,11 @@
             <artifactId>dubbo-spring-boot-tracing-otel-otlp-starter</artifactId>
         </dependency>
 
+        <!-- OpenTelemetry Common -->
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk-common</artifactId>
+        </dependency>
 
 
     </dependencies>
