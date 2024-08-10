@@ -1,0 +1,59 @@
+# dubbo config
+dubbo:
+  application:
+    name: dubbo-v2-producer
+    parameters:
+      protocol: dubbo
+    qos-enable: true
+    qos-port: 20889
+  # dubbo rpc registry
+  registry:
+    address: nacos://localhost:8848
+    protocol: dubbo
+    timeout: 2000
+    file: ../registry/cache
+  # dubbo rpc protocol
+  protocol:
+    name: dubbo
+    port: 20888
+    serialization: hessian2
+    corethreads: 2
+  # provider side
+  provider:
+    timeout: 20000
+    accepts: 0
+    threadpool: cached
+    threads: 2000
+    executes: 0
+    retries: 0
+    actives: 0
+    loadbalance: roundrobin
+    # ??telnet?????
+    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
+  #    filter: -generic,paramValidationFilter,traceFilter,-exception,
+  # consumer side
+  consumer:
+    check: false
+    retries: 0
+    loadbalance: roundrobin
+    filter: traceFilter
+    service:
+      retries: 0
+      actives: 20
+      connections: 2
+
+
+
+#  # dubbo tracing
+#  tracing:
+#    enabled: true
+#    sampling:
+#      probability: 0.5 # sampling rate, default: 0.1
+#    propagation:
+#      type: W3C
+#    # tracing exporter
+#    tracing-exporter:
+#      otlp-config:
+#        endpoint: http://localhost:4317
+#        timeout: 10s
+#        compression-method: none
