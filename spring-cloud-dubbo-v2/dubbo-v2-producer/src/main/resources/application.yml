@@ -40,6 +40,12 @@ dubbo:
       actives: 20
       connections: 2
 
+# logging
+logging:
+  level:
+    root: DEBUG
+#  pattern:
+#    console: '[%d{dd/MM/yy HH:mm:ss:SSS z}] %t %5p %c{2} [%X{traceId:-}, %X{spanId:-}]: %m%n'
 
 
 #  # dubbo tracing
