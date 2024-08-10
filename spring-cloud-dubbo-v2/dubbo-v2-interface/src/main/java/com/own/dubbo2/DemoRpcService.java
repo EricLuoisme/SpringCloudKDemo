@@ -2,6 +2,6 @@ package com.own.dubbo2;
 
 public interface DemoRpcService {
 
-    // simple but inner with Async supplier
+    // simple time-consuming method
     String sayHello(String name);
 }

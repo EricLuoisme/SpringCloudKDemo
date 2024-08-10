@@ -4,8 +4,7 @@ import com.own.dubbo2.DemoRpcService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @DubboService
@@ -13,19 +12,19 @@ public class DemoRpcServiceImpl implements DemoRpcService {
 
     @Override
     public String sayHello(String name) {
-
-        CompletableFuture<String> timeConsumingJob = CompletableFuture.supplyAsync(() -> {
-            int sum = 0;
-            for (int i = 0; i < 1000000000; i++) {
-                sum += i;
-            }
-            return "Helloooooooo";
-        });
-
+        int sum = 0;
+        for (int i = 0; i < 1000000000; i++) {
+            sum += i;
+        }
+        for (int i = 1000000000; i >= 0; i--) {
+            sum -= i;
+        }
         try {
-            return timeConsumingJob.get();
-        } catch (InterruptedException | ExecutionException e) {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        return "Helloooooooo_" + sum + "_" + name;
+
     }
 }

@@ -5,7 +5,7 @@ dubbo:
     parameters:
       protocol: dubbo
     qos-enable: true
-    qos-port: 20889
+    qos-port: 20202
   # dubbo rpc registry
   registry:
     address: nacos://localhost:8848
@@ -15,12 +15,12 @@ dubbo:
   # dubbo rpc protocol
   protocol:
     name: dubbo
-    port: 20888
+    port: 20203
     serialization: hessian2
     corethreads: 2
   # provider side
   provider:
-    timeout: 20000
+    timeout: 2000000
     accepts: 0
     threadpool: cached
     threads: 2
@@ -29,12 +29,14 @@ dubbo:
     actives: 0
     loadbalance: roundrobin
     telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
+    filter: -generic,-exception
   # consumer side
   consumer:
+    timeout: 2000000
     check: false
     retries: 0
     loadbalance: roundrobin
-    filter: traceFilter
+#    filter: traceFilter
     service:
       retries: 0
       actives: 20
