@@ -23,14 +23,12 @@ dubbo:
     timeout: 20000
     accepts: 0
     threadpool: cached
-    threads: 2000
+    threads: 2
     executes: 0
     retries: 0
     actives: 0
     loadbalance: roundrobin
-    # ??telnet?????
     telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
-  #    filter: -generic,paramValidationFilter,traceFilter,-exception,
   # consumer side
   consumer:
     check: false

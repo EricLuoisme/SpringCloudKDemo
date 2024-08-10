@@ -33,6 +33,7 @@
         <nacos-client.version>1.4.2</nacos-client.version>
         <redisson.version>3.20.0</redisson.version>
         <druid.version>1.2.20</druid.version>
+        <guava.version>23.0</guava.version>
         <fastJson.version>2.0.15</fastJson.version>
         <lombok.version>1.18.34</lombok.version>
         <log4j.version>1.2.12</log4j.version>
@@ -84,6 +85,13 @@
                 <version>${druid.version}</version>
             </dependency>
 
+            <!-- Guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
             <!--Lombok-->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -98,6 +106,7 @@
                 <version>${log4j.version}</version>
             </dependency>
 
+            <!-- FastJson2 -->
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
                 <artifactId>fastjson2</artifactId>

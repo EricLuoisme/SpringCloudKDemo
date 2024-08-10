@@ -62,7 +62,11 @@
             <artifactId>nacos-client</artifactId>
         </dependency>
 
-
+        <!-- Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
 
 
 
