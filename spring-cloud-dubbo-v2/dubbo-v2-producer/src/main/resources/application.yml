@@ -1,3 +1,8 @@
+# logging
+logging:
+  level:
+    root: DEBUG
+
 # dubbo config
 dubbo:
   application:
@@ -9,46 +14,38 @@ dubbo:
   # dubbo rpc registry
   registry:
     address: nacos://localhost:8848
-    protocol: dubbo
-    timeout: 2000
-    file: ../registry/cache
+#    protocol: dubbo
+#    timeout: 2000
+#    file: ../registry/cache
   # dubbo rpc protocol
-  protocol:
-    name: dubbo
-    port: 20203
-    serialization: hessian2
-    corethreads: 2
-  # provider side
-  provider:
-    timeout: 2000000
-    accepts: 0
-    threadpool: cached
-    threads: 2
-    executes: 0
-    retries: 0
-    actives: 0
-    loadbalance: roundrobin
-    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
-    filter: -generic,-exception
-  # consumer side
-  consumer:
-    timeout: 2000000
-    check: false
-    retries: 0
-    loadbalance: roundrobin
-#    filter: traceFilter
-    service:
-      retries: 0
-      actives: 20
-      connections: 2
-
-# logging
-logging:
-  level:
-    root: DEBUG
-#  pattern:
-#    console: '[%d{dd/MM/yy HH:mm:ss:SSS z}] %t %5p %c{2} [%X{traceId:-}, %X{spanId:-}]: %m%n'
-
+#  protocol:
+#    name: dubbo
+#    port: 20203
+#    serialization: hessian2
+#    corethreads: 2
+#  # provider side
+#  provider:
+#    timeout: 2000000
+#    accepts: 0
+#    threadpool: cached
+#    threads: 2
+#    executes: 0
+#    retries: 0
+#    actives: 0
+#    loadbalance: roundrobin
+#    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
+#    filter: -generic,-exception
+#  # consumer side
+#  consumer:
+#    timeout: 2000000
+#    check: false
+#    retries: 0
+#    loadbalance: roundrobin
+##    filter: traceFilter
+#    service:
+#      retries: 0
+#      actives: 20
+#      connections: 2
 
 #  # dubbo tracing
 #  tracing:

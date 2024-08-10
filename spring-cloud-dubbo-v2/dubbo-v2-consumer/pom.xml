@@ -56,11 +56,11 @@
             <artifactId>dubbo-registry-nacos</artifactId>
         </dependency>
 
-        <!-- Nacos-Client -->
-        <dependency>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-        </dependency>
+<!--        &lt;!&ndash; Nacos-Client &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.nacos</groupId>-->
+<!--            <artifactId>nacos-client</artifactId>-->
+<!--        </dependency>-->
 
         <!--数据库连接池-->
         <dependency>
@@ -94,5 +94,15 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- spring-mvn-executable -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
