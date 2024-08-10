@@ -20,6 +20,13 @@
 
     <dependencies>
 
+        <!-- Interface -->
+        <dependency>
+            <groupId>com.own.dubbo2</groupId>
+            <artifactId>dubbo-v2-interface</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
 
         <!-- SpringCloud Starter-->
         <dependency>
@@ -57,6 +64,28 @@
             <artifactId>nacos-client</artifactId>
         </dependency>
 
+        <!--数据库连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+
+        <!--Lombok-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!--Log4j-->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.fastjson2</groupId>
+            <artifactId>fastjson2</artifactId>
+        </dependency>
 
 
 
