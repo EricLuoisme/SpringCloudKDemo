@@ -20,24 +20,24 @@ dubbo:
 #    timeout: 2000
 #    file: ../registry/cache
   # dubbo rpc protocol
-#  protocol:
-#    name: dubbo
-#    port: 20303
-#    serialization: hessian2
-#    corethreads: 2
+  protocol:
+    name: dubbo
+    port: 20303
+    serialization: hessian2
+    corethreads: 2
 #  # provider side
-#  provider:
-#    timeout: 2000000
-#    accepts: 0
-#    threadpool: cached
-#    threads: 2000
-#    executes: 0
-#    retries: 0
-#    actives: 0
-#    loadbalance: roundrobin
-#    # ??telnet?????
-#    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
-#    filter: -generic,-exception
+  provider:
+    timeout: 2000000
+    accepts: 0
+    threadpool: cached
+    threads: 2000
+    executes: 0
+    retries: 0
+    actives: 0
+    loadbalance: roundrobin
+    # ??telnet?????
+    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
+    filter: -generic,-exception
 #  # consumer side
 #  consumer:
 #    timeout: 2000000

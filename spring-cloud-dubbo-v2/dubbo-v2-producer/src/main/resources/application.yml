@@ -18,11 +18,11 @@ dubbo:
 #    timeout: 2000
 #    file: ../registry/cache
   # dubbo rpc protocol
-#  protocol:
-#    name: dubbo
-#    port: 20203
-#    serialization: hessian2
-#    corethreads: 2
+  protocol:
+    name: dubbo
+    port: 20203
+    serialization: hessian2
+    corethreads: 2
 #  # provider side
 #  provider:
 #    timeout: 2000000
