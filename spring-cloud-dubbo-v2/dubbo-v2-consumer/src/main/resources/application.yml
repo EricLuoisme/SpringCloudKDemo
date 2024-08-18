@@ -9,21 +9,22 @@ logging:
 dubbo:
   application:
     name: dubbo-v2-consumer
-    #    parameters:
-    #      protocol: dubbo
+    parameters:
+      protocol: dubbo
   #    qos-enable: true
   #    qos-port: 20302
   # dubbo rpc registry
   registry:
     address: nacos://localhost:8848
-  #    protocol: dubbo
+    protocol: dubbo
   #    timeout: 2000
   #    file: ../registry/cache
   # dubbo rpc protocol
   protocol:
     name: dubbo
-    port: 20303
-    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
+    port: -1
+  #    port: 20303
+  #    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
   #    serialization: hessian2
   #    corethreads: 2
   #  # provider side
