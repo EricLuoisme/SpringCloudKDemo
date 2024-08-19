@@ -14,20 +14,21 @@ public class DemoRpcServiceImpl implements DemoRpcService {
     public String sayHello(String name) {
 
         log.debug("receive request with name:{}", name);
-
         int sum = 0;
-//        for (int i = 0; i < 10000; i++) {
-//            sum += i;
-//        }
-//        for (int i = 1000; i >= 0; i--) {
-//            sum -= i;
-//        }
-//        try {
-//            TimeUnit.SECONDS.sleep(3);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-        return "Helloooooooo_" + sum + "_" + name;
+        for (int i = 0; i < 10000; i++) {
+            sum += i;
+        }
+        for (int i = 1000; i >= 0; i--) {
+            sum -= i;
+        }
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        String result = "Helloooooooo_" + sum + "_" + name;
+        log.debug("sending response with name:{}", result);
+        return result;
 
     }
 }

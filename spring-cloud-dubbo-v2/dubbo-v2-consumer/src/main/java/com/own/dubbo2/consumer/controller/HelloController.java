@@ -13,10 +13,17 @@ public class HelloController {
     @DubboReference
     private DemoRpcService demoRpcService;
 
-    @GetMapping("/hello")
-    public CompletableFuture<String> dubbo2Async() {
+
+    @GetMapping("/sync")
+    public String helloSync() {
+        return demoRpcService.sayHello("HelloSync\n");
+    }
+
+
+    @GetMapping("/async")
+    public CompletableFuture<String> helloAsync() {
         return CompletableFuture.supplyAsync(
-                        () -> demoRpcService.sayHello("GetMapp"))
+                        () -> demoRpcService.sayHello("HelloAsync"))
                 .thenApply(str -> str + "\n");
     }
 }
