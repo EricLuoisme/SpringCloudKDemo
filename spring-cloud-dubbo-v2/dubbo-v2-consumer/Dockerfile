@@ -1,5 +1,5 @@
-# docker build -t dubbo-v2-producer:1.0 .
-# docker run -d -p 20202:20202 -p 20203:20203 --name=dubbo-v2-producer dubbo-v2-producer:1.0
+# docker build -t dubbo-v2-consumer:1.0 .
+# docker run -d -p 20302:20302 -p 20303:20303 --name=dubbo-v2-consumer dubbo-v2-consumer:1.0
 
 # oracle
 FROM openjdk:17.0.2-oracle
