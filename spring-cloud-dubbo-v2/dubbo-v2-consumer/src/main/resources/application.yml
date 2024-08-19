@@ -17,7 +17,8 @@ dubbo:
     qos-port: 20302
   # dubbo rpc registry
   registry:
-    address: nacos://localhost:8848
+    #    address: nacos://localhost:8848 # on intellij
+    address: nacos://192.168.215.2:8848 # in docker img
     protocol: dubbo
     timeout: 2000
   protocol:
