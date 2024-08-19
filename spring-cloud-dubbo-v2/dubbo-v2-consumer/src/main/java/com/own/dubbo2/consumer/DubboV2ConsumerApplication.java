@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DubboV2ConsumerApplication {
     public static void main(String[] args) {
+//        System.setProperty("java.net.preferIPv4Stack", "true");
         SpringApplication.run(DubboV2ConsumerApplication.class, args);
         Main.main(args);
     }

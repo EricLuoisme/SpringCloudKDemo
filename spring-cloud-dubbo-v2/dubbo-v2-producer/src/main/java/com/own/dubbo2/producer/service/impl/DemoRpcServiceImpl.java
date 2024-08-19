@@ -12,6 +12,9 @@ public class DemoRpcServiceImpl implements DemoRpcService {
 
     @Override
     public String sayHello(String name) {
+
+        log.debug("receive request with name:{}", name);
+
         int sum = 0;
 //        for (int i = 0; i < 10000; i++) {
 //            sum += i;

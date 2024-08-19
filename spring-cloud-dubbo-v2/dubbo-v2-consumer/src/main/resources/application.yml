@@ -2,6 +2,8 @@
 logging:
   level:
     root: DEBUG
+    sun.rmi: INFO
+    javax.management.remote.rmi: INFO
 #  pattern:
 #    console: '[%d{dd/MM/yy HH:mm:ss:SSS z}] %t %5p %c{2} [%X{traceId:-}, %X{spanId:-}]: %m%n'
 
@@ -11,58 +13,23 @@ dubbo:
     name: dubbo-v2-consumer
     parameters:
       protocol: dubbo
-  #    qos-enable: true
-  #    qos-port: 20302
+    qos-enable: true
+    qos-port: 20302
   # dubbo rpc registry
   registry:
     address: nacos://localhost:8848
     protocol: dubbo
-  #    timeout: 2000
-  #    file: ../registry/cache
-  # dubbo rpc protocol
+    timeout: 2000
   protocol:
     name: dubbo
-    port: -1
-  #    port: 20303
-  #    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
-  #    serialization: hessian2
-  #    corethreads: 2
-  #  # provider side
-#  provider:
-#    timeout: 2000000
-#    accepts: 0
-#    threadpool: cached
-#    threads: 2000
-#    executes: 0
-#    retries: 0
-#    actives: 0
-#    loadbalance: roundrobin
-#    # ??telnet?????
-#    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
-#    filter: -generic,-exception
-#  # consumer side
-#  consumer:
-#    timeout: 2000000
-#    check: false
-#    retries: 0
-#    loadbalance: roundrobin
-#    filter: traceFilter
-#    service:
-#      retries: 0
-#      actives: 20
-#      connections: 2
-
-
-#  # dubbo tracing
-#  tracing:
-#    enabled: true
-#    sampling:
-#      probability: 0.5 # sampling rate, default: 0.1
-#    propagation:
-#      type: W3C
-#    # tracing exporter
-#    tracing-exporter:
-#      otlp-config:
-#        endpoint: http://localhost:4317
-#        timeout: 10s
-#        compression-method: none
+    port: 20303
+    telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
+  # provider side
+  provider:
+    timeout: 20000 # 20s
+    retries: 0
+  # consumer side
+  consumer:
+    timeout: 20000 # 20s
+    retries: 0
+    check: false
