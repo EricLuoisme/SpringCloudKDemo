@@ -24,13 +24,14 @@ dubbo:
     name: dubbo
     port: 20203
     telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
-
   # provider side
   provider:
     timeout: 20000
     retries: 0
+    loadbalance: roundrobin
   # consumer side
   consumer:
     timeout: 20000
     retries: 0
     check: false
+    loadbalance: roundrobin

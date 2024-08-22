@@ -29,8 +29,10 @@ dubbo:
   provider:
     timeout: 20000 # 20s
     retries: 0
+    loadbalance: roundrobin
   # consumer side
   consumer:
     timeout: 20000 # 20s
     retries: 0
     check: false
+    loadbalance: roundrobin
