@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 public class HelloController {
@@ -22,11 +23,20 @@ public class HelloController {
     }
 
 
-    @GetMapping("/async")
-    public CompletableFuture<String> helloAsync() {
+    @GetMapping("/async/future")
+    public CompletableFuture<String> helloAsyncFuture() {
         return CompletableFuture.supplyAsync(
                         () -> demoRpcService.sayHello("HelloAsync"))
                 .thenApply(str -> str + "\n");
+    }
+
+    @GetMapping("/async")
+    public String helloAsync() throws InterruptedException, ExecutionException {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(
+                        () -> demoRpcService.sayHello("HelloAsync"))
+                .thenApply(str -> str + "\n");
+        TimeUnit.SECONDS.sleep(1);
+        return future.get();
     }
 
     @GetMapping("/parallel")

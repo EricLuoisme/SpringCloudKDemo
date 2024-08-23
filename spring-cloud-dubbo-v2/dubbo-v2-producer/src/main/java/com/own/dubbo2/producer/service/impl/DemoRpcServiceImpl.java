@@ -22,7 +22,7 @@ public class DemoRpcServiceImpl implements DemoRpcService {
             sum -= i;
         }
         try {
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
