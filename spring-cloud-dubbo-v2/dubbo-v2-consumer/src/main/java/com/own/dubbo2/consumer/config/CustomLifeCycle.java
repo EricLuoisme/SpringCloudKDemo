@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
  * dubbo.protocol.serialization: hessian2
  * Even the hessian2 is default serialization method, not manually config it could cause later
  * serialization SPI not found
- * - Or else, we need pre-load it like what we do with the loadBalance.class
+ * - Or else, we need preload it like what we do with the LoadBalance
  */
 @Slf4j
 @Configuration
