@@ -15,10 +15,10 @@ public class DemoRpcServiceImpl implements DemoRpcService {
 
         log.debug("receive request with name:{}", name);
         int sum = 0;
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100; i++) {
             sum += i;
         }
-        for (int i = 1000; i >= 0; i--) {
+        for (int i = 100; i >= 0; i--) {
             sum -= i;
         }
         try {
