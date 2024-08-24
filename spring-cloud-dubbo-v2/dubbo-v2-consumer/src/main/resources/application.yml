@@ -25,13 +25,13 @@ dubbo:
     name: dubbo
     port: 20303
     telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
-    serialization: hessian2
+  #    serialization: hessian2
   #    corethreads: 4
   # provider side
   provider:
     timeout: 20000 # 20s
     retries: 0
-    loadbalance: roundrobin
+  #    loadbalance: roundrobin
   #    threads: 2
   #    threadpool: cached
   # consumer side
@@ -39,5 +39,5 @@ dubbo:
     timeout: 20000 # 20s
     retries: 0
     check: false
-    loadbalance: roundrobin
+#    loadbalance: roundrobin
 #    threads: 2
