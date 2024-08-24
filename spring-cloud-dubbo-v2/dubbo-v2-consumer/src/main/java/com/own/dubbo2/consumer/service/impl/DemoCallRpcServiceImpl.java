@@ -24,7 +24,7 @@ public class DemoCallRpcServiceImpl implements DemoCallRpcService {
         );
 
         try {
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(1);
             return future.get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
