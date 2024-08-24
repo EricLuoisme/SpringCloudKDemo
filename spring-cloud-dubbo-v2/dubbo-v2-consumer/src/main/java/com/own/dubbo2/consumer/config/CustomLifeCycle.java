@@ -13,21 +13,20 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class CustomLifeCycle implements SmartLifecycle {
 
-    private ApplicationContext applicationContext;
-
-    @Autowired
-    public void ClassLoaderInspector(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
     @Override
     public void start() {
+
+//        Thread thread = Thread.currentThread();
+//        log.info("[CustomSmartLifeCycle] current thread:{}, thread context class-loader{}",
+//                thread.getName(), thread.getContextClassLoader());
+
         // load dubbo config just after start, eliminate the forkJoinPool's
         // thread with different class loader cause issue
-        log.debug("[CustomSmartLifeCycle] preloading start");
-        ExtensionLoader.getExtensionLoader(LoadBalance.class)
-                .getDefaultExtensionName();
-        log.debug("[CustomSmartLifeCycle] preloading finished");
+//        log.debug("[CustomSmartLifeCycle] preloading start, thread name:{}, thread context classloader:{}",
+//                thread.getName(), thread.getContextClassLoader());
+//        ExtensionLoader.getExtensionLoader(LoadBalance.class)
+//                .getDefaultExtensionName();
+//        log.debug("[CustomSmartLifeCycle] preloading finished");
     }
 
     @Override

@@ -15,23 +15,30 @@ dubbo:
     qos-port: 20202
   # dubbo rpc registry
   registry:
-    #    address: nacos://localhost:8848 # on intellij
-    address: nacos://192.168.215.2:8848 # in docker img
+    address: nacos://localhost:8848 # on intellij
+    #    address: nacos://192.168.215.2:8848 # in docker img
     protocol: dubbo
     timeout: 2000
+    serialization: hessian2
+    corethreads: 4
   # dubbo rpc protocol
   protocol:
     name: dubbo
     port: 20203
     telnet: ls,ps,cd,pwd,trace,count,invoke,select,status,log,help,clear,exit,shutdown
+    threads: 2
+    threadpool: cached
   # provider side
   provider:
     timeout: 20000
     retries: 0
     loadbalance: roundrobin
+    threads: 2
+    threadpool: cached
   # consumer side
   consumer:
     timeout: 20000
     retries: 0
     check: false
     loadbalance: roundrobin
+    threads: 2
