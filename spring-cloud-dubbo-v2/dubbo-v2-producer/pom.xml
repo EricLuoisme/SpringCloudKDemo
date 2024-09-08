@@ -89,6 +89,12 @@
             <artifactId>fastjson2</artifactId>
         </dependency>
 
+        <!-- Dynamic Thread Pool - Dubbo ver -->
+        <dependency>
+            <groupId>org.dromara.dynamictp</groupId>
+            <artifactId>dynamic-tp-spring-boot-starter-adapter-dubbo</artifactId>
+        </dependency>
+
 
     </dependencies>
 
