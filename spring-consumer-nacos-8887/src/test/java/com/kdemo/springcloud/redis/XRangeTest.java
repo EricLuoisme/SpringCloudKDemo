@@ -28,7 +28,6 @@ public class XRangeTest {
     @Qualifier("normal")
     private RedisTemplate<String, Object> redisTemplateObj;
 
-
     @Autowired
     private RedissonClient redissonClient;
 
@@ -72,7 +71,11 @@ public class XRangeTest {
         top10.forEach(
                 x -> System.out.println("first level: " + x.getValue() + " got " + x.getScore())
         );
-    }
 
+        Collection<ScoredEntry<Object>> middle10 = zset.entryRangeReversed(10, 19);
+        middle10.forEach(
+                x -> System.out.println("middle level: " + x.getValue() + " got " + x.getScore())
+        );
+    }
 
 }
