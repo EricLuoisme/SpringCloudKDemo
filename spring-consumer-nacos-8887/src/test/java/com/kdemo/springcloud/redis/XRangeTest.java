@@ -2,6 +2,10 @@ package com.kdemo.springcloud.redis;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.redisson.api.RScoredSortedSet;
+import org.redisson.api.RedissonClient;
+import org.redisson.client.codec.StringCodec;
+import org.redisson.client.protocol.ScoredEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collection;
 import java.util.Random;
 import java.util.Set;
 
@@ -22,6 +27,11 @@ public class XRangeTest {
     @Autowired
     @Qualifier("normal")
     private RedisTemplate<String, Object> redisTemplateObj;
+
+
+    @Autowired
+    private RedissonClient redissonClient;
+
 
     @Test
     public void insertZSet() {
@@ -51,6 +61,17 @@ public class XRangeTest {
         );
 
         System.out.println();
+    }
+
+
+    @Test
+    public void pickOrderFromZSet_Redisson() {
+        RScoredSortedSet<Object> zset = redissonClient.getScoredSortedSet(ZSET_KEY, StringCodec.INSTANCE);
+//        Collection<Object> keyTop10 = zset.valueRangeReversed(0, 9);
+        Collection<ScoredEntry<Object>> top10 = zset.entryRangeReversed(0, 9);
+        top10.forEach(
+                x -> System.out.println("first level: " + x.getValue() + " got " + x.getScore())
+        );
     }
 
 
