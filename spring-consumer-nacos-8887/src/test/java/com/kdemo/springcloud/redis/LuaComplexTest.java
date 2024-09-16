@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,9 +31,9 @@ public class LuaComplexTest {
                     "if not new_score then " +
                     "  return {'error', 'Invalid score format: ' .. new_score_str} " +
                     "end " +
-                    "local exists = redis.call('ZSCORE', key, member) " +
-                    "if exists then " +
-                    "  local current_score = tonumber(exists) " +
+                    "local exists_score = redis.call('ZSCORE', key, member) " +
+                    "if exists_score then " +
+                    "  local current_score = tonumber(exists_score) " +
                     "  if new_score > current_score then " +
                     "    redis.call('ZADD', key, new_score, member) " +
                     "    return {'updated', member, new_score} " +
@@ -52,21 +54,33 @@ public class LuaComplexTest {
     public void emptyAdd() {
         String zSetKey = "leaderboard";
         String key = "user_1995";
-        Double score = 29930.59;
+        Double score = 29930.69;
         Object eval = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
                 Collections.singletonList(zSetKey), key, Double.toString(score));
+
+        Iterator iterator = ((ArrayList) eval).iterator();
         System.out.println();
     }
 
 
     @Data
-    public static class LuaExecution {
+    public static class ExecutionResult {
 
         private String result;
         private String key;
         private Double score;
 
+        /**
+         * Build from lua result
+         *
+         * @param iterator result array
+         * @return script execution result
+         */
+        public static ExecutionResult createFromResult(Iterator<Object> iterator) {
 
+
+            return null;
+        }
     }
 }
