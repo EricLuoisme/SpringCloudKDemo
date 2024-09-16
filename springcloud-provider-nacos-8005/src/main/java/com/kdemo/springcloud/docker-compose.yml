@@ -13,10 +13,11 @@ services:
       - 16370:16370
     environment:
       REDIS_CLUSTER_DYNAMIC_IPS: no
-      REDIS_CLUSTER_ANNOUNCE_IP: 192.168.0.116
+      REDIS_CLUSTER_ANNOUNCE_IP: "redis-node-0"
       REDIS_PORT_NUMBER: 6370
       ALLOW_EMPTY_PASSWORD: yes
-      REDIS_NODES: 192.168.0.116:6370 192.168.0.116:6371 192.168.0.116:6372 192.168.0.116:6373 192.168.0.116:6374 192.168.0.116:6375
+      REDIS_CLUSTER_ANNOUNCE_PORT: 6370
+      REDIS_NODES: "redis-node-0:6370 redis-node-1:6371 redis-node-2:6372 redis-node-3:6373 redis-node-4:6374 redis-node-5:6375"
   redis-node-1:
     container_name: redis-node-1
     <<: *redis-base
@@ -25,10 +26,11 @@ services:
       - 16371:16371
     environment:
       REDIS_CLUSTER_DYNAMIC_IPS: no
-      REDIS_CLUSTER_ANNOUNCE_IP: 192.168.0.116
+      REDIS_CLUSTER_ANNOUNCE_IP: "redis-node-1"
       REDIS_PORT_NUMBER: 6371
       ALLOW_EMPTY_PASSWORD: yes
-      REDIS_NODES: 192.168.0.116:6370 192.168.0.116:6371 192.168.0.116:6372 192.168.0.116:6373 192.168.0.116:6374 192.168.0.116:6375
+      REDIS_CLUSTER_ANNOUNCE_PORT: 6371
+      REDIS_NODES: "redis-node-0:6370 redis-node-1:6371 redis-node-2:6372 redis-node-3:6373 redis-node-4:6374 redis-node-5:6375"
   redis-node-2:
     container_name: redis-node-2
     <<: *redis-base
@@ -37,10 +39,11 @@ services:
       - 16372:16372
     environment:
       REDIS_CLUSTER_DYNAMIC_IPS: no
-      REDIS_CLUSTER_ANNOUNCE_IP: 192.168.0.116
+      REDIS_CLUSTER_ANNOUNCE_IP: "redis-node-2"
       REDIS_PORT_NUMBER: 6372
       ALLOW_EMPTY_PASSWORD: yes
-      REDIS_NODES: 192.168.0.116:6370 192.168.0.116:6371 192.168.0.116:6372 192.168.0.116:6373 192.168.0.116:6374 192.168.0.116:6375
+      REDIS_CLUSTER_ANNOUNCE_PORT: 6372
+      REDIS_NODES: "redis-node-0:6370 redis-node-1:6371 redis-node-2:6372 redis-node-3:6373 redis-node-4:6374 redis-node-5:6375"
   redis-node-3:
     container_name: redis-node-3
     <<: *redis-base
@@ -49,10 +52,11 @@ services:
       - 16373:16373
     environment:
       REDIS_CLUSTER_DYNAMIC_IPS: no
-      REDIS_CLUSTER_ANNOUNCE_IP: 192.168.0.116
+      REDIS_CLUSTER_ANNOUNCE_IP: "redis-node-3"
       REDIS_PORT_NUMBER: 6373
       ALLOW_EMPTY_PASSWORD: yes
-      REDIS_NODES: 192.168.0.116:6370 192.168.0.116:6371 192.168.0.116:6372 192.168.0.116:6373 192.168.0.116:6374 192.168.0.116:6375
+      REDIS_CLUSTER_ANNOUNCE_PORT: 6373
+      REDIS_NODES: "redis-node-0:6370 redis-node-1:6371 redis-node-2:6372 redis-node-3:6373 redis-node-4:6374 redis-node-5:6375"
   redis-node-4:
     container_name: redis-node-4
     <<: *redis-base
@@ -61,10 +65,11 @@ services:
       - 16374:16374
     environment:
       REDIS_CLUSTER_DYNAMIC_IPS: no
-      REDIS_CLUSTER_ANNOUNCE_IP: 192.168.0.116
+      REDIS_CLUSTER_ANNOUNCE_IP: "redis-node-4"
       REDIS_PORT_NUMBER: 6374
       ALLOW_EMPTY_PASSWORD: yes
-      REDIS_NODES: 192.168.0.116:6370 192.168.0.116:6371 192.168.0.116:6372 192.168.0.116:6373 192.168.0.116:6374 192.168.0.116:6375
+      REDIS_CLUSTER_ANNOUNCE_PORT: 6374
+      REDIS_NODES: "redis-node-0:6370 redis-node-1:6371 redis-node-2:6372 redis-node-3:6373 redis-node-4:6374 redis-node-5:6375"
   redis-node-5:
     container_name: redis-node-5
     <<: *redis-base
@@ -73,9 +78,14 @@ services:
       - 16375:16375
     environment:
       REDIS_CLUSTER_DYNAMIC_IPS: no
-      REDIS_CLUSTER_ANNOUNCE_IP: 192.168.0.116
+      REDIS_CLUSTER_ANNOUNCE_IP: "redis-node-5"
       REDIS_PORT_NUMBER: 6375
       ALLOW_EMPTY_PASSWORD: yes
-      REDIS_NODES: 192.168.0.116:6370 192.168.0.116:6371 192.168.0.116:6372 192.168.0.116:6373 192.168.0.116:6374 192.168.0.116:6375
+      REDIS_CLUSTER_ANNOUNCE_PORT: 6375
+      REDIS_NODES: "redis-node-0:6370 redis-node-1:6371 redis-node-2:6372 redis-node-3:6373 redis-node-4:6374 redis-node-5:6375"
       REDIS_CLUSTER_REPLICAS: 1
       REDIS_CLUSTER_CREATOR: yes
+
+networks:
+  default:
+    driver: bridge
