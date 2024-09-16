@@ -17,6 +17,7 @@
         <module>dubbo-v2-interface</module>
         <module>dubbo-v2-producer</module>
         <module>dubbo-v2-consumer</module>
+        <module>dubbo-v2-redis-cluster-consumer</module>
     </modules>
 
     <packaging>pom</packaging>

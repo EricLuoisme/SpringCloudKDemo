@@ -1,0 +1,23 @@
+server:
+  port: 8887
+
+spring:
+  application:
+    name: dubbo-v2-redis-cluster-consumer
+  # Nacos配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  # Redis - Config
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
