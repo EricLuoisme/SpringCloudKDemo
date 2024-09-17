@@ -1,6 +1,11 @@
 package com.kdemo.springcloud.redis;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RScript;
@@ -12,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,41 +50,63 @@ public class LuaComplexTest {
                     "  return {'added', member, string.format(\"%.6f\", new_score)} " +
                     "end";
 
+    private static final ObjectMapper OM = new ObjectMapper();
+
 
     @Autowired
     private RedissonClient redissonClient;
 
 
     @Test
-    public void emptyAdd() {
+    public void emptyAdd() throws JsonProcessingException {
         String zSetKey = "leaderboard";
         String key = "user_1995";
         Double score = 29930.89;
-        Object eval = redissonClient.getScript(StringCodec.INSTANCE).eval(
+        // execution
+        ArrayList<Object> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
                 Collections.singletonList(zSetKey), key, Double.toString(score));
-
-        System.out.println();
+        // convert
+        ScriptResult result = ScriptResult.createFromRawResult(rawResult, key, score);
+        System.out.println(
+                OM.writerWithDefaultPrettyPrinter().writeValueAsString(result));
     }
 
 
+
+
+
+
     @Data
-    public static class ExecutionResult {
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ScriptResult {
 
         private String result;
         private String key;
         private Double score;
 
         /**
-         * Build from lua result
+         * Build from lua execution result
          *
-         * @param iterator result array
-         * @return script execution result
+         * @param scriptResult script result (result, key, score)
+         * @param key          key
+         * @param inputScore   calling score
+         * @return script compact result
          */
-        public static ExecutionResult createFromResult(String execResult, String key, Double score) {
-
-
-            return null;
+        public static ScriptResult createFromRawResult(List<Object> scriptResult, String key, Double inputScore) {
+            if (scriptResult.isEmpty()) {
+                throw new RuntimeException("Exception during lua execution");
+            }
+            // switch
+            String result = scriptResult.get(0).toString();
+            return switch (result) {
+                case "added", "updated" -> ScriptResult.builder().result(result).key(key).score(inputScore).build();
+                case "unchanged" ->
+                        ScriptResult.builder().result(result).key(key).score((Double) scriptResult.get(2)).build();
+                default -> throw new RuntimeException("Exception during lua execution");
+            };
         }
     }
 }
