@@ -9,52 +9,28 @@ import lombok.NoArgsConstructor;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
+import org.redisson.api.RScoredSortedSet;
 import org.redisson.api.RScript;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
+import org.redisson.client.protocol.ScoredEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.time.Instant;
+import java.util.*;
 
+import static com.kdemo.springcloud.redis.script.LuaScripts.GET_COMPARE_SET_SCRIPT;
 import static org.junit.Assert.assertEquals;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class LuaComplexTest {
 
-    // 1. retrieve from ZSet
-    // 1.1 if ZSet is empty, add the value, stop
-    // 2. ZSet is not empty, get the cached score
-    // 2.1 if the cached score is greater/equal, stop
-    // 3. Update ZSet's score with this key
-    private static final String GET_COMPARE_SET_SCRIPT =
-            "local key = KEYS[1] " +
-                    "local member = ARGV[1] " +
-                    "local new_score_str = ARGV[2] " +
-                    "local new_score = tonumber(new_score_str) " +
-                    "if not new_score then " +
-                    "  return {'error', 'Invalid score format: ' .. new_score_str} " +
-                    "end " +
-                    "local exists_score = redis.call('ZSCORE', key, member) " +
-                    "if exists_score then " +
-                    "  local current_score = tonumber(exists_score) " +
-                    "  if new_score > current_score then " +
-                    "    redis.call('ZADD', key, new_score, member) " +
-                    "    return {'updated', member, string.format(\"%.6f\", new_score)} " +
-                    "  else " +
-                    "    return {'unchanged', member, string.format(\"%.6f\", current_score)} " +
-                    "  end " +
-                    "else " +
-                    "  redis.call('ZADD', key, new_score, member) " +
-                    "  return {'added', member, string.format(\"%.6f\", new_score)} " +
-                    "end";
 
     private static final ObjectMapper OM = new ObjectMapper();
 
@@ -62,6 +38,34 @@ public class LuaComplexTest {
     @Autowired
     private RedissonClient redissonClient;
 
+
+    @Test
+    public void initLeaderboard() {
+
+        String zSetKey = "leaderboard";
+
+        Random random = new Random();
+        RScoredSortedSet<Object> zSet = redissonClient.getScoredSortedSet(zSetKey, StringCodec.INSTANCE);
+        for (int i = 0; i < 300; i++) {
+            String user = "user_" + i;
+            // val: Integer part (score + timeStamp remain digits), Decimal part (timeStamp last 5 digits)
+
+            // score part (1000 - 3w)
+            int score = 1000 + random.nextInt(29001);
+
+            // timestamp part (only remain to Second), add simulation for different insert time
+            String timestampStr = String.valueOf((Instant.now().toEpochMilli() + random.nextInt(100)) / 1000);
+            long integerPart = Long.parseLong(timestampStr.substring(0, timestampStr.length() - 5));
+            long decimalPart = Long.parseLong(timestampStr.substring(timestampStr.length() - 5));
+            double cacheScore = score * 100000L + integerPart + (decimalPart / 100000.0);
+
+            // insert
+            zSet.add(cacheScore, user);
+            System.out.println("user: " + user + ", score: " + cacheScore);
+        }
+
+        System.out.println("Finished 300 user settle into Redis ZSET: " + zSetKey);
+    }
 
     @Test
     public void emptyAdd() throws JsonProcessingException {
