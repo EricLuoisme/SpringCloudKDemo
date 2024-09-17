@@ -36,13 +36,13 @@ public class LuaComplexTest {
                     "  local current_score = tonumber(exists_score) " +
                     "  if new_score > current_score then " +
                     "    redis.call('ZADD', key, new_score, member) " +
-                    "    return {'updated', member, new_score} " +
+                    "    return {'updated', member, string.format(\"%.6f\", new_score)} " +
                     "  else " +
-                    "    return {'unchanged', member, current_score} " +
+                    "    return {'unchanged', member, string.format(\"%.6f\", current_score)} " +
                     "  end " +
                     "else " +
                     "  redis.call('ZADD', key, new_score, member) " +
-                    "  return {'added', member, new_score} " +
+                    "  return {'added', member, string.format(\"%.6f\", new_score)} " +
                     "end";
 
 
@@ -54,12 +54,11 @@ public class LuaComplexTest {
     public void emptyAdd() {
         String zSetKey = "leaderboard";
         String key = "user_1995";
-        Double score = 29930.69;
+        Double score = 29930.89;
         Object eval = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
                 Collections.singletonList(zSetKey), key, Double.toString(score));
 
-        Iterator iterator = ((ArrayList) eval).iterator();
         System.out.println();
     }
 
@@ -77,7 +76,7 @@ public class LuaComplexTest {
          * @param iterator result array
          * @return script execution result
          */
-        public static ExecutionResult createFromResult(Iterator<Object> iterator) {
+        public static ExecutionResult createFromResult(String execResult, String key, Double score) {
 
 
             return null;
