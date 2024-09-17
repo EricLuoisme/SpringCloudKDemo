@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.redisson.api.RScript;
 import org.redisson.api.RedissonClient;
@@ -18,6 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -61,26 +64,68 @@ public class LuaComplexTest {
     public void emptyAdd() throws JsonProcessingException {
         String zSetKey = "leaderboard";
         String key = "user_1995";
-        Double score = 29930.89;
+        double score = 29930.89;
+
         // execution
         ArrayList<Object> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
                 Collections.singletonList(zSetKey), key, Double.toString(score));
+
         // convert
         ScriptResult result = ScriptResult.createFromRawResult(rawResult, key, score);
         System.out.println(
                 OM.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+
+        // check
+        assertEquals("added", result.getResult());
     }
 
+    @Test
+    public void compareDrop() throws JsonProcessingException {
+        String zSetKey = "leaderboard";
+        String key = "user_1995";
+        double score = 29930.88;
 
+        // execution
+        ArrayList<Object> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+                RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
+                Collections.singletonList(zSetKey), key, Double.toString(score));
 
+        // convert
+        ScriptResult result = ScriptResult.createFromRawResult(rawResult, key, score);
+        System.out.println(
+                OM.writerWithDefaultPrettyPrinter().writeValueAsString(result));
 
+        // check
+        assertEquals("unchanged", result.getResult());
+    }
+
+    @Test
+    public void compareUpdate() throws JsonProcessingException {
+        String zSetKey = "leaderboard";
+        String key = "user_1995";
+        double score = 29930.89123;
+
+        // execution
+        ArrayList<Object> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+                RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
+                Collections.singletonList(zSetKey), key, Double.toString(score));
+
+        // convert
+        ScriptResult result = ScriptResult.createFromRawResult(rawResult, key, score);
+        System.out.println(
+                OM.writerWithDefaultPrettyPrinter().writeValueAsString(result));
+
+        // check
+        assertEquals("updated", result.getResult());
+    }
 
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+
     public static class ScriptResult {
 
         private String result;
@@ -109,4 +154,7 @@ public class LuaComplexTest {
             };
         }
     }
+
+
+
 }
