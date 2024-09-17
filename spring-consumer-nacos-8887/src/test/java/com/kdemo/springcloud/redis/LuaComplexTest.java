@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.redisson.api.RScript;
@@ -67,7 +70,7 @@ public class LuaComplexTest {
         double score = 29930.89;
 
         // execution
-        ArrayList<Object> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+        ArrayList<String> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
                 Collections.singletonList(zSetKey), key, Double.toString(score));
 
@@ -87,7 +90,7 @@ public class LuaComplexTest {
         double score = 29930.88;
 
         // execution
-        ArrayList<Object> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+        ArrayList<String> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
                 Collections.singletonList(zSetKey), key, Double.toString(score));
 
@@ -107,7 +110,7 @@ public class LuaComplexTest {
         double score = 29930.89123;
 
         // execution
-        ArrayList<Object> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+        ArrayList<String> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
                 Collections.singletonList(zSetKey), key, Double.toString(score));
 
@@ -140,21 +143,30 @@ public class LuaComplexTest {
          * @param inputScore   calling score
          * @return script compact result
          */
-        public static ScriptResult createFromRawResult(List<Object> scriptResult, String key, Double inputScore) {
+        public static ScriptResult createFromRawResult(List<String> scriptResult, String key, Double inputScore) {
             if (scriptResult.isEmpty()) {
                 throw new RuntimeException("Exception during lua execution");
             }
             // switch
-            String result = scriptResult.get(0).toString();
+            String result = scriptResult.get(0);
             return switch (result) {
                 case "added", "updated" -> ScriptResult.builder().result(result).key(key).score(inputScore).build();
                 case "unchanged" ->
-                        ScriptResult.builder().result(result).key(key).score((Double) scriptResult.get(2)).build();
+                        ScriptResult.builder().result(result).key(key).score(Double.parseDouble(scriptResult.get(2))).build();
                 default -> throw new RuntimeException("Exception during lua execution");
             };
         }
     }
 
 
+    @Before
+    public void before() {
+        System.out.println("\n\n\n");
+    }
+
+    @After
+    public void after() {
+        System.out.println("\n\n\n");
+    }
 
 }
