@@ -11,6 +11,7 @@ public class LuaScripts {
             "local key = KEYS[1] " +
                     "local member = ARGV[1] " +
                     "local new_score_str = ARGV[2] " +
+                    "local max_size = tonumber(ARGV[3]) " +
                     "local new_score = tonumber(new_score_str) " +
                     "if not new_score then " +
                     "  return {'error', 'Invalid score format: ' .. new_score_str} " +
@@ -26,6 +27,10 @@ public class LuaScripts {
                     "  end " +
                     "else " +
                     "  redis.call('ZADD', key, new_score, member) " +
+                    "  local current_size = redis.call('ZCARD', zset_key) " +
+                    "  if current_size > max_size then " +
+                    "    redis.call('ZREMRANGEBYRANK', zset_key, 0, current_size - max_size - 1) " +
+                    "  end " +
                     "  return {'added', member, string.format(\"%.6f\", new_score)} " +
                     "end";
 

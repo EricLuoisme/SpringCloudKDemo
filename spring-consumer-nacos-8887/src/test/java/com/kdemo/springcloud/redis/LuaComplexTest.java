@@ -14,10 +14,8 @@ import org.redisson.api.RScoredSortedSet;
 import org.redisson.api.RScript;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
-import org.redisson.client.protocol.ScoredEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
@@ -33,6 +31,8 @@ public class LuaComplexTest {
 
 
     private static final ObjectMapper OM = new ObjectMapper();
+
+    private static final Integer LEADERBOARD_SIZE = 100;
 
 
     @Autowired
@@ -76,7 +76,7 @@ public class LuaComplexTest {
         // execution
         ArrayList<String> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
-                Collections.singletonList(zSetKey), key, Double.toString(score));
+                Collections.singletonList(zSetKey), key, Double.toString(score), LEADERBOARD_SIZE);
 
         // convert
         ScriptResult result = ScriptResult.createFromRawResult(rawResult, key, score);
@@ -96,7 +96,7 @@ public class LuaComplexTest {
         // execution
         ArrayList<String> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
-                Collections.singletonList(zSetKey), key, Double.toString(score));
+                Collections.singletonList(zSetKey), key, Double.toString(score), LEADERBOARD_SIZE);
 
         // convert
         ScriptResult result = ScriptResult.createFromRawResult(rawResult, key, score);
@@ -116,7 +116,7 @@ public class LuaComplexTest {
         // execution
         ArrayList<String> rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
                 RScript.Mode.READ_WRITE, GET_COMPARE_SET_SCRIPT, RScript.ReturnType.MULTI,
-                Collections.singletonList(zSetKey), key, Double.toString(score));
+                Collections.singletonList(zSetKey), key, Double.toString(score), LEADERBOARD_SIZE);
 
         // convert
         ScriptResult result = ScriptResult.createFromRawResult(rawResult, key, score);
