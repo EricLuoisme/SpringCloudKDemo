@@ -55,6 +55,8 @@ public class LuaComplexTest {
 
             // timestamp part (only remain to Second), add simulation for different insert time
             String timestampStr = String.valueOf((Instant.now().toEpochMilli() + random.nextInt(100)) / 1000);
+
+
             long integerPart = Long.parseLong(timestampStr.substring(0, timestampStr.length() - 5));
             long decimalPart = Long.parseLong(timestampStr.substring(timestampStr.length() - 5));
             double cacheScore = score * 100000L + integerPart + (decimalPart / 100000.0);
