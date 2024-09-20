@@ -5,9 +5,9 @@ import com.kdemo.springcloud.score.ScoreConvertor;
 import java.time.Instant;
 
 /**
- * First in ordered first convertor
+ * First in rank first convertor
  */
-public class FIOFConvertor implements ScoreConvertor {
+public class FIRFConvertor implements ScoreConvertor {
 
     private static final long BIG_NUM = Integer.MAX_VALUE * 10L;
 
@@ -34,6 +34,8 @@ public class FIOFConvertor implements ScoreConvertor {
 
     @Override
     public Integer convertFromZSetScore(Double cacheScore) {
-        return 0;
+        // just cut the decimal part
+        String[] split = cacheScore.toString().split("\\.");
+        return Integer.parseInt(split[0]);
     }
 }

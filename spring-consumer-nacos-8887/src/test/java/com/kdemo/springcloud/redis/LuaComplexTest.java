@@ -2,6 +2,7 @@ package com.kdemo.springcloud.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kdemo.springcloud.score.convertor.FIRFConvertor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +35,8 @@ public class LuaComplexTest {
 
     private static final Integer LEADERBOARD_SIZE = 100;
 
+    private static final FIRFConvertor CONVERTOR = new FIRFConvertor();
+
 
     @Autowired
     private RedissonClient redissonClient;
@@ -52,14 +55,7 @@ public class LuaComplexTest {
 
             // score part (1000 - 3w)
             int score = 1000 + random.nextInt(29001);
-
-            // timestamp part (only remain to Second), add simulation for different insert time
-            String timestampStr = String.valueOf((Instant.now().toEpochMilli() + random.nextInt(100)) / 1000);
-
-
-            long integerPart = Long.parseLong(timestampStr.substring(0, timestampStr.length() - 5));
-            long decimalPart = Long.parseLong(timestampStr.substring(timestampStr.length() - 5));
-            double cacheScore = score * 100000L + integerPart + (decimalPart / 100000.0);
+            Double cacheScore = CONVERTOR.convertToZSetScore(score);
 
             // insert
             zSet.add(cacheScore, user);
