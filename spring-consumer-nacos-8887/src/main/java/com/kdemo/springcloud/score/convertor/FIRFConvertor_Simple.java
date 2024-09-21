@@ -6,8 +6,10 @@ import java.time.Instant;
 
 /**
  * First in rank first convertor
+ * Simple version, this only workable for small number of external Score
+ *
  */
-public class FIRFConvertor implements ScoreConvertor {
+public class FIRFConvertor_Simple implements ScoreConvertor {
 
     private static final long BIG_NUM = Integer.MAX_VALUE * 10L;
 

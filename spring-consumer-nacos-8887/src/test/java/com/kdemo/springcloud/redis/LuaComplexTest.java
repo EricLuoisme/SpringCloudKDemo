@@ -2,7 +2,7 @@ package com.kdemo.springcloud.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdemo.springcloud.score.convertor.FIRFConvertor;
+import com.kdemo.springcloud.score.convertor.FIRFConvertor_Simple;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.Instant;
 import java.util.*;
 
 import static com.kdemo.springcloud.redis.script.LuaScripts.GET_COMPARE_SET_SCRIPT;
@@ -35,7 +34,7 @@ public class LuaComplexTest {
 
     private static final Integer LEADERBOARD_SIZE = 100;
 
-    private static final FIRFConvertor CONVERTOR = new FIRFConvertor();
+    private static final FIRFConvertor_Simple CONVERTOR = new FIRFConvertor_Simple();
 
 
     @Autowired
