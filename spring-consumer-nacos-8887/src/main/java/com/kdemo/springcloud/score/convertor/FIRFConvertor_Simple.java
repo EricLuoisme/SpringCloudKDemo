@@ -7,7 +7,6 @@ import java.time.Instant;
 /**
  * First in rank first convertor
  * Simple version, this only workable for small number of external Score
- *
  */
 public class FIRFConvertor_Simple implements ScoreConvertor {
 
@@ -17,10 +16,10 @@ public class FIRFConvertor_Simple implements ScoreConvertor {
 
 
     @Override
-    public Double convertToZSetScore(Integer externalScore) {
+    public Double convertToZSetScore(Long externalScore, Long timestamp) {
 
         // fix big num - current timestamp
-        long curTimestampInSec = Instant.now().toEpochMilli() / 1000;
+        long curTimestampInSec = timestamp / 1000;
         long decreaseNum = BIG_NUM - curTimestampInSec;
 
         // use string act as divide, add 0 to front
@@ -35,9 +34,9 @@ public class FIRFConvertor_Simple implements ScoreConvertor {
     }
 
     @Override
-    public Integer convertFromZSetScore(Double cacheScore) {
+    public Long convertFromZSetScore(Double cacheScore) {
         // just cut the decimal part
         String[] split = cacheScore.toString().split("\\.");
-        return Integer.parseInt(split[0]);
+        return Long.parseLong(split[0]);
     }
 }

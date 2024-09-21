@@ -2,6 +2,7 @@ package com.kdemo.springcloud.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kdemo.springcloud.score.convertor.FIRFConvertor;
 import com.kdemo.springcloud.score.convertor.FIRFConvertor_Simple;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.Instant;
 import java.util.*;
 
 import static com.kdemo.springcloud.redis.script.LuaScripts.GET_COMPARE_SET_SCRIPT;
@@ -32,9 +34,11 @@ public class LuaComplexTest {
 
     private static final ObjectMapper OM = new ObjectMapper();
 
-    private static final Integer LEADERBOARD_SIZE = 100;
+    private static final FIRFConvertor CONVERTOR = new FIRFConvertor();
 
-    private static final FIRFConvertor_Simple CONVERTOR = new FIRFConvertor_Simple();
+    private static final int LEADERBOARD_SIZE = 100;
+
+    private static final long BASE_TIMESTAMP = Instant.now().toEpochMilli();
 
 
     @Autowired
@@ -53,12 +57,13 @@ public class LuaComplexTest {
             // val: Integer part (score + timeStamp remain digits), Decimal part (timeStamp last 5 digits)
 
             // score part (1000 - 3w)
-            int score = 1000 + random.nextInt(29001);
-            Double cacheScore = CONVERTOR.convertToZSetScore(score);
+            long score = 1000 + random.nextInt(29001);
+            Double cacheScore = CONVERTOR.convertToZSetScore(
+                    score, BASE_TIMESTAMP + random.nextInt(1000));
 
             // insert
             zSet.add(cacheScore, user);
-            System.out.println("user: " + user + ", score: " + cacheScore);
+            System.out.printf("user:%s, score:%d, cachedScore:%f%n", user, score, cacheScore);
         }
 
         System.out.println("Finished 300 user settle into Redis ZSET: " + zSetKey);
