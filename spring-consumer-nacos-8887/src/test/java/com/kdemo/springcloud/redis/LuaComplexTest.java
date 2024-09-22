@@ -3,7 +3,6 @@ package com.kdemo.springcloud.redis;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kdemo.springcloud.score.convertor.FIRFConvertor;
-import com.kdemo.springcloud.score.convertor.FIRFConvertor_Simple;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -128,6 +127,19 @@ public class LuaComplexTest {
         // check
         assertEquals("updated", result.getResult());
     }
+
+
+    @Test
+    public void test() {
+
+    }
+
+
+
+
+
+
+
 
 
     @Data
