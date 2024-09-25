@@ -34,5 +34,24 @@ public class LuaScripts {
                     "  return {'added', member, string.format(\"%.6f\", new_score)} " +
                     "end";
 
+    /**
+     * Simple add GT script
+     */
+    public static final String Z_ADD_GT_SCRIPT = "return redis.call('ZADD', KEYS[1], 'GT', ARGV[2], ARGV[1]) ";
 
+
+    /**
+     * Script for re-arrange the zSet to maximum size
+     */
+    public static final String REMOVE_MEMBER_OUT_RANGE_SCRIPT =
+            "local key = KEYS[1] " +
+                    "local max_size = tonumber(ARGV[1]) " +
+                    "local current_size = redis.call('ZCARD', key) " +
+                    "if current_size > max_size then " +
+                    "    local num_removed = redis.call('ZREMRANGEBYRANK', key, 0, current_size - max_size - 1) " +
+                    "    return num_removed " +
+                    "else " +
+                    "    return 0 " +
+                    "end";
 }
+
