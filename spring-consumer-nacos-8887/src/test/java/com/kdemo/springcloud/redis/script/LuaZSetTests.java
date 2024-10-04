@@ -23,8 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Instant;
 import java.util.*;
 
-import static com.kdemo.springcloud.scripts.LuaZSetOps.GET_COMPARE_SET_SCRIPT;
-import static com.kdemo.springcloud.scripts.LuaZSetOps.Z_ADD_GT_SCRIPT;
+import static com.kdemo.springcloud.scripts.LuaZSetOps.*;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -41,7 +40,7 @@ public class LuaZSetTests {
 
     private static final FIRFConvertor CONVERTOR = new FIRFConvertor();
 
-    private static final int LEADERBOARD_SIZE = 100;
+    private static final int LEADERBOARD_SIZE = 299;
 
     private static final long BASE_TIMESTAMP = Instant.now().toEpochMilli();
 
@@ -104,7 +103,23 @@ public class LuaZSetTests {
     }
 
 
+    /**
+     * For zSet rearrange operation
+     * 针对ZSet进行重新size裁剪, 维护一个固定数量的ZSet
+     */
     @Test
+    public void reverseArrangeZSet() {
+        // single insert with GT
+        Object rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+                RScript.Mode.READ_WRITE, REMOVE_MEMBER_OUT_RANGE_SCRIPT, RScript.ReturnType.INTEGER,
+                Collections.singletonList(BOARD_KEY), LEADERBOARD_SIZE);
+        log.info("[reverseArrangeZSet] raw result: {}", rawResult);
+    }
+
+
+    /* Plain old combine-script for single key logic, use ZSet GT instead */
+    @Test
+    @Deprecated
     public void emptyAdd() throws JsonProcessingException {
         String zSetKey = "leaderboard";
         String key = "user_1995";
@@ -125,6 +140,7 @@ public class LuaZSetTests {
     }
 
     @Test
+    @Deprecated
     public void compareDrop() throws JsonProcessingException {
         String zSetKey = "leaderboard";
         String key = "user_1995";
@@ -145,6 +161,7 @@ public class LuaZSetTests {
     }
 
     @Test
+    @Deprecated
     public void compareUpdate() throws JsonProcessingException {
         String zSetKey = "leaderboard";
         String key = "user_1995";
@@ -162,12 +179,6 @@ public class LuaZSetTests {
 
         // check
         assertEquals("updated", result.getResult());
-    }
-
-
-    @Test
-    public void test() {
-
     }
 
 
