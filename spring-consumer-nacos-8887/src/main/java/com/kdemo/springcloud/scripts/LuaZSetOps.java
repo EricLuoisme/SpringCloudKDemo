@@ -1,12 +1,26 @@
 package com.kdemo.springcloud.scripts;
 
+/**
+ * Lua script for Redis ZSet operations
+ */
 public class LuaZSetOps {
 
-
     /**
-     * Simple add GT script
+     * Simple ZAdd GT script
      */
     public static final String Z_ADD_GT_SCRIPT = "return redis.call('ZADD', KEYS[1], 'GT', ARGV[2], ARGV[1]) ";
+
+    /**
+     * (Batch) ZAdd GT script
+     */
+    public static final String BATCH_Z_ADD_GT_SCRIPT =
+            "local zset_key = KEYS[1] " +
+                    "for i = 1, #ARGV, 2 do " +
+                    "    local member = ARGV[i] " +
+                    "    local score = tonumber(ARGV[i + 1]) " +
+                    "    redis.call('ZADD', zset_key, 'GT', score, member) " +
+                    "end " +
+                    "return 'OK'";
 
 
     /**
@@ -24,12 +38,14 @@ public class LuaZSetOps {
                     "end";
 
 
-    // should use ZADD GT rather then below logic
-    // 1. retrieve from ZSet
-    // 1.1 if ZSet is empty, add the value, stop
-    // 2. ZSet is not empty, get the cached score
-    // 2.1 if the cached score is greater/equal, stop
-    // 3. Update ZSet's score with this key
+    /**
+     * Deprecated, should use ZADD GT rather then below logic
+     * 1. retrieve from ZSet
+     * 1.1 if ZSet is empty, add the value, stop
+     * 2. ZSet is not empty, get the cached score
+     * 2.1 if the cached score is greater/equal, stop
+     * 3. Update ZSet's score with this key
+     */
     public static final String GET_COMPARE_SET_SCRIPT =
             "local key = KEYS[1] " +
                     "local member = ARGV[1] " +
