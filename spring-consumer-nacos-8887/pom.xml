@@ -91,6 +91,13 @@
             <artifactId>simpleclient</artifactId>
         </dependency>
 
+        <!-- Caffeine 本地缓存 -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
         <!-- Redis Cache -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
