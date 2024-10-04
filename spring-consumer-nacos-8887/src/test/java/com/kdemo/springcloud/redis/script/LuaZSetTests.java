@@ -104,6 +104,39 @@ public class LuaZSetTests {
 
 
     /**
+     * For batch values adding into ZSet -> with GT param
+     * 针对多值插入ZSet, 批量插入 (not care size & re-arrange)
+     */
+    @Test
+    public void batchZSetGTAdd() {
+
+        List<String> batchArgs = new LinkedList<>();
+        Random random = new Random();
+
+        // args init
+        for (int i = 0; i < 2000; i++) {
+            String user = "user_" + i;
+
+            // score part (1000 - 3w)
+            long score = 1000 + random.nextInt(29001);
+            double cacheScore = CONVERTOR.convertToZSetScore(
+                    score, Instant.now().toEpochMilli() - BASE_TIMESTAMP + random.nextInt(1000));
+
+            // args
+            batchArgs.add(user);
+            batchArgs.add(Double.toString(cacheScore));
+        }
+
+        // single execution for batch operation
+        Object rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+                RScript.Mode.READ_WRITE, BATCH_Z_ADD_GT_SCRIPT, RScript.ReturnType.MULTI,
+                Collections.singletonList(BOARD_KEY), batchArgs.toArray(new String[0]));
+        log.info("\n\n\n[LuaZSetTests][batchZSetGTAdd] finished batch insertion with raw result: {}\n\n\n",
+                rawResult);
+    }
+
+
+    /**
      * For zSet rearrange operation
      * 针对ZSet进行重新size裁剪, 维护一个固定数量的ZSet
      */
