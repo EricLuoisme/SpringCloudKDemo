@@ -11,6 +11,7 @@ spring:
         server-addr: 127.0.0.1:8848
   # Redis - Config
   redis:
+    # single
     host: 127.0.0.1
     port: 6379
     database: 0

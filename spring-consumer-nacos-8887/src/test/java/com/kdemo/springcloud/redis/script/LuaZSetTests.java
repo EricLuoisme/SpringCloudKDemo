@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,16 +23,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Instant;
 import java.util.*;
 
-import static com.kdemo.springcloud.redis.script.LuaScripts.GET_COMPARE_SET_SCRIPT;
+import static com.kdemo.springcloud.scripts.LuaZSetOps.GET_COMPARE_SET_SCRIPT;
+import static com.kdemo.springcloud.scripts.LuaZSetOps.Z_ADD_GT_SCRIPT;
 import static org.junit.Assert.assertEquals;
 
 /**
  * Batch-Ops & Expire & Complex
  */
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class LuaComplexTests {
+public class LuaZSetTests {
 
+    private static final String BOARD_KEY = "leaderboard";
 
     private static final ObjectMapper OM = new ObjectMapper();
 
@@ -69,6 +73,36 @@ public class LuaComplexTests {
 
         System.out.println("Finished 300 user settle into Redis ZSET: " + zSetKey);
     }
+
+    /**
+     * For single value adding into ZSet -> basic redis ZADD with GT param suit the logic
+     * 针对当个值在ZSet的插入, 直接使用ZADD GT可以自动比较更大时才更新
+     */
+    @Test
+    public void singleZSetGTAdd() {
+
+        String member = "user_1995";
+        long score = 10010L;
+
+        // score conversion
+        double zSetScore = CONVERTOR.convertToZSetScore(
+                score, Instant.now().toEpochMilli() - BASE_TIMESTAMP);
+        log.info("\n\n\n[singleZSetGTAdd] for member:{}, socre:{}, cacheScore:{}",
+                member, score, String.format("%.1f", zSetScore));
+
+        // single insert with GT
+        Object rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+                RScript.Mode.READ_WRITE, Z_ADD_GT_SCRIPT, RScript.ReturnType.INTEGER,
+                Collections.singletonList(BOARD_KEY), member, Double.toString(zSetScore));
+        log.info("[singleZSetGTAdd] raw result:{}", rawResult);
+
+        // retrieve to check
+        Double retrieveScore = redissonClient.getScoredSortedSet(BOARD_KEY, StringCodec.INSTANCE)
+                .getScore(member);
+        Long reformScore = CONVERTOR.convertFromZSetScore(retrieveScore);
+        log.info("[singleZSetGTAdd] reform score:{}\n\n\n", reformScore);
+    }
+
 
     @Test
     public void emptyAdd() throws JsonProcessingException {
