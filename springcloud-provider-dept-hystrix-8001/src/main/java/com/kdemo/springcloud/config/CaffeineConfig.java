@@ -2,7 +2,6 @@ package com.kdemo.springcloud.config;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import com.kdemo.springcloud.pojo.Department;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
@@ -40,6 +39,15 @@ public class CaffeineConfig {
                 .build();
     }
 
+    /**
+     * How to use?
+     * 当替换 Spring-CacheManager 时, 意味着替换spring-boot-starter-cache的默认缓存管理, 可以使用
+     *
+     * @Cacheable: 相同入参的结果会被缓存
+     * @CachePut: 转门put一个结果到缓存
+     * @CacheEvict: 清除相关key的缓存
+     * @Caching: 将上面多个注解进行组合操作
+     */
     @Bean
     public CacheManager cacheManagerBean() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
