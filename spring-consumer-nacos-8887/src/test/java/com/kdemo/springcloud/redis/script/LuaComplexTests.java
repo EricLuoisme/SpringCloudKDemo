@@ -1,4 +1,4 @@
-package com.kdemo.springcloud.redis;
+package com.kdemo.springcloud.redis.script;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,10 +25,12 @@ import java.util.*;
 import static com.kdemo.springcloud.redis.script.LuaScripts.GET_COMPARE_SET_SCRIPT;
 import static org.junit.Assert.assertEquals;
 
-
+/**
+ * Batch-Ops & Expire & Complex
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class LuaComplexTest {
+public class LuaComplexTests {
 
 
     private static final ObjectMapper OM = new ObjectMapper();
@@ -133,13 +135,6 @@ public class LuaComplexTest {
     public void test() {
 
     }
-
-
-
-
-
-
-
 
 
     @Data
