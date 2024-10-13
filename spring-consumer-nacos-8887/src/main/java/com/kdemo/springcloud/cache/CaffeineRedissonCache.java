@@ -65,7 +65,8 @@ public class CaffeineRedissonCache {
         // 2. value not present -> 2.1) load from db, 2.2) add into redis cache
         GameInfoDto gameInfo = loadFromDb(key);
         long ttl = gameInfo.isNotInSeason() ? 10 : 6 * 10;
-        gameInfoStrMap.put(key, JSON.toJSONString(gameInfo), ttl, TimeUnit.MINUTES);
+        // fastPut
+        gameInfoStrMap.fastPut(key, JSON.toJSONString(gameInfo), ttl, TimeUnit.MINUTES);
         if (gameInfo.isNotInSeason()) {
             log.warn("[CaffeineRedissonCache][loadFromDb] no game in this season");
         }
