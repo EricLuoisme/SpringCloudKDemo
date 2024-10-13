@@ -12,7 +12,6 @@ import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 import org.springframework.util.StringUtils;
 
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,34 +42,33 @@ public class CaffeineRedissonCache {
      */
     @NonNull
     public GameInfoDto getActivatedGameInfo() {
+        // local cache check, use Caffeine's concurrent Hash map to make sure
+        // only one thread would call loadGameInfo, others wait
+        return caffieneCache.get(CUR_GAME, this::loadGameInfo);
+    }
 
-        // local cache check
-        GameInfoDto gameInfo = caffieneCache.getIfPresent(CUR_GAME);
-        if (Objects.isNull(gameInfo)) {
-            // check from redis (here must use String as value)
-            RMapCache<String, String> gameInfoStrMap = redissonClient.getMapCache(REDIS_KEY, StringCodec.INSTANCE);
-            String gameInfoStr = gameInfoStrMap.get(CUR_GAME);
-            if (StringUtils.hasLength(gameInfoStr)) {
-                log.debug("[CaffeineRedissonCache][loadFromDb] load from Redisson cache");
-                // value present -> 1) deserialized it, 2) add it into local cache
-                gameInfo = JSON.parseObject(gameInfoStr, GameInfoDto.class);
-                caffieneCache.put(CUR_GAME, gameInfo);
-            } else {
-                // value not present -> 1) load from db, 2) add into redis cache & 3) add into local cache
-                gameInfo = loadFromDb(CUR_GAME);
-                if (gameInfo.isNotInSeason()) {
-                    log.warn("[CaffeineRedissonCache][loadFromDb] no game in this season");
-                    // not in season, with shorter ttl\
-                    gameInfoStrMap.put(CUR_GAME, JSON.toJSONString(gameInfo), 10, TimeUnit.MINUTES);
-                    caffieneCache.put(CUR_GAME, gameInfo);
-                } else {
-                    // in season, with longer ttl
-                    gameInfoStrMap.put(CUR_GAME, JSON.toJSONString(gameInfo), 10, TimeUnit.HOURS);
-                    caffieneCache.put(CUR_GAME, gameInfo);
-                }
-            }
+    /**
+     * Load game info logic (from Redis first, then from database)
+     *
+     * @param key key
+     * @return gameInfo
+     */
+    @NonNull
+    private GameInfoDto loadGameInfo(String key) {
+        // 1. attempt to load from Redis's cache
+        RMapCache<String, String> gameInfoStrMap = redissonClient.getMapCache(REDIS_KEY, StringCodec.INSTANCE);
+        String gameInfoStr = gameInfoStrMap.get(key);
+        if (StringUtils.hasLength(gameInfoStr)) {
+            log.debug("[CaffeineRedissonCache][loadFromDb] load from Redisson cache");
+            return JSON.parseObject(gameInfoStr, GameInfoDto.class);
         }
-        // return
+        // 2. value not present -> 2.1) load from db, 2.2) add into redis cache
+        GameInfoDto gameInfo = loadFromDb(key);
+        long ttl = gameInfo.isNotInSeason() ? 10 : 6 * 10;
+        gameInfoStrMap.put(key, JSON.toJSONString(gameInfo), ttl, TimeUnit.MINUTES);
+        if (gameInfo.isNotInSeason()) {
+            log.warn("[CaffeineRedissonCache][loadFromDb] no game in this season");
+        }
         return gameInfo;
     }
 
@@ -80,6 +78,7 @@ public class CaffeineRedissonCache {
      * @param gameId gameId
      * @return entity
      */
+    @NonNull
     private GameInfoDto loadFromDb(String gameId) {
         log.debug("[CaffeineRedissonCache][loadFromDb] try to load game info for: {} from database", gameId);
         return GameInfoDto.builder()
@@ -88,6 +87,4 @@ public class CaffeineRedissonCache {
                 .gameLink("http://applestore.com")
                 .build();
     }
-
-
 }
