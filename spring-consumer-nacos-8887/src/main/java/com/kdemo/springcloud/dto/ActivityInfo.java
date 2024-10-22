@@ -8,19 +8,19 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * Complex game info dto simulation
+ * Complex activity info dto simulation
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GameInfoDto implements Serializable {
+public class ActivityInfo implements Serializable {
 
     private boolean notInSeason;
 
-    private String gameId;
+    private String actId;
 
-    private String gameName;
+    private String actName;
 
-    private String gameLink;
+    private String actLink;
 }

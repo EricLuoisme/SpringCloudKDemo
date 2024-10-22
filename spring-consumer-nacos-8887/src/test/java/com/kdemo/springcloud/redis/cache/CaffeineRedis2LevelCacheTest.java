@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.kdemo.springcloud.cache.CaffeineRedissonCache;
-import com.kdemo.springcloud.dto.GameInfoDto;
+import com.kdemo.springcloud.dto.ActivityInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,7 +27,7 @@ public class CaffeineRedis2LevelCacheTest {
     private RedissonClient redissonClient;
 
     @Autowired
-    private Cache<String, GameInfoDto> caffeineCache;
+    private Cache<String, ActivityInfo> caffeineCache;
 
     private static final ObjectMapper OM = new ObjectMapper();
 
@@ -36,13 +36,13 @@ public class CaffeineRedis2LevelCacheTest {
 
     @BeforeAll
     public void init() {
-        caffeineRedissonCache = new CaffeineRedissonCache("GamInf", caffeineCache, redissonClient);
+        caffeineRedissonCache = new CaffeineRedissonCache("ActInf", caffeineCache, redissonClient);
     }
 
     @Test
     public void caffeineRedisDoubleCacheTest() throws JsonProcessingException {
-        GameInfoDto activatedGameInfo = caffeineRedissonCache.getActivatedGameInfo();
-        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activatedGameInfo));
+        ActivityInfo activityInfo = caffeineRedissonCache.getActivityInfo();
+        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 
 }
