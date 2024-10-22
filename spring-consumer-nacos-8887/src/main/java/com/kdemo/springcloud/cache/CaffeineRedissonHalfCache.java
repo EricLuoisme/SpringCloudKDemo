@@ -3,12 +3,10 @@ package com.kdemo.springcloud.cache;
 import com.alibaba.fastjson2.JSON;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.kdemo.springcloud.dto.ActivityInfo;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RMapCache;
 import org.redisson.api.RedissonClient;
-
 import org.redisson.client.codec.StringCodec;
 import org.springframework.util.StringUtils;
 
@@ -18,13 +16,11 @@ import java.util.concurrent.TimeUnit;
  * Caffeine + Redisson(RMapCache) 2-layers cache, dif from Guava's ForwardingCache,
  * - Double-level logic must be explicitly implemented
  * - Caffeine could not explicitly set different ttl
- * Caffeine + Redisson(RMapCache) 组成二级缓存, 与Guava的ForwardingCache不同,
- * - 需要更多的手动编写二级缓存逻辑
- * - Caffeine 不支持同一个map设置不同的ttl
+ * - Half -> means only when loadActInfo find activity,
+ * it would store the cache, or else, just keep query from db, may cause ‘Cache breakdown’
  */
 @Slf4j
-@AllArgsConstructor
-public class CaffeineRedissonCache {
+public class CaffeineRedissonHalfCache {
 
     private static final String CUR_ACT = "CUR_ACT";
 
@@ -32,12 +28,12 @@ public class CaffeineRedissonCache {
 
     private final RMapCache<String, String> redisCache;
 
-    public CaffeineRedissonCache(Cache<String, ActivityInfo> caffieneCache, RedissonClient redissonClient,
+
+    public CaffeineRedissonHalfCache(Cache<String, ActivityInfo> caffieneCache, RedissonClient redissonClient,
                                      String redisKey) {
         this.caffieneCache = caffieneCache;
         this.redisCache = redissonClient.getMapCache(redisKey, StringCodec.INSTANCE);
     }
-
 
     /**
      * Get activity info from caffeine & redis cache
@@ -51,17 +47,7 @@ public class CaffeineRedissonCache {
         return caffieneCache.get(CUR_ACT, this::loadActInfo);
     }
 
-    /**
-     * Clear all cache
-     */
-    public void clearActivityCache() {
-
-    }
-
-    /**
-     * Clear local cache only
-     */
-    public void clearActivityLocalCache() {
+    public void clearActivity() {
 
     }
 

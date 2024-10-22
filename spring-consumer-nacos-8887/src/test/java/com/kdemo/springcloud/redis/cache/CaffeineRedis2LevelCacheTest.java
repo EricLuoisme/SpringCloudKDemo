@@ -36,7 +36,7 @@ public class CaffeineRedis2LevelCacheTest {
 
     @BeforeAll
     public void init() {
-        caffeineRedissonCache = new CaffeineRedissonCache("ActInf", caffeineCache, redissonClient);
+        caffeineRedissonCache = new CaffeineRedissonCache(caffeineCache, redissonClient, "ActInf");
     }
 
     @Test
