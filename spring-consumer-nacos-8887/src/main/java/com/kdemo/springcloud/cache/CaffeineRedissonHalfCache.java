@@ -18,9 +18,10 @@ import java.util.concurrent.TimeUnit;
  * - Caffeine could not explicitly set different ttl
  * - Half -> means only when loadActInfo find activity,
  * it would store the cache, or else, just keep query from db, may cause ‘Cache breakdown’
+ * Half -> 意义为仅通过localActInfo进行查询, 如果查不到的情况下, 不会进行缓存 (存在缓存击穿)
  */
 @Slf4j
-public class CaffeineRedissonHalfCache {
+public class CaffeineRedissonHalfCache implements ActCache {
 
     private static final String CUR_ACT = "CUR_ACT";
 
@@ -41,13 +42,20 @@ public class CaffeineRedissonHalfCache {
      * @return actInfo
      */
     @NonNull
+    @Override
     public ActivityInfo getActivityInfo() {
         // local cache check, use Caffeine's concurrent Hash map to make sure
         // only one thread would call loadActInfo, others wait
         return caffieneCache.get(CUR_ACT, this::loadActInfo);
     }
 
-    public void clearActivity() {
+    @Override
+    public void clearActivityCache(String actNo) {
+
+    }
+
+    @Override
+    public void clearActivityLocalCache(String actNo) {
 
     }
 

@@ -10,7 +10,7 @@ import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 
 @Slf4j
-public class GuavaRedissonCache {
+public class GuavaRedissonCache implements ActCache {
 
     private static final String CUR_ACT = "CUR_ACT";
 
@@ -25,12 +25,27 @@ public class GuavaRedissonCache {
             protected Cache<String, ActivityInfo> delegate() {
 
 
-
-
                 return null;
             }
         };
     }
+
+
+    @Override
+    public ActivityInfo getActivityInfo() {
+        return null;
+    }
+
+    @Override
+    public void clearActivityCache(String actNo) {
+
+    }
+
+    @Override
+    public void clearActivityLocalCache(String actNo) {
+
+    }
+
 
     /**
      * Simulation of database querying
@@ -47,4 +62,5 @@ public class GuavaRedissonCache {
                 .actLink("http://applestore.com")
                 .build();
     }
+
 }

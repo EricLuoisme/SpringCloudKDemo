@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @AllArgsConstructor
-public class CaffeineRedissonCache {
+public class CaffeineRedissonCache implements ActCache {
 
     private static final String CUR_ACT = "CUR_ACT";
 
@@ -33,7 +33,7 @@ public class CaffeineRedissonCache {
     private final RMapCache<String, String> redisCache;
 
     public CaffeineRedissonCache(Cache<String, ActivityInfo> caffieneCache, RedissonClient redissonClient,
-                                     String redisKey) {
+                                 String redisKey) {
         this.caffieneCache = caffieneCache;
         this.redisCache = redissonClient.getMapCache(redisKey, StringCodec.INSTANCE);
     }
@@ -45,6 +45,7 @@ public class CaffeineRedissonCache {
      * @return actInfo
      */
     @NonNull
+    @Override
     public ActivityInfo getActivityInfo() {
         // local cache check, use Caffeine's concurrent Hash map to make sure
         // only one thread would call loadActInfo, others wait
@@ -54,14 +55,19 @@ public class CaffeineRedissonCache {
     /**
      * Clear all cache
      */
-    public void clearActivityCache() {
+    @Override
+    public void clearActivityCache(String actNo) {
+        // local
+        clearActivityLocalCache(actNo);
+        // redis
 
     }
 
     /**
      * Clear local cache only
      */
-    public void clearActivityLocalCache() {
+    @Override
+    public void clearActivityLocalCache(String actNo) {
 
     }
 
