@@ -104,12 +104,12 @@ public class CaffeineRedissonCache implements ActCache {
     /**
      * Simulation of database querying
      *
-     * @param actId actId
+     * @param actNo actNo
      * @return entity
      */
     @NonNull
-    private ActivityInfo loadFromDb(String actId) {
-        log.debug("[CaffeineRedissonCache][loadFromDb] try to load activity info for: {} from database", actId);
+    private ActivityInfo loadFromDb(String actNo) {
+        log.debug("[CaffeineRedissonCache][loadFromDb] try to load activity info for: {} from database", actNo);
         return ActivityInfo.builder()
                 .actId("12134234")
                 .actName("Happy")
