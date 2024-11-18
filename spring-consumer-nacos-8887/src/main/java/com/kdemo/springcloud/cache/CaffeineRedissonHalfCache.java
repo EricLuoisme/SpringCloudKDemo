@@ -23,12 +23,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class CaffeineRedissonHalfCache implements ActCache {
 
+
     private static final String CUR_ACT = "CUR_ACT";
 
     private final Cache<String, ActivityInfo> caffieneCache;
 
+    // RMapCache in Redisson -> must store it as String
     private final RMapCache<String, String> redisCache;
-
+    
 
     public CaffeineRedissonHalfCache(Cache<String, ActivityInfo> caffieneCache, RedissonClient redissonClient,
                                      String redisKey) {
@@ -51,12 +53,16 @@ public class CaffeineRedissonHalfCache implements ActCache {
 
     @Override
     public void clearActivityCache(String actNo) {
-
+        // local
+        clearActivityLocalCache(actNo);
+        // redis -> fastRemove do not care the value that stored before
+        redisCache.fastRemove(actNo);
     }
 
     @Override
     public void clearActivityLocalCache(String actNo) {
-
+        // invalid specific key
+        caffieneCache.invalidate(actNo);
     }
 
     /**

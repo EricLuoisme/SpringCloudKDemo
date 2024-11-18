@@ -26,11 +26,14 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class CaffeineRedissonCache implements ActCache {
 
+
     private static final String CUR_ACT = "CUR_ACT";
 
     private final Cache<String, ActivityInfo> caffieneCache;
 
+    // RMapCache in Redisson -> must store it as String
     private final RMapCache<String, String> redisCache;
+
 
     public CaffeineRedissonCache(Cache<String, ActivityInfo> caffieneCache, RedissonClient redissonClient,
                                  String redisKey) {
@@ -59,8 +62,8 @@ public class CaffeineRedissonCache implements ActCache {
     public void clearActivityCache(String actNo) {
         // local
         clearActivityLocalCache(actNo);
-        // redis
-
+        // redis -> fastRemove do not care the value that stored before
+        redisCache.fastRemove(actNo);
     }
 
     /**
@@ -68,7 +71,8 @@ public class CaffeineRedissonCache implements ActCache {
      */
     @Override
     public void clearActivityLocalCache(String actNo) {
-
+        // invalid specific key
+        caffieneCache.invalidate(actNo);
     }
 
     /**
@@ -88,7 +92,7 @@ public class CaffeineRedissonCache implements ActCache {
         // 2. value not present -> 2.1) load from db, 2.2) add into redis cache
         ActivityInfo actInfo = loadFromDb(key);
         long ttl = actInfo.isNotInSeason() ? 10 : 6 * 10;
-        // fastPut
+        // fastPut -> fastPut does not care the val that stored before
         redisCache.fastPut(key, JSON.toJSONString(actInfo), ttl, TimeUnit.MINUTES);
         if (actInfo.isNotInSeason()) {
             log.warn("[CaffeineRedissonCache][loadFromDb] no activity currently");
