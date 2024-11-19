@@ -27,8 +27,6 @@ import java.util.concurrent.TimeUnit;
 public class CaffeineRedissonCache implements ActCache {
 
 
-    private static final String CUR_ACT = "CUR_ACT";
-
     private final Cache<String, ActivityInfo> caffieneCache;
 
     // RMapCache in Redisson -> must store it as String

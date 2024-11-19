@@ -7,6 +7,10 @@ import com.kdemo.springcloud.dto.ActivityInfo;
  */
 public interface ActCache {
 
+    // current activity
+    String CUR_ACT = "CUR_ACT";
+
+
     /**
      * Get Activity info (inner cache logic)
      *

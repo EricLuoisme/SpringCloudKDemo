@@ -14,11 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Guava + Redisson -> 2-level cache
- * - Double-level logic is implicitly implemented by ForwardingCache's delegate logic
- * - Let cache extend Forwarding cache directly, impl the CacheLoader for 2-lever cache (Redisson + Database)
+ * - Similar to GauvaRedissonCache
+ * - Not cache if we could not find any act from the database
  */
 @Slf4j
-public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> implements ActCache {
+public class GuavaRedissonHalfCache extends ForwardingCache<String, ActivityInfo> implements ActCache {
 
 
     private final RMapCache<String, String> redisCache;
@@ -28,7 +28,7 @@ public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> im
     private final Object lock;
 
 
-    public GuavaRedissonCache(RedissonClient redissonClient, String redisKey) {
+    public GuavaRedissonHalfCache(RedissonClient redissonClient, String redisKey) {
         this.redisCache = redissonClient.getMapCache(redisKey, StringCodec.INSTANCE);
         this.loadingCache = CacheBuilder.newBuilder()
                 .maximumSize(64)
@@ -52,10 +52,11 @@ public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> im
                                             ActivityInfo activityInfo = loadFromDb(actNo);
                                             // set to redis
                                             actInfoStr = JSON.toJSONString(activityInfo);
-                                            if (activityInfo.isNotInSeason()) {
-                                                redisCache.put(actNo, actInfoStr, 3, TimeUnit.HOURS);
-                                            } else {
+                                            if (!activityInfo.isNotInSeason()) {
                                                 redisCache.put(actNo, actInfoStr, 3, TimeUnit.MINUTES);
+                                            } else {
+                                                log.warn("Not in season, actInfo would not be stored in cache");
+                                                throw new NotInSeasonException();
                                             }
                                         }
                                     }
