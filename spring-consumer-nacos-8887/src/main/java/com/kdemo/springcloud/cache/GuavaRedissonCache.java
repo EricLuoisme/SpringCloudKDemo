@@ -27,6 +27,8 @@ public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> im
 
     private final LoadingCache<String, ActivityInfo> loadingCache;
 
+    private final Object lock;
+
 
     public GuavaRedissonCache(RedissonClient redissonClient, String redisKey) {
         this.redisCache = redissonClient.getMapCache(redisKey, StringCodec.INSTANCE);
@@ -42,18 +44,26 @@ public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> im
                             public ActivityInfo load(@NotNull String actNo) throws Exception {
                                 // find from Redis (2-level cache)
                                 String actInfoStr = redisCache.get(actNo);
+                                // double check ->
+                                // unlike caffeine's get consume func, load function may be entered concurrently
+                                // user synchronized + double check to avoid 'Cache Breakdown' to database
                                 if (!StringUtils.hasLength(actInfoStr)) {
-                                    // load from db
-                                    ActivityInfo activityInfo = loadFromDb(actNo);
-                                    // set to redis
-                                    actInfoStr = JSON.toJSONString(activityInfo);
-                                    redisCache.put(actNo, actInfoStr, 3, TimeUnit.HOURS);
+                                    synchronized (lock) {
+                                        if (!StringUtils.hasLength(actInfoStr)) {
+                                            // load from db
+                                            ActivityInfo activityInfo = loadFromDb(actNo);
+                                            // set to redis
+                                            actInfoStr = JSON.toJSONString(activityInfo);
+                                            redisCache.put(actNo, actInfoStr, 3, TimeUnit.HOURS);
+                                        }
+                                    }
                                 }
                                 // automatically insert back the val to the forwardingCache (local-cache), no need to do it explicitly
                                 return JSON.parseObject(actInfoStr, ActivityInfo.class);
                             }
                         }
                 );
+        this.lock = new Object();
     }
 
 
