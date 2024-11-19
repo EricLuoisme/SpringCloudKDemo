@@ -4,10 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.kdemo.springcloud.cache.CaffeineRedissonCache;
+import com.kdemo.springcloud.cache.CaffeineRedissonHalfCache;
 import com.kdemo.springcloud.dto.ActivityInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,25 +24,34 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class CaffeineRedis2LevelCacheTest {
 
+    private static final ObjectMapper OM = new ObjectMapper();
+
     @Autowired
     private RedissonClient redissonClient;
 
     @Autowired
     private Cache<String, ActivityInfo> caffeineCache;
 
-    private static final ObjectMapper OM = new ObjectMapper();
 
     private CaffeineRedissonCache caffeineRedissonCache;
+    private CaffeineRedissonHalfCache caffeineRedissonHalfCache;
 
 
-    @BeforeAll
+    @Before
     public void init() {
-        caffeineRedissonCache = new CaffeineRedissonCache(caffeineCache, redissonClient, "ActInf");
+        caffeineRedissonCache = new CaffeineRedissonCache(caffeineCache, redissonClient, "ActInf-CaffeineFull");
+        caffeineRedissonHalfCache = new CaffeineRedissonHalfCache(caffeineCache, redissonClient, "ActInf-CaffeineHalf");
     }
 
     @Test
     public void caffeineRedisDoubleCacheTest() throws JsonProcessingException {
         ActivityInfo activityInfo = caffeineRedissonCache.getActivityInfo();
+        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+    }
+
+    @Test
+    public void caffeineRedisHalfCacheTest() throws JsonProcessingException {
+        ActivityInfo activityInfo = caffeineRedissonHalfCache.getActivityInfo();
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 

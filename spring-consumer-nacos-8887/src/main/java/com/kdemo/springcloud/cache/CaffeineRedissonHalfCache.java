@@ -46,7 +46,11 @@ public class CaffeineRedissonHalfCache implements ActCache {
     public ActivityInfo getActivityInfo() {
         // local cache check, use Caffeine's concurrent Hash map to make sure
         // only one thread would call loadActInfo, others wait
-        return caffieneCache.get(CUR_ACT, this::loadActInfo);
+        try {
+            return caffieneCache.get(CUR_ACT, this::loadActInfo);
+        } catch (NotInSeasonException ex) {
+            return ActivityInfo.builder().notInSeason(true).build();
+        }
     }
 
     @Override
@@ -70,7 +74,7 @@ public class CaffeineRedissonHalfCache implements ActCache {
      * @return actInfo
      */
     @NonNull
-    private ActivityInfo loadActInfo(String key) {
+    private ActivityInfo loadActInfo(String key) throws NotInSeasonException {
         // 1. attempt to load from Redis's cache
         String actInfoStr = redisCache.get(key);
         if (StringUtils.hasLength(actInfoStr)) {
@@ -79,11 +83,13 @@ public class CaffeineRedissonHalfCache implements ActCache {
         }
         // 2. value not present -> 2.1) load from db, 2.2) add into redis cache
         ActivityInfo actInfo = loadFromDb(key);
-        long ttl = actInfo.isNotInSeason() ? 10 : 6 * 10;
-        // fastPut
-        redisCache.fastPut(key, JSON.toJSONString(actInfo), ttl, TimeUnit.MINUTES);
-        if (actInfo.isNotInSeason()) {
-            log.warn("[CaffeineRedissonCache][loadFromDb] no activity currently");
+        if (!actInfo.isNotInSeason()) {
+            // fastPut, only add into Redis when it's work
+            redisCache.fastPut(key, JSON.toJSONString(actInfo), 6 * 10, TimeUnit.MINUTES);
+        } else {
+            // not store not in season stuff
+            log.warn("[CaffeineRedissonCache][loadFromDb] not cache not in season act");
+            throw new NotInSeasonException();
         }
         // return would add into caffeine automatically
         return actInfo;
