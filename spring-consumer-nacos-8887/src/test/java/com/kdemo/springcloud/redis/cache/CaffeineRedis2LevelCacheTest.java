@@ -3,6 +3,7 @@ package com.kdemo.springcloud.redis.cache;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benmanes.caffeine.cache.Cache;
+import com.kdemo.springcloud.cache.ActCache;
 import com.kdemo.springcloud.cache.CaffeineRedissonCache;
 import com.kdemo.springcloud.cache.CaffeineRedissonHalfCache;
 import com.kdemo.springcloud.dto.ActivityInfo;
@@ -43,16 +44,30 @@ public class CaffeineRedis2LevelCacheTest {
         caffeineRedissonHalfCache = new CaffeineRedissonHalfCache(caffeineCache, redissonClient, "ActInf-CaffeineHalf");
     }
 
+    /* Full double-level cache */
     @Test
-    public void caffeineRedisDoubleCacheTest() throws JsonProcessingException {
-        ActivityInfo activityInfo = caffeineRedissonCache.getActivityInfo();
+    public void caffeineRedisDoubleCacheTest_Contains() throws JsonProcessingException {
+        ActivityInfo activityInfo = caffeineRedissonCache.getActivityInfo(ActCache.CUR_ACT);
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 
     @Test
-    public void caffeineRedisHalfCacheTest() throws JsonProcessingException {
-        ActivityInfo activityInfo = caffeineRedissonHalfCache.getActivityInfo();
+    public void caffeineRedisDoubleCacheTest_NotContains() throws JsonProcessingException {
+        ActivityInfo activityInfo = caffeineRedissonCache.getActivityInfo("ABC");
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 
+
+    /* Half double-level cache */
+    @Test
+    public void caffeineRedisHalfCacheTest_Contains() throws JsonProcessingException {
+        ActivityInfo activityInfo = caffeineRedissonHalfCache.getActivityInfo(ActCache.CUR_ACT);
+        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+    }
+
+    @Test
+    public void caffeineRedisHalfCacheTest_NotContains() throws JsonProcessingException {
+        ActivityInfo activityInfo = caffeineRedissonHalfCache.getActivityInfo("BBC");
+        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+    }
 }

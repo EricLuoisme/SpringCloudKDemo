@@ -107,3 +107,4 @@ public class CaffeineRedissonHalfCache implements ActCache {
                 ? ActivityInfo.builder().notInSeason(true).build()
                 : ActivityInfo.builder().actId("12134234").actName("Happy").actLink("http://applestore.com").build();
     }
+}
