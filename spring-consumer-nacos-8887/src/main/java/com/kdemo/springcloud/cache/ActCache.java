@@ -14,9 +14,10 @@ public interface ActCache {
     /**
      * Get Activity info (inner cache logic)
      *
+     * @param actNo activity no., could be null
      * @return act info
      */
-    ActivityInfo getActivityInfo();
+    ActivityInfo getActivityInfo(String actNo);
 
     /**
      * Clear all cache

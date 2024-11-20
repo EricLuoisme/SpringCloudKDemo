@@ -70,7 +70,7 @@ public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> im
 
 
     @Override
-    public ActivityInfo getActivityInfo() {
+    public ActivityInfo getActivityInfo(String actNo) {
         // should not call this cache by this func, just call getIfPresent()
         throw new RuntimeException("Method not implemented");
     }

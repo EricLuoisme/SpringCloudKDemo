@@ -47,10 +47,10 @@ public class CaffeineRedissonCache implements ActCache {
      */
     @NonNull
     @Override
-    public ActivityInfo getActivityInfo() {
+    public ActivityInfo getActivityInfo(String actNo) {
         // local cache check, use Caffeine's concurrent Hash map to make sure
         // only one thread would call loadActInfo, others wait
-        return caffieneCache.get(CUR_ACT, this::loadActInfo);
+        return caffieneCache.get(actNo, this::loadActInfo);
     }
 
     /**
@@ -89,9 +89,8 @@ public class CaffeineRedissonCache implements ActCache {
         }
         // 2. value not present -> 2.1) load from db, 2.2) add into redis cache
         ActivityInfo actInfo = loadFromDb(key);
-        long ttl = actInfo.isNotInSeason() ? 10 : 6 * 10;
         // fastPut -> fastPut does not care the val that stored before
-        redisCache.fastPut(key, JSON.toJSONString(actInfo), ttl, TimeUnit.MINUTES);
+        redisCache.fastPut(key, JSON.toJSONString(actInfo), actInfo.isNotInSeason() ? 10 : 6 * 10, TimeUnit.MINUTES);
         if (actInfo.isNotInSeason()) {
             log.warn("[CaffeineRedissonCache][loadFromDb] no activity currently");
         }
@@ -108,10 +107,8 @@ public class CaffeineRedissonCache implements ActCache {
     @NonNull
     private ActivityInfo loadFromDb(String actNo) {
         log.debug("[CaffeineRedissonCache][loadFromDb] try to load activity info for: {} from database", actNo);
-        return ActivityInfo.builder()
-                .actId("12134234")
-                .actName("Happy")
-                .actLink("http://applestore.com")
-                .build();
+        return !CUR_ACT.equalsIgnoreCase(actNo)
+                ? ActivityInfo.builder().notInSeason(true).build()
+                : ActivityInfo.builder().actId("12134234").actName("Happy").actLink("http://applestore.com").build();
     }
 }

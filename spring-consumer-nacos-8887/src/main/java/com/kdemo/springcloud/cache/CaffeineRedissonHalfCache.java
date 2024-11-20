@@ -43,11 +43,11 @@ public class CaffeineRedissonHalfCache implements ActCache {
      */
     @NonNull
     @Override
-    public ActivityInfo getActivityInfo() {
+    public ActivityInfo getActivityInfo(String actNo) {
         // local cache check, use Caffeine's concurrent Hash map to make sure
         // only one thread would call loadActInfo, others wait
         try {
-            return caffieneCache.get(CUR_ACT, this::loadActInfo);
+            return caffieneCache.get(actNo, this::loadActInfo);
         } catch (NotInSeasonException ex) {
             return ActivityInfo.builder().notInSeason(true).build();
         }
@@ -78,19 +78,18 @@ public class CaffeineRedissonHalfCache implements ActCache {
         // 1. attempt to load from Redis's cache
         String actInfoStr = redisCache.get(key);
         if (StringUtils.hasLength(actInfoStr)) {
-            log.debug("[CaffeineRedissonCache][loadFromDb] load from Redisson cache");
+            log.debug("[CaffeineRedissonHalfCache][loadFromDb] load from Redisson cache");
             return JSON.parseObject(actInfoStr, ActivityInfo.class);
         }
         // 2. value not present -> 2.1) load from db, 2.2) add into redis cache
         ActivityInfo actInfo = loadFromDb(key);
-        if (!actInfo.isNotInSeason()) {
-            // fastPut, only add into Redis when it's work
-            redisCache.fastPut(key, JSON.toJSONString(actInfo), 6 * 10, TimeUnit.MINUTES);
-        } else {
+        if (actInfo.isNotInSeason()) {
             // not store not in season stuff
-            log.warn("[CaffeineRedissonCache][loadFromDb] not cache not in season act");
+            log.warn("[CaffeineRedissonHalfCache][loadFromDb] not cache not in season act");
             throw new NotInSeasonException();
         }
+        // fastPut, only add into Redis when it's work
+        redisCache.fastPut(key, JSON.toJSONString(actInfo), 6 * 10, TimeUnit.MINUTES);
         // return would add into caffeine automatically
         return actInfo;
     }
@@ -103,11 +102,8 @@ public class CaffeineRedissonHalfCache implements ActCache {
      */
     @NonNull
     private ActivityInfo loadFromDb(String actNo) {
-        log.debug("[CaffeineRedissonCache][loadFromDb] try to load activity info for: {} from database", actNo);
-        return ActivityInfo.builder()
-                .actId("12134234")
-                .actName("Happy")
-                .actLink("http://applestore.com")
-                .build();
+        log.debug("[CaffeineRedissonHalfCache][loadFromDb] try to load activity info for: {} from database", actNo);
+        return !CUR_ACT.equalsIgnoreCase(actNo)
+                ? ActivityInfo.builder().notInSeason(true).build()
+                : ActivityInfo.builder().actId("12134234").actName("Happy").actLink("http://applestore.com").build();
     }
-}
