@@ -17,8 +17,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * Caffeine integrate with Redis to form 2-level cache
- * Caffeine 与 Redis 组成二级缓存
+ * Caffeine integrate with Redisson to form 2-level cache
+ * Caffeine 与 Redisson 组成二级缓存
  */
 @Slf4j
 @RunWith(SpringRunner.class)
