@@ -18,8 +18,7 @@ import java.util.concurrent.TimeUnit;
  * - Not cache if we could not find any act from the database
  */
 @Slf4j
-public class GuavaRedissonHalfCache extends ForwardingCache<String, ActivityInfo> implements ActCache {
-
+public class GuavaRedissonHalfCache extends ForwardingLoadingCache<String, ActivityInfo> implements ActCache {
 
     private final RMapCache<String, String> redisCache;
 
@@ -55,7 +54,7 @@ public class GuavaRedissonHalfCache extends ForwardingCache<String, ActivityInfo
                                             if (!activityInfo.isNotInSeason()) {
                                                 redisCache.put(actNo, actInfoStr, 3, TimeUnit.MINUTES);
                                             } else {
-                                                log.warn("Not in season, actInfo would not be stored in cache");
+                                                log.warn("[GuavaRedissonHalfCache] Not in season, actInfo would not be stored in cache");
                                                 throw new NotInSeasonException();
                                             }
                                         }
@@ -95,7 +94,7 @@ public class GuavaRedissonHalfCache extends ForwardingCache<String, ActivityInfo
      */
     @NotNull
     @Override
-    protected Cache<String, ActivityInfo> delegate() {
+    protected LoadingCache<String, ActivityInfo> delegate() {
         return loadingCache;
     }
 
@@ -107,12 +106,10 @@ public class GuavaRedissonHalfCache extends ForwardingCache<String, ActivityInfo
      */
     @NotNull
     private ActivityInfo loadFromDb(String actNo) {
-        log.debug("[CaffeineRedissonCache][loadFromDb] try to load activity info for: {} from database", actNo);
-        return ActivityInfo.builder()
-                .actId("12134234")
-                .actName("Happy")
-                .actLink("http://applestore.com")
-                .build();
+        log.debug("[GuavaRedissonHalfCache][loadFromDb] try to load activity info for: {} from database", actNo);
+        return !CUR_ACT.equalsIgnoreCase(actNo)
+                ? ActivityInfo.builder().notInSeason(true).build()
+                : ActivityInfo.builder().actId("12134234").actName("Happy").actLink("http://applestore.com").build();
     }
 
 

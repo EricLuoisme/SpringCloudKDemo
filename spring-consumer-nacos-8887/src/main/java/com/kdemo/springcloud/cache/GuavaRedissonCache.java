@@ -14,12 +14,12 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Guava + Redisson -> 2-level cache
- * - Double-level logic is implicitly implemented by ForwardingCache's delegate logic
+ * - Double-level logic is implicitly implemented by ForwardingLoadingCache's delegate logic
+ * - When get() could not find the value, ForwardingLoadingCache automatically forward it to loading cache logic (delegation)
  * - Let cache extend Forwarding cache directly, impl the CacheLoader for 2-lever cache (Redisson + Database)
  */
 @Slf4j
-public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> implements ActCache {
-
+public class GuavaRedissonCache extends ForwardingLoadingCache<String, ActivityInfo> implements ActCache {
 
     private final RMapCache<String, String> redisCache;
 
@@ -52,11 +52,10 @@ public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> im
                                             ActivityInfo activityInfo = loadFromDb(actNo);
                                             // set to redis
                                             actInfoStr = JSON.toJSONString(activityInfo);
-                                            if (activityInfo.isNotInSeason()) {
-                                                redisCache.put(actNo, actInfoStr, 3, TimeUnit.HOURS);
-                                            } else {
-                                                redisCache.put(actNo, actInfoStr, 3, TimeUnit.MINUTES);
-                                            }
+                                            redisCache.fastPut(actNo, actInfoStr, 3,
+                                                    activityInfo.isNotInSeason()
+                                                            ? TimeUnit.MINUTES
+                                                            : TimeUnit.HOURS);
                                         }
                                     }
                                 }
@@ -94,7 +93,7 @@ public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> im
      */
     @NotNull
     @Override
-    protected Cache<String, ActivityInfo> delegate() {
+    protected LoadingCache<String, ActivityInfo> delegate() {
         return loadingCache;
     }
 
@@ -106,12 +105,10 @@ public class GuavaRedissonCache extends ForwardingCache<String, ActivityInfo> im
      */
     @NotNull
     private ActivityInfo loadFromDb(String actNo) {
-        log.debug("[CaffeineRedissonCache][loadFromDb] try to load activity info for: {} from database", actNo);
-        return ActivityInfo.builder()
-                .actId("12134234")
-                .actName("Happy")
-                .actLink("http://applestore.com")
-                .build();
+        log.debug("[GuavaRedissonCache][loadFromDb] try to load activity info for: {} from database", actNo);
+        return !CUR_ACT.equalsIgnoreCase(actNo)
+                ? ActivityInfo.builder().notInSeason(true).build()
+                : ActivityInfo.builder().actId("12134234").actName("Happy").actLink("http://applestore.com").build();
     }
 
 
