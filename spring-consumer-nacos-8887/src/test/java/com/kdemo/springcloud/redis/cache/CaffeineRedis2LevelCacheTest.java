@@ -47,27 +47,42 @@ public class CaffeineRedis2LevelCacheTest {
     /* Full double-level cache */
     @Test
     public void caffeineRedisDoubleCacheTest_Contains() throws JsonProcessingException {
+        // first time loading from db
         ActivityInfo activityInfo = caffeineRedissonCache.getActivityInfo(ActCache.CUR_ACT);
+        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+
+        // loading from local cache
+        activityInfo = caffeineRedissonCache.getActivityInfo(ActCache.CUR_ACT);
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 
     @Test
     public void caffeineRedisDoubleCacheTest_NotContains() throws JsonProcessingException {
+        // first time loading from db
         ActivityInfo activityInfo = caffeineRedissonCache.getActivityInfo("ABC");
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 
-
     /* Half double-level cache */
     @Test
     public void caffeineRedisHalfCacheTest_Contains() throws JsonProcessingException {
+        // first time loading from db
         ActivityInfo activityInfo = caffeineRedissonHalfCache.getActivityInfo(ActCache.CUR_ACT);
+        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+
+        // loading from local cache
+        activityInfo = caffeineRedissonHalfCache.getActivityInfo(ActCache.CUR_ACT);
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 
     @Test
     public void caffeineRedisHalfCacheTest_NotContains() throws JsonProcessingException {
+        // first time loading from db
         ActivityInfo activityInfo = caffeineRedissonHalfCache.getActivityInfo("BBC");
+        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+
+        // second time still loading from db
+        activityInfo = caffeineRedissonHalfCache.getActivityInfo("BBC");
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 }

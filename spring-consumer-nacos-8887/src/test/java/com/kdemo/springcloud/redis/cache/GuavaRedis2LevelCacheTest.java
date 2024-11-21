@@ -43,7 +43,12 @@ public class GuavaRedis2LevelCacheTest {
     /* Full double-level cache */
     @Test
     public void doubleCacheTest_Contains() throws JsonProcessingException, ExecutionException {
+        // first time loading from db
         ActivityInfo activityInfo = guavaRedissonCache.get(ActCache.CUR_ACT);
+        System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+
+        // second time loading from local cache
+        activityInfo = guavaRedissonCache.get(ActCache.CUR_ACT);
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
     }
 
@@ -59,8 +64,30 @@ public class GuavaRedis2LevelCacheTest {
     public void halfCacheTest_Contains() throws JsonProcessingException, ExecutionException {
         ActivityInfo activityInfo;
         try {
+            // first time loading from db
             activityInfo = guavaRedissonHalfCache.get(ActCache.CUR_ACT);
+            System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+
+            // second time loading from local cache
+            activityInfo = guavaRedissonCache.get(ActCache.CUR_ACT);
+            System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
+
         } catch (NotInSeasonException ex) {
+            if (ex.getCause() instanceof NotInSeasonException) {
+                log.warn("not int season");
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    @Test
+    public void halfCacheTest_NotContains() throws JsonProcessingException, ExecutionException {
+        ActivityInfo activityInfo;
+        try {
+            // first time loading from db
+            activityInfo = guavaRedissonHalfCache.get("BBC");
+        } catch (Exception ex) {
             if (ex.getCause() instanceof NotInSeasonException) {
                 log.warn("not int season");
                 activityInfo = ActivityInfo.builder().notInSeason(true).build();
@@ -69,11 +96,8 @@ public class GuavaRedis2LevelCacheTest {
             }
         }
         System.out.println(OM.writerWithDefaultPrettyPrinter().writeValueAsString(activityInfo));
-    }
 
-    @Test
-    public void halfCacheTest_NotContains() throws JsonProcessingException, ExecutionException {
-        ActivityInfo activityInfo;
+        // second time still loading from db
         try {
             activityInfo = guavaRedissonHalfCache.get("BBC");
         } catch (Exception ex) {
