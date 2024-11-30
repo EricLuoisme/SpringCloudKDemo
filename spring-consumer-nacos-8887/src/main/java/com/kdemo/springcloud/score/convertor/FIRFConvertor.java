@@ -8,9 +8,12 @@ import com.kdemo.springcloud.score.ScoreConvertor;
  */
 public class FIRFConvertor implements ScoreConvertor {
 
+    /* deviation of the delta-timestamp input -> saving the bit for score usage */
+    private static final int DEVIATION = 1000;
+
     private static final int TOTAL_BIT = 52;
 
-    private static final int SCORE_BIT = 20;
+    private static final int SCORE_BIT = 24;
 
     private static final int TIMESTAMP_BIT = TOTAL_BIT - SCORE_BIT;
 
@@ -35,12 +38,13 @@ public class FIRFConvertor implements ScoreConvertor {
             throw new IllegalArgumentException("score overflow");
         }
 
-        if (timestamp < 0 || timestamp > MAX_TIMESTAMP) {
+        long useTimestamp = timestamp / DEVIATION;
+        if (useTimestamp < 0 || useTimestamp > MAX_TIMESTAMP) {
             throw new IllegalArgumentException("timestamp overflow");
         }
 
         // move score to higher & fill lower with timestamp
-        long combinedScore = (externalScore << TIMESTAMP_BIT) | timestamp;
+        long combinedScore = (externalScore << TIMESTAMP_BIT) | useTimestamp;
         return (double) combinedScore;
     }
 
