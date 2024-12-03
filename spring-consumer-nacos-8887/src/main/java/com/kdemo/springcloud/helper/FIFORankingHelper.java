@@ -23,7 +23,7 @@ import static com.kdemo.springcloud.scripts.LuaZSetOps.Z_ADD_GT_SCRIPT;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class RankingHelper {
+public class FIFORankingHelper {
 
     // Auto spin configs
     private static Integer BOARD_CALLING_COUNTS = 0;
@@ -46,13 +46,23 @@ public class RankingHelper {
     /**
      * TODO combine ops of 1) update leaderboard & 2) update user own score
      */
-    public void uploadScore(String boardKey, int boardSize, String hashKey, long baseTime, long expireTime,
-                            String unqId, Long score) {
-        // TODO
-        String updateLeaderboardResult = updateLeaderboard(redissonClient, boardKey, boardSize, baseTime, expireTime, unqId, score);
 
-        // TODO
-        String updatePoolScoreResult = updatePoolScore(redissonClient, hashKey, expireTime, unqId, score);
+    /**
+     * Upload single score for ranking, update on both: leaderboard & score pool
+     *
+     * @param boardKey   zSet key
+     * @param boardSize  zSet remaining size
+     * @param hashKey    hashSet key
+     * @param baseTime   base time
+     * @param expireTime redis keys ttl
+     * @param unqId      member
+     * @param score      raw score value
+     */
+    public ScoreUploadResult uploadScoreForRanking(String boardKey, int boardSize, String hashKey, long baseTime,
+                                                   long expireTime, String unqId, Long score) {
+        final String updateLeaderboardResult = updateLeaderboard(redissonClient, boardKey, boardSize, baseTime, expireTime, unqId, score);
+        final String updatePoolScoreResult = updatePoolScore(redissonClient, hashKey, expireTime, unqId, score);
+        return new ScoreUploadResult(updateLeaderboardResult, updatePoolScoreResult);
     }
 
     /**
@@ -138,5 +148,14 @@ public class RankingHelper {
         }
 
         return String.valueOf(rawResult);
+    }
+
+    /**
+     * Upload result
+     *
+     * @param leaderboardResult leaderboard (zSet) execution result
+     * @param scorePoolResult   score pool (hashSet) execution result
+     */
+    public record ScoreUploadResult(String leaderboardResult, String scorePoolResult) {
     }
 }
