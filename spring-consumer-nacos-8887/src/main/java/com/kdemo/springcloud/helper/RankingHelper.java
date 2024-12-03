@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.Collections;
 
 import static com.kdemo.springcloud.scripts.LuaBasicOps.EXPIRATION_SCRIPT;
+import static com.kdemo.springcloud.scripts.LuaHashOps.HASH_SET_GT_OPS;
 import static com.kdemo.springcloud.scripts.LuaZSetOps.REMOVE_MEMBER_OUT_RANGE_SCRIPT;
 import static com.kdemo.springcloud.scripts.LuaZSetOps.Z_ADD_GT_SCRIPT;
 
@@ -45,13 +46,13 @@ public class RankingHelper {
     /**
      * TODO combine ops of 1) update leaderboard & 2) update user own score
      */
-    public void uploadScore(String boardKey, int boardSize, long baseTime, long expireTime,
-                            String unqId, Long gameScore) {
+    public void uploadScore(String boardKey, int boardSize, String hashKey, long baseTime, long expireTime,
+                            String unqId, Long score) {
         // TODO
-        updateLeaderboard(redissonClient, boardKey, boardSize, baseTime, expireTime, unqId, gameScore);
+        String updateLeaderboardResult = updateLeaderboard(redissonClient, boardKey, boardSize, baseTime, expireTime, unqId, score);
 
         // TODO
-        updateUserScore();
+        String updatePoolScoreResult = updatePoolScore(redissonClient, hashKey, expireTime, unqId, score);
     }
 
     /**
@@ -63,15 +64,15 @@ public class RankingHelper {
      * @param baseTime       base time (for score)
      * @param expireTime     expire time (for zSet)
      * @param unqId          member
-     * @param gameScore      raw score value
+     * @param score          raw score value
      * @return update board raw Redis result
      */
     private static String updateLeaderboard(RedissonClient redissonClient, String boardKey, int boardSize,
-                                            Long baseTime, Long expireTime, String unqId, Long gameScore) {
+                                            Long baseTime, Long expireTime, String unqId, Long score) {
 
         // score conversion
         double cacheScore = CONVERTOR.convertToZSetScore(
-                gameScore, Instant.now().toEpochMilli() - baseTime);
+                score, Instant.now().toEpochMilli() - baseTime);
 
         // Lua script execution
         Object rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
@@ -95,14 +96,47 @@ public class RankingHelper {
         }
 
         // reset counting
-        if (BOARD_CALLING_COUNTS > TRIGGER_MARGIN) {
+        if (BOARD_CALLING_COUNTS++ > TRIGGER_MARGIN) {
             BOARD_CALLING_COUNTS = 0;
         }
 
         return String.valueOf(rawResult);
     }
 
-    private static boolean updateUserScore() {
-        return false;
+    /**
+     * Update pooling score
+     *
+     * @param redissonClient redisson client
+     * @param hashKey        hash set key
+     * @param expireTime     expire time (for hashSet)
+     * @param unqId          member
+     * @param score          raw score value
+     * @return update pool raw Redis result
+     */
+    private static String updatePoolScore(RedissonClient redissonClient, String hashKey, Long expireTime,
+                                          String unqId, Long score) {
+
+        Object rawResult = redissonClient.getScript(StringCodec.INSTANCE).eval(
+                RScript.Mode.READ_WRITE,
+                HASH_SET_GT_OPS,
+                RScript.ReturnType.VALUE,
+                Collections.singletonList(hashKey),
+                unqId, Long.toString(score));
+
+        // expiration setting -> instead of triggering each time, only reach specific calling times would executed
+        // expiration setting -> instead of triggering each time, only reach specific calling times would executed
+        if (HASH_CALLING_COUNTS == 0 || HASH_CALLING_COUNTS % EXPIRE_THRESHOLD == 0) {
+            Object ttlResult = redissonClient.getScript(StringCodec.INSTANCE)
+                    .eval(RScript.Mode.READ_WRITE, EXPIRATION_SCRIPT,
+                            RScript.ReturnType.INTEGER, Collections.singletonList(hashKey), expireTime);
+            log.info("HashSet set TTL triggered with result:{}", ttlResult);
+        }
+
+        // reset counting
+        if (HASH_CALLING_COUNTS++ > TRIGGER_MARGIN) {
+            HASH_CALLING_COUNTS = 0;
+        }
+
+        return String.valueOf(rawResult);
     }
 }
