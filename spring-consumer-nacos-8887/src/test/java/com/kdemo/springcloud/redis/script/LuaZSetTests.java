@@ -2,7 +2,7 @@ package com.kdemo.springcloud.redis.script;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdemo.springcloud.score.convertor.FIRFConvertor;
+import com.kdemo.springcloud.helper.score.convertor.FIRFConvertor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

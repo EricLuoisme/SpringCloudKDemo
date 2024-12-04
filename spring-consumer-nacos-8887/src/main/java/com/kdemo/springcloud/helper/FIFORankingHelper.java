@@ -1,7 +1,7 @@
 package com.kdemo.springcloud.helper;
 
-import com.kdemo.springcloud.score.ScoreConvertor;
-import com.kdemo.springcloud.score.convertor.FIRFConvertor;
+import com.kdemo.springcloud.helper.score.ScoreConvertor;
+import com.kdemo.springcloud.helper.score.convertor.FIRFConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RScript;
