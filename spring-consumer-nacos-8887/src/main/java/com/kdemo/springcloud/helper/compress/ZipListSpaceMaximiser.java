@@ -33,10 +33,7 @@ public class ZipListSpaceMaximiser {
 
         // hard coding exception
         if (bucketKey.length() > 64) {
-            throw new IllegalStateException("Bucket key exceeds ziplist limit: " + bucketKey);
-        }
-        if (memberKey.length() > 64) {
-            throw new IllegalStateException("Member key exceeds ziplist limit: " + memberKey);
+            throw new IllegalStateException("Bucket key exceeds zipList limit: " + bucketKey);
         }
 
         return new PartitionBundle(bucketKey, memberKey);
