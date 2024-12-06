@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 
-import static com.kdemo.springcloud.scripts.LuaBasicOps.EXPIRATION_SCRIPT;
+import static com.kdemo.springcloud.redis.scripts.LuaBasicOps.EXPIRATION_SCRIPT;
 
 /**
  * Common lua operation

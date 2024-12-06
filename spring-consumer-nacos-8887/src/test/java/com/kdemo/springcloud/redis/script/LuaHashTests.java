@@ -15,8 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import static com.kdemo.springcloud.scripts.LuaHashOps.BATCH_HASH_SET_GT_OPS;
-import static com.kdemo.springcloud.scripts.LuaHashOps.HASH_SET_GT_OPS;
+import static com.kdemo.springcloud.redis.scripts.LuaHashOps.BATCH_HASH_SET_GT_OPS;
+import static com.kdemo.springcloud.redis.scripts.LuaHashOps.HASH_SET_GT_OPS;
 
 /**
  * Query & Init & Single-Ops

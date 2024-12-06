@@ -1,6 +1,6 @@
-package com.kdemo.springcloud.helper.score.convertor;
+package com.kdemo.springcloud.redis.helper.score.convertor;
 
-import com.kdemo.springcloud.helper.score.ScoreConvertor;
+import com.kdemo.springcloud.redis.helper.score.ScoreConvertor;
 
 /**
  * First in rank first convertor

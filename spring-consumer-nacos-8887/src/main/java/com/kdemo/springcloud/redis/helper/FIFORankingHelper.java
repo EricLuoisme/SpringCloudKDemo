@@ -1,7 +1,7 @@
-package com.kdemo.springcloud.helper;
+package com.kdemo.springcloud.redis.helper;
 
-import com.kdemo.springcloud.helper.score.ScoreConvertor;
-import com.kdemo.springcloud.helper.score.convertor.FIRFConvertor;
+import com.kdemo.springcloud.redis.helper.score.ScoreConvertor;
+import com.kdemo.springcloud.redis.helper.score.convertor.FIRFConvertor;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RScript;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.Collections;
 
-import static com.kdemo.springcloud.scripts.LuaBasicOps.EXPIRATION_SCRIPT;
-import static com.kdemo.springcloud.scripts.LuaHashOps.HASH_SET_GT_OPS;
-import static com.kdemo.springcloud.scripts.LuaZSetOps.REMOVE_MEMBER_OUT_RANGE_SCRIPT;
-import static com.kdemo.springcloud.scripts.LuaZSetOps.Z_ADD_GT_SCRIPT;
+import static com.kdemo.springcloud.redis.scripts.LuaBasicOps.EXPIRATION_SCRIPT;
+import static com.kdemo.springcloud.redis.scripts.LuaHashOps.HASH_SET_GT_OPS;
+import static com.kdemo.springcloud.redis.scripts.LuaZSetOps.REMOVE_MEMBER_OUT_RANGE_SCRIPT;
+import static com.kdemo.springcloud.redis.scripts.LuaZSetOps.Z_ADD_GT_SCRIPT;
 
 /**
  * Ranking related ops helper

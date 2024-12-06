@@ -1,6 +1,6 @@
 package com.kdemo.springcloud.redis.script;
 
-import com.kdemo.springcloud.helper.FIFORankingHelper;
+import com.kdemo.springcloud.redis.helper.FIFORankingHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

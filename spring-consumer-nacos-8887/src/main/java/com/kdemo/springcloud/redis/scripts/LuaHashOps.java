@@ -1,4 +1,4 @@
-package com.kdemo.springcloud.scripts;
+package com.kdemo.springcloud.redis.scripts;
 
 /**
  * Lua script for Redis hash operations

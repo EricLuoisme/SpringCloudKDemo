@@ -2,7 +2,7 @@ package com.kdemo.springcloud.redis.script;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kdemo.springcloud.helper.score.convertor.FIRFConvertor;
+import com.kdemo.springcloud.redis.helper.score.convertor.FIRFConvertor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +23,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Instant;
 import java.util.*;
 
-import static com.kdemo.springcloud.scripts.LuaZSetOps.*;
 import static org.junit.Assert.assertEquals;
 
 /**

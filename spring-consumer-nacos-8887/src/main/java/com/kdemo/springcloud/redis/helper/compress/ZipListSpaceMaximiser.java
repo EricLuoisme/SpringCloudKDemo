@@ -1,4 +1,4 @@
-package com.kdemo.springcloud.helper.compress;
+package com.kdemo.springcloud.redis.helper.compress;
 
 import org.springframework.util.StringUtils;
 

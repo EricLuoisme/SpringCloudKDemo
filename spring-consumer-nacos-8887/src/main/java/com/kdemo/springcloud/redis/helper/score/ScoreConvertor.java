@@ -1,4 +1,4 @@
-package com.kdemo.springcloud.helper.score;
+package com.kdemo.springcloud.redis.helper.score;
 
 /**
  * Score convertor
