@@ -29,8 +29,10 @@ public class LuaHashTests {
 
     private static final String HASH_KEY = "scoreHSet";
 
+
     @Autowired
     private RedissonClient redissonClient;
+
 
     /**
      * Simple key-value pair operation
