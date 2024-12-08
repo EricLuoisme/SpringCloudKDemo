@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.time.Instant;
 import java.util.*;
 
+import static com.kdemo.springcloud.redis.scripts.LuaZSetOps.*;
 import static org.junit.Assert.assertEquals;
 
 /**
