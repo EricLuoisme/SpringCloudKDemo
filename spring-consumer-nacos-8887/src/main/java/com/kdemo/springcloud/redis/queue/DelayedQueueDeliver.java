@@ -18,18 +18,13 @@ public class DelayedQueueDeliver {
 
     private static final String MSG_QUEUE_NAME = "MsgDelayQueue";
 
-    private final RBlockingQueue<String> blockingQueue;
-
     private final RDelayedQueue<String> delayedQueue;
-    private final HttpMessageConverters messageConverters;
 
 
-    public DelayedQueueDeliver(RedissonClient redissonClient, HttpMessageConverters messageConverters) {
-        this.blockingQueue = redissonClient.getBlockingQueue(MSG_QUEUE_NAME);
-        this.delayedQueue = redissonClient.getDelayedQueue(this.blockingQueue);
-        this.messageConverters = messageConverters;
+    public DelayedQueueDeliver(RedissonClient redissonClient) {
+        this.delayedQueue = redissonClient.getDelayedQueue(
+                redissonClient.getBlockingQueue(MSG_QUEUE_NAME));
     }
-
 
     /**
      * Add new message with delay consumption time (in seconds)
@@ -39,7 +34,11 @@ public class DelayedQueueDeliver {
      */
     public void addNewMessage(String msg, long delayInSeconds) {
         delayedQueue.offer(msg, delayInSeconds, TimeUnit.SECONDS);
-        log.info("Message added to queue:{}, msg:{}", MSG_QUEUE_NAME, msg);
+        log.info("[DelayedQueueDeliver] Message added to queue:{}, msg:{}", MSG_QUEUE_NAME, msg);
+    }
+
+    public void shutDown() {
+        delayedQueue.destroy();
     }
 
 }
