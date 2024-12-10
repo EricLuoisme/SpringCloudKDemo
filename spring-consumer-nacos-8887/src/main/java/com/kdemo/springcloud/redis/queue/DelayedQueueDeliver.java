@@ -1,10 +1,8 @@
 package com.kdemo.springcloud.redis.queue;
 
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RDelayedQueue;
 import org.redisson.api.RedissonClient;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -36,9 +34,9 @@ public class DelayedQueueDeliver {
         delayedQueue.offer(msg, delayInSeconds, TimeUnit.SECONDS);
         log.info("[DelayedQueueDeliver] Message added to queue:{}, msg:{}", MSG_QUEUE_NAME, msg);
     }
-
-    public void shutDown() {
-        delayedQueue.destroy();
-    }
+//
+//    public void shutDown() {
+//        delayedQueue.destroy();
+//    }
 
 }

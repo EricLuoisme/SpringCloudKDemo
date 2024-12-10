@@ -1,5 +1,6 @@
 package com.kdemo.springcloud.redis.script;
 
+import com.kdemo.springcloud.redis.queue.DelayedQueueDeliver;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +9,6 @@ import org.redisson.api.RDelayedQueue;
 import org.redisson.api.RedissonClient;
 import org.redisson.client.codec.StringCodec;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -27,6 +27,21 @@ public class RedisDelayConsumptionTest {
 
     @Autowired
     private RedissonClient redissonClient;
+
+    @Autowired
+    private DelayedQueueDeliver delayedQueueDeliver;
+
+
+    @Test
+    public void serviceCalling() throws InterruptedException {
+        // expectation: printing order asc -> asb2, 3, 5, 6
+        delayedQueueDeliver.addNewMessage("asb3", 3);
+        delayedQueueDeliver.addNewMessage("asb5", 5);
+        delayedQueueDeliver.addNewMessage("asb2", 2);
+        delayedQueueDeliver.addNewMessage("asb6", 6);
+
+        Thread.sleep(100000);
+    }
 
 
     @Test

@@ -35,11 +35,11 @@ public class DelayedQueueReceiver {
      * Looping for retrieving msg from blocking queue
      */
     private void iterLogic() {
+        log.info("[DelayedQueueReceiver] start iter logic");
         while (true) {
             try {
                 String receiveMsg = blockingQueue.take();
                 log.info("[DelayedQueueReceiver] Message got from queue:{}, msg:{}", MSG_QUEUE_NAME, receiveMsg);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
