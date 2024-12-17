@@ -5,20 +5,20 @@ logging:
     sun.rmi: INFO
     javax.management.remote.rmi: INFO
 
-spring:
-  dynamic:
-    tp:
-      enabledCollect: true                 # 是否开启监控指标采集，默认false
-      collectorTypes: micrometer           # 监控数据采集器类型（logging | micrometer | internal_logging | JMX），默认micrometer
-      monitorInterval: 5                   # 监控时间间隔（报警判断、指标采集），默认5s
-      dubboTp: # dubbo 线程池配置
-        - threadPoolName: dubboTp#20202    # 名称规则：dubboTp + "#" + 协议端口
-          threadPoolAliasName: 测试线程池
-          corePoolSize: 100
-          maximumPoolSize: 200
-          keepAliveTime: 60
-          runTimeout: 200
-          queueTimeout: 100
+#spring:
+#  dynamic:
+#    tp:
+#      enabledCollect: true                 # 是否开启监控指标采集，默认false
+#      collectorTypes: micrometer           # 监控数据采集器类型（logging | micrometer | internal_logging | JMX），默认micrometer
+#      monitorInterval: 5                   # 监控时间间隔（报警判断、指标采集），默认5s
+#      dubboTp: # dubbo 线程池配置
+#        - threadPoolName: dubboTp#20202    # 名称规则：dubboTp + "#" + 协议端口
+#          threadPoolAliasName: 测试线程池
+#          corePoolSize: 100
+#          maximumPoolSize: 200
+#          keepAliveTime: 60
+#          runTimeout: 200
+#          queueTimeout: 100
 
 # dubbo config
 dubbo:

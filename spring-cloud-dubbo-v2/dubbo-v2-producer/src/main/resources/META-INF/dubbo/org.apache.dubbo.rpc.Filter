@@ -1,0 +1,1 @@
+threadLocalCleanFilter=com.own.dubbo2.producer.filter.ThreadLocalCleanFilter
