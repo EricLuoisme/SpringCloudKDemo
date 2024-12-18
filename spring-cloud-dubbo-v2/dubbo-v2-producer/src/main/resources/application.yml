@@ -50,6 +50,8 @@ dubbo:
     loadbalance: roundrobin
     threads: 2
     threadpool: cached
+    # must be the same name in META-INF
+    filter: threadLocalCleanFilter
   # consumer side
   consumer:
     timeout: 20000
