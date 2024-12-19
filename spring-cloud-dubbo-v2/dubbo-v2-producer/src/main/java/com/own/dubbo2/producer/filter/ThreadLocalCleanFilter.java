@@ -9,15 +9,11 @@ public class ThreadLocalCleanFilter implements Filter {
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         try {
-
-            log.info("Herserahsraesre");
-
             // basically do nothing, pass the invocation
             return invoker.invoke(invocation);
         } finally {
             // but after finished (stack back to this frame), clear all threadLocal stuff
             log.info("Clear thread local for thread:{}", Thread.currentThread().getName());
-            System.out.println("Clear clear clear");
             ThreadLocalHolder.clear();
         }
     }
